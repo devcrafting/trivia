@@ -7,6 +7,7 @@ namespace UglyTrivia
             Name = playerName;
             Purses = 0;
             Place = 0;
+            IsInPenaltyBox = false;
         }
 
         public int Purses { get; private set; }
@@ -14,6 +15,8 @@ namespace UglyTrivia
         public string Name { get; private set; }
 
         public int Place { get; private set; }
+
+        public bool IsInPenaltyBox { get; private set; }
 
         public void WinOnePurse()
         {
@@ -23,6 +26,11 @@ namespace UglyTrivia
         public void Move(int roll)
         {
             Place = (Place + roll) % 12;
+        }
+
+        public void GoToPenaltyBox()
+        {
+            IsInPenaltyBox = true;
         }
     }
 }
