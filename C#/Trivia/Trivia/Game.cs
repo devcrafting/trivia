@@ -8,10 +8,7 @@ namespace UglyTrivia
     public class Game
     {
         List<Player> players = new List<Player>();
-
-        int[] places = new int[6];
-        int[] purses = new int[6];
-
+        
         bool[] inPenaltyBox = new bool[6];
 
         LinkedList<string> popQuestions = new LinkedList<string>();
@@ -46,7 +43,6 @@ namespace UglyTrivia
         public bool add(String playerName)
         {
             players.Add(new Player(playerName));
-            places[howManyPlayers()] = 0;
             inPenaltyBox[howManyPlayers()] = false;
 
             Console.WriteLine(playerName + " was added");
@@ -71,12 +67,11 @@ namespace UglyTrivia
                     isGettingOutOfPenaltyBox = true;
 
                     Console.WriteLine(players[currentPlayer].Name + " is getting out of the penalty box");
-                    places[currentPlayer] = places[currentPlayer] + roll;
-                    if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+                    players[currentPlayer].Move(roll);
 
                     Console.WriteLine(players[currentPlayer].Name
                             + "'s new location is "
-                            + places[currentPlayer]);
+                            + players[currentPlayer].Place);
                     Console.WriteLine("The category is " + currentCategory());
                     askQuestion();
                 }
@@ -89,17 +84,13 @@ namespace UglyTrivia
             }
             else
             {
-
-                places[currentPlayer] = places[currentPlayer] + roll;
-                if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-
+                players[currentPlayer].Move(roll);
                 Console.WriteLine(players[currentPlayer].Name
                         + "'s new location is "
-                        + places[currentPlayer]);
+                        + players[currentPlayer].Place);
                 Console.WriteLine("The category is " + currentCategory());
                 askQuestion();
             }
-
         }
 
         private void askQuestion()
@@ -129,15 +120,9 @@ namespace UglyTrivia
 
         private String currentCategory()
         {
-            if (places[currentPlayer] == 0) return "Pop";
-            if (places[currentPlayer] == 4) return "Pop";
-            if (places[currentPlayer] == 8) return "Pop";
-            if (places[currentPlayer] == 1) return "Science";
-            if (places[currentPlayer] == 5) return "Science";
-            if (places[currentPlayer] == 9) return "Science";
-            if (places[currentPlayer] == 2) return "Sports";
-            if (places[currentPlayer] == 6) return "Sports";
-            if (places[currentPlayer] == 10) return "Sports";
+            if (players[currentPlayer].Place % 4 == 0) return "Pop";
+            if (players[currentPlayer].Place % 4 == 1) return "Science";
+            if (players[currentPlayer].Place % 4 == 2) return "Sports";
             return "Rock";
         }
 
@@ -166,13 +151,9 @@ namespace UglyTrivia
                     if (currentPlayer == players.Count) currentPlayer = 0;
                     return true;
                 }
-
-
-
             }
             else
             {
-
                 Console.WriteLine("Answer was corrent!!!!");
                 players[currentPlayer].WinOnePurse();
                 Console.WriteLine(players[currentPlayer].Name
@@ -198,7 +179,6 @@ namespace UglyTrivia
             if (currentPlayer == players.Count) currentPlayer = 0;
             return true;
         }
-
 
         private bool didPlayerWin()
         {
