@@ -8,29 +8,18 @@ namespace UglyTrivia
     public class Game
     {
         List<Player> players = new List<Player>();
-        
-        LinkedList<string> popQuestions = new LinkedList<string>();
-        LinkedList<string> scienceQuestions = new LinkedList<string>();
-        LinkedList<string> sportsQuestions = new LinkedList<string>();
-        LinkedList<string> rockQuestions = new LinkedList<string>();
+
+        private Dictionary<int, QuestionStack> questionsAccordingPosition = new Dictionary<int, QuestionStack>();
 
         int currentPlayer = 0;
         bool isGettingOutOfPenaltyBox;
 
         public Game()
         {
-            for (int i = 0; i < 50; i++)
-            {
-                popQuestions.AddLast("Pop Question " + i);
-                scienceQuestions.AddLast(("Science Question " + i));
-                sportsQuestions.AddLast(("Sports Question " + i));
-                rockQuestions.AddLast(createRockQuestion(i));
-            }
-        }
-
-        public String createRockQuestion(int index)
-        {
-            return "Rock Question " + index;
+            questionsAccordingPosition.Add(0, new QuestionStack("Pop"));
+            questionsAccordingPosition.Add(1, new QuestionStack("Science"));
+            questionsAccordingPosition.Add(2, new QuestionStack("Sports"));
+            questionsAccordingPosition.Add(3, new QuestionStack("Rock"));
         }
 
         public bool isPlayable()
@@ -91,35 +80,13 @@ namespace UglyTrivia
 
         private void askQuestion()
         {
-            if (currentCategory() == "Pop")
-            {
-                Console.WriteLine(popQuestions.First());
-                popQuestions.RemoveFirst();
-            }
-            if (currentCategory() == "Science")
-            {
-                Console.WriteLine(scienceQuestions.First());
-                scienceQuestions.RemoveFirst();
-            }
-            if (currentCategory() == "Sports")
-            {
-                Console.WriteLine(sportsQuestions.First());
-                sportsQuestions.RemoveFirst();
-            }
-            if (currentCategory() == "Rock")
-            {
-                Console.WriteLine(rockQuestions.First());
-                rockQuestions.RemoveFirst();
-            }
+            questionsAccordingPosition[players[currentPlayer].Place % 4].AskNextQuestion();
         }
 
 
         private String currentCategory()
         {
-            if (players[currentPlayer].Place % 4 == 0) return "Pop";
-            if (players[currentPlayer].Place % 4 == 1) return "Science";
-            if (players[currentPlayer].Place % 4 == 2) return "Sports";
-            return "Rock";
+            return questionsAccordingPosition[players[currentPlayer].Place % 4].CategoryName;
         }
 
         public bool wasCorrectlyAnswered()
