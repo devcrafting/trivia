@@ -10,7 +10,6 @@ namespace UglyTrivia
         List<Player> players = new List<Player>();
 
         int[] places = new int[6];
-        int[] purses = new int[6];
 
         bool[] inPenaltyBox = new bool[6];
 
