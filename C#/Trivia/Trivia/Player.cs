@@ -8,5 +8,8 @@ namespace UglyTrivia
         }
 
         public string Name { get; private set; }
+        public string Purses { get; private set; }
+        public int[] Places { get; private set; }
+        public string inPenaltyBox { get; private set; }
     }
 }
