@@ -1,3 +1,5 @@
 # MS Visual Studio
 *.suo
 *.csproj.user
+*.user
+_NCrunch*

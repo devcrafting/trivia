@@ -1,25 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace UglyTrivia
 {
     public class Game
     {
-        List<Player> players = new List<Player>();
+        private readonly List<Player> players = new List<Player>();
 
-        private Dictionary<int, QuestionStack> questionsAccordingPosition = new Dictionary<int, QuestionStack>();
-
+        private readonly Questions _questions = new Questions();
+        
         int currentPlayer = 0;
         bool isGettingOutOfPenaltyBox;
 
         public Game()
         {
-            questionsAccordingPosition.Add(0, new QuestionStack("Pop"));
-            questionsAccordingPosition.Add(1, new QuestionStack("Science"));
-            questionsAccordingPosition.Add(2, new QuestionStack("Sports"));
-            questionsAccordingPosition.Add(3, new QuestionStack("Rock"));
         }
 
         public bool isPlayable()
@@ -58,7 +52,7 @@ namespace UglyTrivia
                             + "'s new location is "
                             + players[currentPlayer].Place);
                     Console.WriteLine("The category is " + currentCategory());
-                    askQuestion();
+                    _questions.AskQuestion(currentCategory());
                 }
                 else
                 {
@@ -74,19 +68,17 @@ namespace UglyTrivia
                         + "'s new location is "
                         + players[currentPlayer].Place);
                 Console.WriteLine("The category is " + currentCategory());
-                askQuestion();
+                _questions.AskQuestion(currentCategory());
             }
-        }
-
-        private void askQuestion()
-        {
-            questionsAccordingPosition[players[currentPlayer].Place % 4].AskNextQuestion();
         }
 
 
         private String currentCategory()
         {
-            return questionsAccordingPosition[players[currentPlayer].Place % 4].CategoryName;
+            if (players[currentPlayer].Place % 4 == 0) return "Pop";
+            if (players[currentPlayer].Place % 4 == 1) return "Science";
+            if (players[currentPlayer].Place % 4 == 2) return "Sports";
+            return "Rock";
         }
 
         public bool wasCorrectlyAnswered()
