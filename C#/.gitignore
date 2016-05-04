@@ -3,3 +3,6 @@
 *.csproj.user
 *.user
 _NCrunch*
+packages/
+bin/
+obj/

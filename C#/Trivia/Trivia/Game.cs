@@ -5,6 +5,7 @@ namespace UglyTrivia
 {
     public class Game
     {
+        private readonly int _nbPursesToWin;
         private readonly List<Player> players = new List<Player>();
 
         private readonly Questions _questions = new Questions();
@@ -12,8 +13,9 @@ namespace UglyTrivia
         int currentPlayer = 0;
         bool isGettingOutOfPenaltyBox;
 
-        public Game()
+        public Game(int nbPursesToWin)
         {
+            _nbPursesToWin = nbPursesToWin;
         }
 
         public bool isPlayable()
@@ -137,7 +139,7 @@ namespace UglyTrivia
 
         private bool didPlayerWin()
         {
-            return !(players[currentPlayer].Purses == 6);
+            return !(players[currentPlayer].Purses == _nbPursesToWin);
         }
     }
 }
