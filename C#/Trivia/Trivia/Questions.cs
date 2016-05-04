@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace UglyTrivia
 {
-    internal class Questions
+    public class Questions
     {
         private Dictionary<string, LinkedList<string>> _questionsByCategory = new Dictionary<string, LinkedList<string>>();
 
@@ -20,6 +20,18 @@ namespace UglyTrivia
                 _questionsByCategory["Science"].AddLast(("Science Question " + i));
                 _questionsByCategory["Sports"].AddLast(("Sports Question " + i));
                 _questionsByCategory["Rock"].AddLast(CreateRockQuestion(i));
+            }
+        }
+
+        public Questions(IEnumerable<string> categories)
+        {
+            foreach (var category in categories)
+            {
+                _questionsByCategory[category] = new LinkedList<string>();
+                for (int i = 0; i < 50; i++)
+                {
+                    _questionsByCategory[category].AddLast(category + " Question " + i);
+                }
             }
         }
 

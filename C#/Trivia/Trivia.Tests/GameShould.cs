@@ -25,6 +25,12 @@ namespace Trivia.Tests
             Check.That(hasNotWon).IsFalse();
         }
 
+        //[Fact]
+        //public void AllowToDefineQuestionsCategories()
+        //{
+        //    var game = NewGame(6, new Questions(new [] { "Pop", "Rock", "Science", "Sports" }));
+        //}
+
         private static Game NewGame(int nbPursesToWin)
         {
             var game = new Game(nbPursesToWin);
