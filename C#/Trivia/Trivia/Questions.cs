@@ -46,5 +46,10 @@ namespace UglyTrivia
             Console.WriteLine(questions.First());
             questions.RemoveFirst();
         }
+
+        public string GetCategoryAt(int place)
+        {
+            return _questionsByCategory.Keys.ElementAt(place % _questionsByCategory.Count);
+        }
     }
 }

@@ -77,6 +77,7 @@ namespace UglyTrivia
 
         private String currentCategory()
         {
+            return _questions.GetCategoryAt(players[currentPlayer].Place);
             if (players[currentPlayer].Place % 4 == 0) return "Pop";
             if (players[currentPlayer].Place % 4 == 1) return "Science";
             if (players[currentPlayer].Place % 4 == 2) return "Sports";
