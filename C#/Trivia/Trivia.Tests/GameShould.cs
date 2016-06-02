@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,15 +26,31 @@ namespace Trivia.Tests
             Check.That(hasNotWon).IsFalse();
         }
 
-        //[Fact]
-        //public void AllowToDefineQuestionsCategories()
-        //{
-        //    var game = NewGame(6, new Questions(new [] { "Pop", "Rock", "Science", "Sports" }));
-        //}
-
-        private static Game NewGame(int nbPursesToWin)
+        [Fact]
+        public void AllowToDefineQuestionsCategories()
         {
-            var game = new Game(nbPursesToWin);
+            var game = NewGame(6, new Questions(new[] { "Pop", "Rock", "Science", "Sports" }));
+            var consoleOut = Console.Out;
+            var stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+
+            game.roll(1);
+            game.roll(1);
+            game.roll(1);
+            game.roll(1);
+
+            var categories = stringWriter.ToString().Split(new [] {Environment.NewLine}, StringSplitOptions.None)
+                .Where(x => x.StartsWith("The category is"))
+                .Select(x => x.Replace("The category is ", ""));
+            Check.That(categories)
+                .ContainsExactly("Rock", "Science", "Sports", "Pop");
+
+            Console.SetOut(consoleOut);
+        }
+
+        private static Game NewGame(int nbPursesToWin, Questions questions = null)
+        {
+            var game = new Game(nbPursesToWin, questions);
             game.add("Joe");
             return game;
         }

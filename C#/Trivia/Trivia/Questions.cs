@@ -23,14 +23,21 @@ namespace UglyTrivia
             }
         }
 
-        public Questions(IEnumerable<string> categories)
+        public Questions(IEnumerable<string> categories, IExternalSource externalSource = null)
         {
             foreach (var category in categories)
             {
-                _questionsByCategory[category] = new LinkedList<string>();
-                for (int i = 0; i < 50; i++)
+                if (externalSource == null)
                 {
-                    _questionsByCategory[category].AddLast(category + " Question " + i);
+                    _questionsByCategory[category] = new LinkedList<string>();
+                    for (int i = 0; i < 50; i++)
+                    {
+                        _questionsByCategory[category].AddLast(category + " Question " + i);
+                    }
+                }
+                else
+                {
+                    _questionsByCategory[category] = externalSource.GetQuestions("category");
                 }
             }
         }

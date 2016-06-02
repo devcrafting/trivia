@@ -8,14 +8,15 @@ namespace UglyTrivia
         private readonly int _nbPursesToWin;
         private readonly List<Player> players = new List<Player>();
 
-        private readonly Questions _questions = new Questions();
+        private readonly Questions _questions;
         
         int currentPlayer = 0;
         bool isGettingOutOfPenaltyBox;
 
-        public Game(int nbPursesToWin)
+        public Game(int nbPursesToWin, Questions questions = null)
         {
             _nbPursesToWin = nbPursesToWin;
+            _questions = questions ?? new Questions();
         }
 
         public bool isPlayable()
