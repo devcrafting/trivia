@@ -16,7 +16,7 @@ namespace Trivia
         {
             for (var i = 0; i < 100; i++)
             {
-                var questions = new Questions(new[] { "Pop", "Science", "Sports", "Rock" }, new QuestionFlatFile());
+                var questions = new Questions(new[] { "Pop", "Science", "Sports", "Rock" }/*, new QuestionFlatFile()*/);
                 var aGame = new Game(6, questions);
 
                 aGame.add("Chet");

@@ -6,3 +6,4 @@ _NCrunch*
 packages/
 bin/
 obj/
+*.received.txt
