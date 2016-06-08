@@ -37,7 +37,7 @@ namespace UglyTrivia
                 }
                 else
                 {
-                    _questionsByCategory[category] = externalSource.GetQuestions("category");
+                    _questionsByCategory[category] = externalSource.GetQuestions(category);
                 }
             }
         }
