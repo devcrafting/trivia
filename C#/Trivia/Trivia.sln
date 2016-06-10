@@ -1,11 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trivia", "Trivia\Trivia.csproj", "{6DF4340A-A044-4593-BC79-8F7961BB91E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trivia.Console", "Trivia\Trivia.Console.csproj", "{6DF4340A-A044-4593-BC79-8F7961BB91E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trivia.Tests", "Trivia.Tests\Trivia.Tests.csproj", "{7F8861B4-CC9D-433B-A0BC-52CDBD0BC7A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trivia.WebApi", "Trivia.WebApi\Trivia.WebApi.csproj", "{74F37689-BE96-4A7B-AFF9-6FBD7F73AE6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trivia.Infrastructure", "Trivia.Infrastructure\Trivia.Infrastructure.csproj", "{95AEFE59-84C1-4866-A277-23C86923E2DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trivia.Domain", "Trivia.Domain\Trivia.Domain.csproj", "{80FCF2FC-B138-42EF-90FA-F36231B1C5B9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{1AC8B5B2-E744-4DC1-A5CA-CCA95172A589}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,8 +37,37 @@ Global
 		{7F8861B4-CC9D-433B-A0BC-52CDBD0BC7A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F8861B4-CC9D-433B-A0BC-52CDBD0BC7A8}.Release|x86.ActiveCfg = Release|Any CPU
 		{7F8861B4-CC9D-433B-A0BC-52CDBD0BC7A8}.Release|x86.Build.0 = Release|Any CPU
+		{74F37689-BE96-4A7B-AFF9-6FBD7F73AE6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74F37689-BE96-4A7B-AFF9-6FBD7F73AE6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74F37689-BE96-4A7B-AFF9-6FBD7F73AE6B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{74F37689-BE96-4A7B-AFF9-6FBD7F73AE6B}.Debug|x86.Build.0 = Debug|Any CPU
+		{74F37689-BE96-4A7B-AFF9-6FBD7F73AE6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74F37689-BE96-4A7B-AFF9-6FBD7F73AE6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74F37689-BE96-4A7B-AFF9-6FBD7F73AE6B}.Release|x86.ActiveCfg = Release|Any CPU
+		{74F37689-BE96-4A7B-AFF9-6FBD7F73AE6B}.Release|x86.Build.0 = Release|Any CPU
+		{95AEFE59-84C1-4866-A277-23C86923E2DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95AEFE59-84C1-4866-A277-23C86923E2DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95AEFE59-84C1-4866-A277-23C86923E2DC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{95AEFE59-84C1-4866-A277-23C86923E2DC}.Debug|x86.Build.0 = Debug|Any CPU
+		{95AEFE59-84C1-4866-A277-23C86923E2DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95AEFE59-84C1-4866-A277-23C86923E2DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95AEFE59-84C1-4866-A277-23C86923E2DC}.Release|x86.ActiveCfg = Release|Any CPU
+		{95AEFE59-84C1-4866-A277-23C86923E2DC}.Release|x86.Build.0 = Release|Any CPU
+		{80FCF2FC-B138-42EF-90FA-F36231B1C5B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80FCF2FC-B138-42EF-90FA-F36231B1C5B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80FCF2FC-B138-42EF-90FA-F36231B1C5B9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{80FCF2FC-B138-42EF-90FA-F36231B1C5B9}.Debug|x86.Build.0 = Debug|Any CPU
+		{80FCF2FC-B138-42EF-90FA-F36231B1C5B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80FCF2FC-B138-42EF-90FA-F36231B1C5B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80FCF2FC-B138-42EF-90FA-F36231B1C5B9}.Release|x86.ActiveCfg = Release|Any CPU
+		{80FCF2FC-B138-42EF-90FA-F36231B1C5B9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6DF4340A-A044-4593-BC79-8F7961BB91E7} = {1AC8B5B2-E744-4DC1-A5CA-CCA95172A589}
+		{74F37689-BE96-4A7B-AFF9-6FBD7F73AE6B} = {1AC8B5B2-E744-4DC1-A5CA-CCA95172A589}
+		{95AEFE59-84C1-4866-A277-23C86923E2DC} = {1AC8B5B2-E744-4DC1-A5CA-CCA95172A589}
 	EndGlobalSection
 EndGlobal

@@ -85,9 +85,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Trivia\Trivia.csproj">
+    <ProjectReference Include="..\Trivia.Domain\Trivia.Domain.csproj">
+      <Project>{80fcf2fc-b138-42ef-90fa-f36231b1c5b9}</Project>
+      <Name>Trivia.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trivia\Trivia.Console.csproj">
       <Project>{6DF4340A-A044-4593-BC79-8F7961BB91E7}</Project>
-      <Name>Trivia</Name>
+      <Name>Trivia.Console</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
