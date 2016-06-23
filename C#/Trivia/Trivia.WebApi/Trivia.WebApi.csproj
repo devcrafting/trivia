@@ -85,6 +85,12 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Trivia.Domain\Trivia.Domain.csproj">
+      <Project>{80FCF2FC-B138-42EF-90FA-F36231B1C5B9}</Project>
+      <Name>Trivia.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
