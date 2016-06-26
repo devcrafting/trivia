@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using Trivia.Domain;
 using UglyTrivia;
 
 namespace Trivia.WebApi.Controllers
@@ -16,5 +17,22 @@ namespace Trivia.WebApi.Controllers
             gamesInProgress[gameGuid] = new Game(6, new Questions(new [] { "Sports", "Rock", "Science", "Pop"}));
             return gameGuid;
         }
+
+        [HttpPost]
+        public void Stop(string guid)
+        {
+            
+        }
+
+        [HttpPost]
+        public void AddPlayer(string id, PlayerName playerName)
+        {
+            gamesInProgress[id].add(playerName.Name);
+        }
+    }
+
+    public class PlayerName
+    {
+        public string Name { get; set; }
     }
 }
