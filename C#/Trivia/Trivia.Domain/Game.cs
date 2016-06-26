@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Trivia.Domain;
 
 namespace UglyTrivia
 {
@@ -37,7 +38,12 @@ namespace UglyTrivia
             return players.Count;
         }
 
-        public void roll(int roll)
+        public void roll(int dice)
+        {
+            this.roll(dice, x => Console.WriteLine(x.Question));
+        }
+
+        public void roll(int roll, Action<QuestionAsked> onQuestionAsked)
         {
             Console.WriteLine(players[currentPlayer].Name + " is the current player");
             Console.WriteLine("They have rolled a " + roll);
@@ -55,7 +61,7 @@ namespace UglyTrivia
                             + "'s new location is "
                             + players[currentPlayer].Place);
                     Console.WriteLine("The category is " + currentCategory());
-                    _questions.AskQuestion(currentCategory());
+                    _questions.AskQuestion(currentCategory(), onQuestionAsked);
                 }
                 else
                 {
@@ -71,7 +77,7 @@ namespace UglyTrivia
                         + "'s new location is "
                         + players[currentPlayer].Place);
                 Console.WriteLine("The category is " + currentCategory());
-                _questions.AskQuestion(currentCategory());
+                _questions.AskQuestion(currentCategory(), onQuestionAsked);
             }
         }
 

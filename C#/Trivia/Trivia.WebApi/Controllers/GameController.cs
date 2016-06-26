@@ -29,6 +29,15 @@ namespace Trivia.WebApi.Controllers
         {
             gamesInProgress[id].add(playerName.Name);
         }
+
+        [HttpPost]
+        public string Roll(string id)
+        {
+            var dice = new Random().Next(1, 6);
+            QuestionAsked questionAsked = null;
+            gamesInProgress[id].roll(dice, x => questionAsked = x);
+            return questionAsked.Question;
+        }
     }
 
     public class PlayerName

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Trivia.Domain;
 
 namespace UglyTrivia
 {
@@ -47,10 +48,16 @@ namespace UglyTrivia
             return "Rock Question " + index;
         }
 
-        public void AskQuestion(string category)
+        public void AskQuestion(string currentCategory)
+        {
+            AskQuestion(currentCategory, x => Console.WriteLine(x.Question));
+        }
+
+        public void AskQuestion(string category, Action<QuestionAsked> onQuestionAsked)
         {
             var questions = _questionsByCategory[category];
-            Console.WriteLine(questions.First());
+            var question = questions.First();
+            onQuestionAsked(new QuestionAsked(question));
             questions.RemoveFirst();
         }
 
