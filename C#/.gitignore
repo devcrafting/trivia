@@ -1,3 +1,9 @@
 # MS Visual Studio
 *.suo
 *.csproj.user
+*.user
+.vs/
+obj/
+bin/
+packages/
+.paket/
