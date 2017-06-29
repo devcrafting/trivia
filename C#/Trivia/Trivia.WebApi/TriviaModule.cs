@@ -1,13 +1,14 @@
 ﻿using System;
 using Nancy;
 using Nancy.ModelBinding;
+using Newtonsoft.Json;
 
 namespace Trivia.WebApi
 {
     public class TriviaModule : NancyModule
     {
         private static Game _game;
-        private static WebEventDispatcher _eventDispatcher;
+        private static JsonEventDispatcher _eventDispatcher;
 
         public TriviaModule()
         {
@@ -20,13 +21,13 @@ namespace Trivia.WebApi
             _eventDispatcher.Flush();
             var random = new Random();
             _game.Roll(random.Next(5) + 1);
-            return _eventDispatcher.Output;
+            return JsonConvert.SerializeObject(_eventDispatcher.Events);
         }
 
         private dynamic StartGame(dynamic o)
         {
             var startGame = this.Bind<StartGame>();
-            _eventDispatcher = new WebEventDispatcher();
+            _eventDispatcher = new JsonEventDispatcher();
             var players = new Players(_eventDispatcher);
             foreach (var player in startGame.Players)
             {
@@ -34,7 +35,7 @@ namespace Trivia.WebApi
             }
 
             _game = new Game(players, new Questions(startGame.Categories, new GeneratedQuestions(), _eventDispatcher), _eventDispatcher);
-            return _eventDispatcher.Output;
+            return JsonConvert.SerializeObject(_eventDispatcher.Events);
         }
     }
 }
