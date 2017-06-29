@@ -52,10 +52,18 @@
     <Compile Include="HelloWorldModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TriviaModule.cs" />
+    <Compile Include="WebEventDispatcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Trivia\Trivia.csproj">
+      <Project>{6DF4340A-A044-4593-BC79-8F7961BB91E7}</Project>
+      <Name>Trivia</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
