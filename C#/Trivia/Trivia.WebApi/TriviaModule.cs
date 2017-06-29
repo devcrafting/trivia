@@ -1,5 +1,6 @@
 ﻿using System;
 using Nancy;
+using Nancy.ModelBinding;
 
 namespace Trivia.WebApi
 {
@@ -24,14 +25,15 @@ namespace Trivia.WebApi
 
         private dynamic StartGame(dynamic o)
         {
+            var startGame = this.Bind<StartGame>();
             _eventDispatcher = new WebEventDispatcher();
             var players = new Players(_eventDispatcher);
-            players.Add("Chet");
-            players.Add("Pat");
-            players.Add("Sue");
+            foreach (var player in startGame.Players)
+            {
+                players.Add(player);
+            }
 
-            var categories = new[] { "Pop", "Science", "Sports", "Rock" };
-            _game = new Game(players, new Questions(categories, new GeneratedQuestions(), _eventDispatcher), _eventDispatcher);
+            _game = new Game(players, new Questions(startGame.Categories, new GeneratedQuestions(), _eventDispatcher), _eventDispatcher);
             return _eventDispatcher.Output;
         }
     }
