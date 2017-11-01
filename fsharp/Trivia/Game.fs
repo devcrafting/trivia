@@ -4,6 +4,7 @@ type Player = {
     Name: string
     Place: int
     GoldCoins: int
+    IsInPenaltyBox: bool
 }
 
 let move player roll =
@@ -11,3 +12,6 @@ let move player roll =
 
 let winAGoldCoin player =
     { player with GoldCoins = player.GoldCoins + 1  }
+
+let goToPenaltyBox player = 
+    { player with IsInPenaltyBox = true }
