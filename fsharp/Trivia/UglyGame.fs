@@ -11,7 +11,6 @@ open TriviaGame
 type Game() as this =
 
     let players = List<Player>()
-    let purses = Array.create 6 0
 
     let inPenaltyBox = Array.create 6 false
 
@@ -37,8 +36,7 @@ type Game() as this =
         this.howManyPlayers() >= 2
 
     member this.add(playerName: String): bool =
-        players.Add({ Name = playerName; Place = 0 });
-        purses.[this.howManyPlayers()] <- 0;
+        players.Add({ Name = playerName; Place = 0; GoldCoins = 0 });
         inPenaltyBox.[this.howManyPlayers()] <- false;
 
         Console.WriteLine(playerName + " was added");
@@ -107,10 +105,10 @@ type Game() as this =
         if inPenaltyBox.[currentPlayer] then
             if isGettingOutOfPenaltyBox then
                 Console.WriteLine("Answer was correct!!!!");
-                purses.[currentPlayer] <- purses.[currentPlayer] + 1;
+                players.[currentPlayer] <- winAGoldCoin players.[currentPlayer];
                 Console.WriteLine(players.[currentPlayer].Name
                                     + " now has "
-                                    + purses.[currentPlayer].ToString()
+                                    + players.[currentPlayer].GoldCoins.ToString()
                                     + " Gold Coins.");
 
                 let winner = this.didPlayerWin();
@@ -125,10 +123,10 @@ type Game() as this =
         else
 
             Console.WriteLine("Answer was corrent!!!!");
-            purses.[currentPlayer] <- purses.[currentPlayer] + 1;
+            players.[currentPlayer] <- winAGoldCoin players.[currentPlayer];
             Console.WriteLine(players.[currentPlayer].Name
                                 + " now has "
-                                + purses.[currentPlayer].ToString()
+                                + players.[currentPlayer].GoldCoins.ToString()
                                 + " Gold Coins.");
 
             let winner = this.didPlayerWin();
@@ -148,7 +146,7 @@ type Game() as this =
 
 
     member private this.didPlayerWin(): bool =
-        not (purses.[currentPlayer] = 6);
+        not (players.[currentPlayer].GoldCoins = 6);
 
 
 module GameRunner = 
