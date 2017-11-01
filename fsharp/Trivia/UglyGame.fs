@@ -6,9 +6,11 @@ open System.Collections.Generic;
 open System.Linq;
 open System.Text;
 
+open TriviaGame
+
 type Game() as this =
 
-    let players = List<string>()
+    let players = List<Player>()
 
     let places = Array.create 6 0
     let purses = Array.create 6 0
@@ -37,7 +39,7 @@ type Game() as this =
         this.howManyPlayers() >= 2
 
     member this.add(playerName: String): bool =
-        players.Add(playerName);
+        players.Add({ Name = playerName });
         places.[this.howManyPlayers()] <- 0;
         purses.[this.howManyPlayers()] <- 0;
         inPenaltyBox.[this.howManyPlayers()] <- false;
@@ -50,32 +52,32 @@ type Game() as this =
         players.Count;
 
     member this.roll(roll: int) =
-        Console.WriteLine(players.[currentPlayer] + " is the current player");
+        Console.WriteLine(players.[currentPlayer].Name + " is the current player");
         Console.WriteLine("They have rolled a " + roll.ToString());
 
         if inPenaltyBox.[currentPlayer] then
             if roll % 2 <> 0 then
                 isGettingOutOfPenaltyBox <- true;
 
-                Console.WriteLine(players.[currentPlayer].ToString() + " is getting out of the penalty box");
+                Console.WriteLine(players.[currentPlayer].Name + " is getting out of the penalty box");
                 places.[currentPlayer] <- places.[currentPlayer] + roll;
                 if places.[currentPlayer] > 11 then places.[currentPlayer] <- places.[currentPlayer] - 12;
 
-                Console.WriteLine(players.[currentPlayer]
+                Console.WriteLine(players.[currentPlayer].Name
                                     + "'s new location is "
                                     + places.[currentPlayer].ToString());
                 Console.WriteLine("The category is " + this.currentCategory());
                 this.askQuestion();
                
             else
-                Console.WriteLine(players.[currentPlayer].ToString() + " is not getting out of the penalty box");
+                Console.WriteLine(players.[currentPlayer].Name + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox <- false;
 
         else
             places.[currentPlayer] <- places.[currentPlayer] + roll;
             if places.[currentPlayer] > 11 then places.[currentPlayer] <- places.[currentPlayer] - 12;
 
-            Console.WriteLine(players.[currentPlayer]
+            Console.WriteLine(players.[currentPlayer].Name
                                 + "'s new location is "
                                 + places.[currentPlayer].ToString());
             Console.WriteLine("The category is " + this.currentCategory());
@@ -117,7 +119,7 @@ type Game() as this =
             if isGettingOutOfPenaltyBox then
                 Console.WriteLine("Answer was correct!!!!");
                 purses.[currentPlayer] <- purses.[currentPlayer] + 1;
-                Console.WriteLine(players.[currentPlayer]
+                Console.WriteLine(players.[currentPlayer].Name
                                     + " now has "
                                     + purses.[currentPlayer].ToString()
                                     + " Gold Coins.");
@@ -135,7 +137,7 @@ type Game() as this =
 
             Console.WriteLine("Answer was corrent!!!!");
             purses.[currentPlayer] <- purses.[currentPlayer] + 1;
-            Console.WriteLine(players.[currentPlayer]
+            Console.WriteLine(players.[currentPlayer].Name
                                 + " now has "
                                 + purses.[currentPlayer].ToString()
                                 + " Gold Coins.");
@@ -148,7 +150,7 @@ type Game() as this =
 
     member this.wrongAnswer(): bool=
         Console.WriteLine("Question was incorrectly answered");
-        Console.WriteLine(players.[currentPlayer] + " was sent to the penalty box");
+        Console.WriteLine(players.[currentPlayer].Name + " was sent to the penalty box");
         inPenaltyBox.[currentPlayer] <- true;
 
         currentPlayer <- currentPlayer + 1;
