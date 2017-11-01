@@ -1,6 +1,6 @@
 # F# refactoring towars a more functional style talk
 
-Run ``Fsi.exe GameRunner.fsx > goldenMaster.txt && git status goldenMaster.txt`` in a Git Bash shell to check Golden Master is still ok.
+Run `Fsi.exe GameRunner.fsx > goldenMaster.txt && git status goldenMaster.txt` in a Git Bash shell to check Golden Master is still ok.
 
 ## Introduction - 5 min
 
@@ -12,10 +12,12 @@ Run ``Fsi.exe GameRunner.fsx > goldenMaster.txt && git status goldenMaster.txt``
 
 ## Where could we start? - 5 min
 
-* Have a look at GameRunner module : mutability of notAWinner and aGame.roll seems to do something, but what? Mutability again? Side effects?
+* Have a look at GameRunner module : mutability of `notAWinner` and `aGame.roll` seems to do something, but what? Mutability again? Side effects?
 * Have a look at Game type : even more mutability and side effects in methods...
 * Let's cleanup a bit: create a Player record type for all these primitive obcession
     * Record type in F#: immutable class with default constructor and member equality + type inference
     * /!\ ToString() to replace /!\
+    * `move` function uses "copy and update record expression"
+* Live-code Name and Place property and then fast-forward other properties: `git reset --hard && git checkout -b step2 fsharp-refactoring-step2`
 
 ## 
