@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.fs" />
+    <Compile Include="UglyGame.fs" />
     <None Include="App.config" />
     <None Include="GameRunner.fsx" />
   </ItemGroup>

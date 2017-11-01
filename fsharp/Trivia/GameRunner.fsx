@@ -1,4 +1,5 @@
 ﻿#load "Game.fs"
+#load "UglyGame.fs"
 
 open UglyTrivia.GameRunner
 
