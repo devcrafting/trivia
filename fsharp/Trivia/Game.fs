@@ -15,3 +15,13 @@ let winAGoldCoin player =
 
 let goToPenaltyBox player = 
     { player with IsInPenaltyBox = true }
+
+type QuestionsStack = {
+    Name: string
+    Questions: Question list
+}
+and Question = string
+
+let generateQuestionsStack category =
+    let questions = [1..50] |> List.map (fun i -> sprintf "%s Question %i" category i)
+    { Name = category; Questions = questions }

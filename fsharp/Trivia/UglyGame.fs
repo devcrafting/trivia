@@ -8,27 +8,15 @@ open System.Text;
 
 open TriviaGame
 
-type Game() as this =
+type Game() =
 
     let players = List<Player>()
-
-    let popQuestions = LinkedList<string>()
-    let scienceQuestions = LinkedList<string>()
-    let sportsQuestions = LinkedList<string>()
-    let rockQuestions = LinkedList<string>()
+    let mutable questionsStacks = 
+        ["Pop"; "Science"; "Sports"; "Rock" ]
+        |> List.map generateQuestionsStack
 
     let mutable currentPlayer = 0;
     let mutable isGettingOutOfPenaltyBox = false;
-
-    do
-        for i = 1 to 50 do
-            popQuestions.AddLast("Pop Question " + i.ToString()) |> ignore
-            scienceQuestions.AddLast("Science Question " + i.ToString()) |> ignore
-            sportsQuestions.AddLast("Sports Question " + i.ToString()) |> ignore
-            rockQuestions.AddLast(this.createRockQuestion(i)) |> ignore
-    
-    member this.createRockQuestion(index: int): string =
-        "Rock Question " + index.ToString()
 
     member this.isPlayable(): bool =
         this.howManyPlayers() >= 2
@@ -57,7 +45,6 @@ type Game() as this =
                 Console.WriteLine(players.[currentPlayer].Name
                                     + "'s new location is "
                                     + players.[currentPlayer].Place.ToString());
-                Console.WriteLine("The category is " + this.currentCategory());
                 this.askQuestion();
                
             else
@@ -70,34 +57,19 @@ type Game() as this =
             Console.WriteLine(players.[currentPlayer].Name
                                 + "'s new location is "
                                 + players.[currentPlayer].Place.ToString());
-            Console.WriteLine("The category is " + this.currentCategory());
             this.askQuestion();
 
     member private this.askQuestion() =
-        if this.currentCategory() = "Pop" then
-            Console.WriteLine(popQuestions.First.Value);
-            popQuestions.RemoveFirst();
-            
-        if this.currentCategory() = "Science" then
-            Console.WriteLine(scienceQuestions.First.Value);
-            scienceQuestions.RemoveFirst();
+        let questionsStack = questionsStacks.[this.currentCategory()]
+        Console.WriteLine("The category is " + questionsStack.Name)
+        Console.WriteLine(questionsStack.Questions |> List.head)
+        questionsStacks <- 
+            questionsStacks
+            |> List.map (fun x -> if x = questionsStack then { questionsStack with Questions = List.tail questionsStack.Questions } else x)
+
+    member private this.currentCategory() =
+        players.[currentPlayer].Place % 4
         
-        if this.currentCategory() = "Sports" then
-            Console.WriteLine(sportsQuestions.First.Value);
-            sportsQuestions.RemoveFirst();
-
-        if this.currentCategory() = "Rock" then
-            Console.WriteLine(rockQuestions.First.Value);
-            rockQuestions.RemoveFirst();
-
-
-    member private this.currentCategory(): String =
-
-        if (players.[currentPlayer].Place % 4 = 0) then "Pop";
-        elif (players.[currentPlayer].Place % 4 = 1) then "Science";
-        elif (players.[currentPlayer].Place % 4 = 2) then "Sports";
-        else "Rock"
-
     member this.wasCorrectlyAnswered(): bool =
         if players.[currentPlayer].IsInPenaltyBox then
             if isGettingOutOfPenaltyBox then

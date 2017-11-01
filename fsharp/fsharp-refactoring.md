@@ -19,5 +19,6 @@ Run `Fsi.exe GameRunner.fsx > goldenMaster.txt && git status goldenMaster.txt` i
     * /!\ ToString() to replace /!\
     * `move` function uses "copy and update record expression"
 * Live-code Name and Place property and then fast-forward other properties: `git reset --hard && git checkout -b step2 fsharp-refactoring-step2`
+* Live-code QuestionsStack and Question record types (using temporary mutable QuestionsStack list in Game)
 
 ## 
