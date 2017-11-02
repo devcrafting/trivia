@@ -51,6 +51,7 @@ type GameState =
     | Won
 and GameTurn = {
     Player: Player
+    GettingOutOfPenaltyBox: bool
     NextPlayers: Player list
     QuestionsStacks: QuestionsStack list
 }
@@ -59,7 +60,7 @@ let invitePlayer name gameState =
     let player = Player.WithName name
     let firstGameTurn =
         match gameState with
-        | GameOutOfTheBox q -> { Player = player; NextPlayers = []; QuestionsStacks = q }
+        | GameOutOfTheBox q -> { Player = player; NextPlayers = []; QuestionsStacks = q; GettingOutOfPenaltyBox = false }
         | Playing turn -> { turn with NextPlayers = turn.NextPlayers @ [ player ] }
     printfn "%s was added" name
     printfn "They are player number %i" (firstGameTurn.NextPlayers.Length + 1)
@@ -71,3 +72,40 @@ let prepareNextTurn currentPlayer currentTurn =
         Playing { currentTurn with
                     Player = currentTurn.NextPlayers |> List.head
                     NextPlayers = (currentTurn.NextPlayers |> List.tail) @ [ currentPlayer ] }
+
+let private moveAskAndDiscardQuestion diceValue turn =
+    let player = turn.Player |> move diceValue
+    let questionsStacks = turn.QuestionsStacks |> askAndDiscardQuestion player.Location
+    { turn with 
+            Player = player
+            GettingOutOfPenaltyBox = true
+            QuestionsStacks = questionsStacks }
+
+let roll diceValue turn =
+    printfn "%s is the current player" turn.Player.Name
+    printfn "They have rolled a %i" diceValue
+    match turn.Player with
+    | p when p.IsInPenaltyBox && diceValue % 2 = 0 ->
+        printfn "%s is not getting out of the penalty box" p.Name
+        { turn with GettingOutOfPenaltyBox = false }
+    | p when p.IsInPenaltyBox ->
+        printfn "%s is getting out of the penalty box" p.Name
+        turn |> moveAskAndDiscardQuestion diceValue
+    | p ->
+        turn |> moveAskAndDiscardQuestion diceValue
+
+let answerCorrectly turn =
+    let player = 
+        match turn.Player with
+        | p when not p.IsInPenaltyBox ->
+            printfn "Answer was corrent!!!!"
+            p |> winAGoldCoin
+        | p when p.IsInPenaltyBox && turn.GettingOutOfPenaltyBox ->
+            printfn "Answer was correct!!!!"
+            p |> winAGoldCoin
+        | p -> p 
+    prepareNextTurn player turn
+
+let answerBadly turn =
+    let player = turn.Player |> goToPenaltyBox
+    prepareNextTurn player turn

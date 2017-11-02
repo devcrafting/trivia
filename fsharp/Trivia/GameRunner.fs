@@ -32,15 +32,15 @@ let main argv =
 
     let randomizeAnswers turn =
         if (rand.Next(9) = 7) then
-            aGame.wrongAnswer turn
+            answerBadly turn
         else
-            aGame.wasCorrectlyAnswered turn
+            answerCorrectly turn
 
     let rec nextTurn gameState =
         match gameState with
         | Playing turn ->
             turn
-            |> aGame.roll(rand.Next(5) + 1)
+            |> roll (rand.Next(5) + 1)
             |> randomizeAnswers
             |> nextTurn
         | Won -> ()
