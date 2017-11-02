@@ -11,8 +11,6 @@ type Game() as this =
 
     let players = List<Player>()
 
-    let inPenaltyBox = Array.create 6 false
-
     let popQuestions = LinkedList<string>()
     let scienceQuestions = LinkedList<string>()
     let sportsQuestions = LinkedList<string>()
@@ -36,7 +34,6 @@ type Game() as this =
 
     member this.add(playerName: String): bool =
         players.Add(Player.WithName playerName)
-        inPenaltyBox.[this.howManyPlayers()] <- false;
 
         Console.WriteLine(playerName + " was added");
         Console.WriteLine("They are player number " + players.Count.ToString());
@@ -49,7 +46,7 @@ type Game() as this =
         Console.WriteLine(players.[currentPlayer].Name + " is the current player");
         Console.WriteLine("They have rolled a " + roll.ToString());
 
-        if inPenaltyBox.[currentPlayer] then
+        if players.[currentPlayer].IsInPenaltyBox then
             if roll % 2 <> 0 then
                 isGettingOutOfPenaltyBox <- true;
 
@@ -92,7 +89,7 @@ type Game() as this =
         else "Rock"
 
     member this.wasCorrectlyAnswered(): bool =
-        if inPenaltyBox.[currentPlayer] then
+        if players.[currentPlayer].IsInPenaltyBox then
             if isGettingOutOfPenaltyBox then
                 Console.WriteLine("Answer was correct!!!!");
                 players.[currentPlayer] <- players.[currentPlayer] |> winAGoldCoin
@@ -118,9 +115,7 @@ type Game() as this =
             winner;
 
     member this.wrongAnswer(): bool=
-        Console.WriteLine("Question was incorrectly answered");
-        Console.WriteLine(players.[currentPlayer].Name + " was sent to the penalty box");
-        inPenaltyBox.[currentPlayer] <- true;
+        players.[currentPlayer] <- players.[currentPlayer] |> goToPenaltyBox
 
         currentPlayer <- currentPlayer + 1;
         if (currentPlayer = players.Count) then currentPlayer <- 0;
