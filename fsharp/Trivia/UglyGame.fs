@@ -11,8 +11,6 @@ type Game() as this =
 
     let players = List<Player>()
 
-    let purses = Array.create 6 0
-
     let inPenaltyBox = Array.create 6 false
 
     let popQuestions = LinkedList<string>()
@@ -37,8 +35,7 @@ type Game() as this =
         this.howManyPlayers() >= 2
 
     member this.add(playerName: String): bool =
-        players.Add(Player.WithName playerName);
-        purses.[this.howManyPlayers()] <- 0;
+        players.Add(Player.WithName playerName)
         inPenaltyBox.[this.howManyPlayers()] <- false;
 
         Console.WriteLine(playerName + " was added");
@@ -98,12 +95,8 @@ type Game() as this =
         if inPenaltyBox.[currentPlayer] then
             if isGettingOutOfPenaltyBox then
                 Console.WriteLine("Answer was correct!!!!");
-                purses.[currentPlayer] <- purses.[currentPlayer] + 1;
-                Console.WriteLine(players.[currentPlayer].Name
-                                    + " now has "
-                                    + purses.[currentPlayer].ToString()
-                                    + " Gold Coins.");
-
+                players.[currentPlayer] <- players.[currentPlayer] |> winAGoldCoin
+                
                 let winner = this.didPlayerWin();
                 currentPlayer <- currentPlayer + 1;
                 if currentPlayer = players.Count then currentPlayer <- 0;
@@ -116,11 +109,7 @@ type Game() as this =
         else
 
             Console.WriteLine("Answer was corrent!!!!");
-            purses.[currentPlayer] <- purses.[currentPlayer] + 1;
-            Console.WriteLine(players.[currentPlayer].Name
-                                + " now has "
-                                + purses.[currentPlayer].ToString()
-                                + " Gold Coins.");
+            players.[currentPlayer] <- players.[currentPlayer] |> winAGoldCoin
 
             let winner = this.didPlayerWin();
             currentPlayer <- currentPlayer + 1;
@@ -139,4 +128,4 @@ type Game() as this =
 
 
     member private this.didPlayerWin(): bool =
-        not (purses.[currentPlayer] = 6);
+        not (players.[currentPlayer].GoldCoins = 6);
