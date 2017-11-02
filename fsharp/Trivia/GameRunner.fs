@@ -6,12 +6,6 @@ open TriviaGame
 
 [<EntryPoint>]
 let main argv = 
-    let aGame = Game();
-
-    aGame.add("Chet") |> ignore;
-    aGame.add("Pat") |> ignore;
-    aGame.add("Sue") |> ignore;
-
     let questionsStacks = [
         generateQuestionsStack "Pop"
         generateQuestionsStack "Science"
