@@ -77,18 +77,8 @@ type Game() =
                                     + " now has "
                                     + players.[currentPlayer].GoldCoins.ToString()
                                     + " Gold Coins.");
-
-                let winner = this.didPlayerWin();
-                currentPlayer <- currentPlayer + 1;
-                if currentPlayer = players.Count then currentPlayer <- 0;
-                
-                nextPlayer <| if winner then gameState else Won;
-            else
-                currentPlayer <- currentPlayer + 1;
-                if currentPlayer = players.Count then currentPlayer <- 0;
-                nextPlayer gameState;
+            else ()
         else
-
             Console.WriteLine("Answer was corrent!!!!");
             players.[currentPlayer] <- winAGoldCoin players.[currentPlayer];
             Console.WriteLine(players.[currentPlayer].Name
@@ -96,11 +86,11 @@ type Game() =
                                 + players.[currentPlayer].GoldCoins.ToString()
                                 + " Gold Coins.");
 
-            let winner = this.didPlayerWin();
-            currentPlayer <- currentPlayer + 1;
-            if (currentPlayer = players.Count) then currentPlayer <- 0;
+        let winner = this.didPlayerWin();
 
-            nextPlayer <| if winner then gameState else Won;
+        currentPlayer <- currentPlayer + 1;
+        if (currentPlayer = players.Count) then currentPlayer <- 0;
+        nextPlayer <| if winner then gameState else Won;
 
     member this.wrongAnswer gameState =
         Console.WriteLine("Question was incorrectly answered");
