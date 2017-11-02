@@ -11,7 +11,6 @@ type Game() as this =
 
     let players = List<Player>()
 
-    let places = Array.create 6 0
     let purses = Array.create 6 0
 
     let inPenaltyBox = Array.create 6 false
@@ -38,8 +37,7 @@ type Game() as this =
         this.howManyPlayers() >= 2
 
     member this.add(playerName: String): bool =
-        players.Add({ Name = playerName });
-        places.[this.howManyPlayers()] <- 0;
+        players.Add(Player.WithName playerName);
         purses.[this.howManyPlayers()] <- 0;
         inPenaltyBox.[this.howManyPlayers()] <- false;
 
@@ -59,12 +57,7 @@ type Game() as this =
                 isGettingOutOfPenaltyBox <- true;
 
                 Console.WriteLine(players.[currentPlayer].Name + " is getting out of the penalty box");
-                places.[currentPlayer] <- places.[currentPlayer] + roll;
-                if places.[currentPlayer] > 11 then places.[currentPlayer] <- places.[currentPlayer] - 12;
-
-                Console.WriteLine(players.[currentPlayer].Name
-                                    + "'s new location is "
-                                    + places.[currentPlayer].ToString());
+                players.[currentPlayer] <- players.[currentPlayer] |> move roll
                 Console.WriteLine("The category is " + this.currentCategory());
                 this.askQuestion();
                
@@ -73,12 +66,7 @@ type Game() as this =
                 isGettingOutOfPenaltyBox <- false;
 
         else
-            places.[currentPlayer] <- places.[currentPlayer] + roll;
-            if places.[currentPlayer] > 11 then places.[currentPlayer] <- places.[currentPlayer] - 12;
-
-            Console.WriteLine(players.[currentPlayer].Name
-                                + "'s new location is "
-                                + places.[currentPlayer].ToString());
+            players.[currentPlayer] <- players.[currentPlayer] |> move roll
             Console.WriteLine("The category is " + this.currentCategory());
             this.askQuestion();
 
@@ -101,16 +89,9 @@ type Game() as this =
 
 
     member private this.currentCategory(): String =
-
-        if (places.[currentPlayer] = 0) then "Pop";
-        elif (places.[currentPlayer] = 4) then "Pop";
-        elif (places.[currentPlayer] = 8) then "Pop";
-        elif (places.[currentPlayer] = 1) then "Science";
-        elif (places.[currentPlayer] = 5) then "Science";
-        elif (places.[currentPlayer] = 9) then "Science";
-        elif (places.[currentPlayer] = 2) then "Sports";
-        elif (places.[currentPlayer] = 6) then "Sports";
-        elif (places.[currentPlayer] = 10) then "Sports";
+        if (players.[currentPlayer].Location % 4 = 0) then "Pop"
+        elif (players.[currentPlayer].Location % 4 = 1) then "Science"
+        elif (players.[currentPlayer].Location % 4 = 2) then "Sports"
         else "Rock"
 
     member this.wasCorrectlyAnswered(): bool =
