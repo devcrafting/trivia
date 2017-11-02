@@ -11,10 +11,14 @@ type Player =
         { Name = name; Place = 0; GoldCoins = 0; IsInPenaltyBox = false }
 
 let move player roll =
-    { player with Place = (player.Place + roll) % 12 }
+    let newPlace = (player.Place + roll) % 12
+    printfn "%s's new location is %i" player.Name newPlace
+    { player with Place = newPlace }
 
 let winAGoldCoin player =
-    { player with GoldCoins = player.GoldCoins + 1  }
+    let goldCoinsWon = player.GoldCoins + 1
+    printfn "%s now has %i Gold Coins." player.Name goldCoinsWon
+    { player with GoldCoins = goldCoinsWon }
 
 let goToPenaltyBox player = 
     printfn "Question was incorrectly answered"

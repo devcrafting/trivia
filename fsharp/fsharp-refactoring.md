@@ -17,8 +17,9 @@ Run `Fsi.exe GameRunner.fsx > goldenMaster.txt && git status goldenMaster.txt` i
 * Let's cleanup a bit: create a Player record type for all these primitive obcession
     * Record type in F#: immutable class with default constructor and member equality (i.e a Value Object) + type inference
     * /!\ ToString() to replace /!\
-    * `move` function uses "copy and update record expression"
+    * `move` function uses "copy and update record expression" (move printfn also)
 * Live-code Name and Place property and then fast-forward other properties: `git reset --hard && git checkout -b step2 fsharp-refactoring-step2`
+    * `winAGoldCoin` function to increment `GoldCoins` (move printfn also)
 * Live-code QuestionsStack and Question record types (using temporary mutable QuestionsStack list in Game)
 
 ## Starting to remove mutability - 15 min

@@ -38,10 +38,6 @@ type Game() =
 
                 Console.WriteLine(players.[currentPlayer].Name + " is getting out of the penalty box");
                 players.[currentPlayer] <- move players.[currentPlayer] roll;
-
-                Console.WriteLine(players.[currentPlayer].Name
-                                    + "'s new location is "
-                                    + players.[currentPlayer].Place.ToString());
                 this.askQuestion();
                
             else
@@ -50,10 +46,6 @@ type Game() =
 
         else
             players.[currentPlayer] <- move players.[currentPlayer] roll;
-
-            Console.WriteLine(players.[currentPlayer].Name
-                                + "'s new location is "
-                                + players.[currentPlayer].Place.ToString());
             this.askQuestion();
         gameState
 
@@ -73,18 +65,10 @@ type Game() =
             if isGettingOutOfPenaltyBox then
                 Console.WriteLine("Answer was correct!!!!");
                 players.[currentPlayer] <- winAGoldCoin players.[currentPlayer];
-                Console.WriteLine(players.[currentPlayer].Name
-                                    + " now has "
-                                    + players.[currentPlayer].GoldCoins.ToString()
-                                    + " Gold Coins.");
             else ()
         else
             Console.WriteLine("Answer was corrent!!!!");
             players.[currentPlayer] <- winAGoldCoin players.[currentPlayer];
-            Console.WriteLine(players.[currentPlayer].Name
-                                + " now has "
-                                + players.[currentPlayer].GoldCoins.ToString()
-                                + " Gold Coins.");
 
         let player = players.[currentPlayer]
 
