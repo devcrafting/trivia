@@ -29,8 +29,8 @@ type Game() =
     member this.howManyPlayers(): int =
         players.Count;
 
-    member this.roll gameState (roll: int) =
-        let gameState = TriviaGame.roll gameState roll
+    member this.roll player (roll: int) =
+        let player = TriviaGame.roll player roll
 
         if players.[currentPlayer].IsInPenaltyBox then
             if roll % 2 <> 0 then
@@ -47,7 +47,7 @@ type Game() =
         else
             players.[currentPlayer] <- move players.[currentPlayer] roll;
             this.askQuestion();
-        gameState
+        player
 
     member private this.askQuestion() =
         let questionsStack = questionsStacks.[this.currentCategory()]
@@ -60,7 +60,7 @@ type Game() =
     member private this.currentCategory() =
         players.[currentPlayer].Place % 4
         
-    member this.wasCorrectlyAnswered gameState =
+    member this.wasCorrectlyAnswered nextPlayers player =
         if players.[currentPlayer].IsInPenaltyBox then
             if isGettingOutOfPenaltyBox then
                 Console.WriteLine("Answer was correct!!!!");
@@ -74,21 +74,19 @@ type Game() =
 
         currentPlayer <- currentPlayer + 1;
         if (currentPlayer = players.Count) then currentPlayer <- 0;
-        nextPlayer player gameState
+        nextPlayer player nextPlayers
 
-    member this.wrongAnswer gameState =
+    member this.wrongAnswer nextPlayers player =
         let playerInPenaltyBox = goToPenaltyBox players.[currentPlayer]
         players.[currentPlayer] <- playerInPenaltyBox;
 
         currentPlayer <- currentPlayer + 1;
         if (currentPlayer = players.Count) then currentPlayer <- 0;
-        nextPlayer playerInPenaltyBox gameState;
+        nextPlayer playerInPenaltyBox nextPlayers;
 
 module GameRunner = 
     [<EntryPoint>]
     let main argv = 
-        let mutable isFirstRound = true;
-        let mutable notAWinner = false;
         let aGame = Game();
 
         aGame.add("Chet") |> ignore;
@@ -100,20 +98,25 @@ module GameRunner =
             | seed::tail -> new Random(int seed)
             | _ -> new Random()
 
-        let mutable gameState =
+        let gameState =
             WaitingPlayers
             |> addPlayer "Chet"
             |> addPlayer "Pat"
             |> addPlayer "Sue" 
 
-        while isFirstRound || notAWinner do
-            isFirstRound <- false; 
-            gameState <- aGame.roll gameState (rand.Next(5) + 1);
-
+        let randomizeAnswer (rand: Random) nextPlayers =
             if (rand.Next(9) = 7) then
-                gameState <- aGame.wrongAnswer gameState;
+                aGame.wrongAnswer nextPlayers
             else
-                gameState <- aGame.wasCorrectlyAnswered gameState;
+                aGame.wasCorrectlyAnswered nextPlayers
 
-            notAWinner <- match gameState with Won -> false | _ -> true
+        let rec nextPlayerPlay = function 
+            | Rolling p as gameState -> 
+                aGame.roll p.Player (rand.Next(5) + 1)
+                |> randomizeAnswer rand p.NextPlayers
+                |> nextPlayerPlay
+            | Won -> ()
+
+        nextPlayerPlay gameState
+
         0

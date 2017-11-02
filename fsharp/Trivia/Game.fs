@@ -55,17 +55,14 @@ let addPlayer name gameState =
     printfn "They are player number %i" (playerTurn.NextPlayers.Length + 1)
     Rolling playerTurn
 
-let nextPlayer currentPlayer = function
-    | _ when currentPlayer.GoldCoins = 6 -> Won
-    | Rolling p -> 
-        Rolling { p with 
-                    Player = p.NextPlayers |> List.head
-                    NextPlayers = (p.NextPlayers |> List.tail) @ [ currentPlayer ] }
-    | x -> x
+let nextPlayer currentPlayer nextPlayers = 
+    if currentPlayer.GoldCoins = 6 then Won
+    else 
+        Rolling { 
+            Player = nextPlayers |> List.head
+            NextPlayers = (nextPlayers |> List.tail) @ [ currentPlayer ] }
 
-let roll gameState dice =
-    match gameState with 
-    | Rolling p ->
-        printfn "%s is the current player" p.Player.Name
-        printfn "They have rolled a %i" dice
-        gameState
+let roll (player:Player) dice =
+    printfn "%s is the current player" player.Name
+    printfn "They have rolled a %i" dice
+    player
