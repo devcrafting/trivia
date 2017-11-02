@@ -25,6 +25,7 @@ Run `Fsi.exe GameRunner.fsx > goldenMaster.txt && git status goldenMaster.txt` i
 
 * Start with `addPlayer` instead of `Game.add`, introducing a discriminated union type
 * Make `roll`, `wasCorrectlyAnswered` and `wrongAnswer` take and return a `GameState`
-* Make `wasCorrectlyAnswered` and `wrongAnswer` change next player in GameState (temporary Won status to hide `isAWinner` mutable)
+* Make `wasCorrectlyAnswered` and `wrongAnswer` change `nextPlayer` in GameState (temporary Won status to hide `isAWinner` mutable)
 * Simplify `wasCorrectlyAnswered` (remove duplication)
 * Encapsulate messages for `goToPenaltyBox`
+* Handle game `Won` case in pattern matching for `nextPlayer`

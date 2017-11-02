@@ -87,11 +87,10 @@ type Game() =
                                 + " Gold Coins.");
 
         let player = players.[currentPlayer]
-        let winner = this.didPlayerWin();
 
         currentPlayer <- currentPlayer + 1;
         if (currentPlayer = players.Count) then currentPlayer <- 0;
-        nextPlayer player <| if winner then gameState else Won;
+        nextPlayer player gameState
 
     member this.wrongAnswer gameState =
         let playerInPenaltyBox = goToPenaltyBox players.[currentPlayer]
@@ -100,11 +99,6 @@ type Game() =
         currentPlayer <- currentPlayer + 1;
         if (currentPlayer = players.Count) then currentPlayer <- 0;
         nextPlayer playerInPenaltyBox gameState;
-
-
-    member private this.didPlayerWin(): bool =
-        not (players.[currentPlayer].GoldCoins = 6);
-
 
 module GameRunner = 
     [<EntryPoint>]

@@ -52,6 +52,7 @@ let addPlayer name gameState =
     Rolling playerTurn
 
 let nextPlayer currentPlayer = function
+    | _ when currentPlayer.GoldCoins = 6 -> Won
     | Rolling p -> 
         Rolling { p with 
                     Player = p.NextPlayers |> List.head
