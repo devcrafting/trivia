@@ -30,3 +30,4 @@ Run `Fsi.exe GameRunner.fsx > goldenMaster.txt && git status goldenMaster.txt` i
 * Start with `addPlayer` instead of `Game.add`, introducing a discriminated union type
 * Simplify `wasCorrectlyAnswered` (remove duplication around return type) and make emerge need for another return type (new GameState : `Won` or `Playing` with new turn prepared => `nextTurn` function)
 * Use recursion instead of while loop with mutable value in `GameRunner` + add `nextTurn` function handling `Won` case or giving next turn `Playing` case
+* Remove use of mutable `questionsStacks` in `Game`, use `GameTurn.QuestionsStacks` instead

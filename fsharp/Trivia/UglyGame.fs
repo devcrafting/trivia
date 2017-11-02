@@ -10,13 +10,7 @@ open TriviaGame
 type Game() =
 
     let players = List<Player>()
-    let mutable questionsStacks = [
-        generateQuestionsStack "Pop"
-        generateQuestionsStack "Science"
-        generateQuestionsStack "Sports"
-        generateQuestionsStack "Rock"
-    ]
-
+    
     let mutable currentPlayer = 0;
     let mutable isGettingOutOfPenaltyBox = false;
 
@@ -40,20 +34,17 @@ type Game() =
 
                 Console.WriteLine(players.[currentPlayer].Name + " is getting out of the penalty box");
                 players.[currentPlayer] <- players.[currentPlayer] |> move roll
-                this.askQuestion();
+                { turn with QuestionsStacks = turn.QuestionsStacks
+                                |> askAndDiscardQuestion players.[currentPlayer].Location }
                
             else
                 Console.WriteLine(players.[currentPlayer].Name + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox <- false;
-
+                turn
         else
             players.[currentPlayer] <- players.[currentPlayer] |> move roll
-            this.askQuestion();
-        turn
-
-    member private this.askQuestion() =
-        let location = players.[currentPlayer].Location
-        questionsStacks <- questionsStacks |> askAndDiscardQuestion location
+            { turn with QuestionsStacks = turn.QuestionsStacks
+                            |> askAndDiscardQuestion players.[currentPlayer].Location }
 
     member this.wasCorrectlyAnswered turn =
         if players.[currentPlayer].IsInPenaltyBox then
