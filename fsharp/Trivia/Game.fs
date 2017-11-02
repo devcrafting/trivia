@@ -24,3 +24,23 @@ let goToPenaltyBox player =
     printfn "Question was incorrectly answered"
     printfn "%s was sent to the penalty box" player.Name
     { player with IsInPenaltyBox = true }
+
+type QuestionsStack = {
+    Category: string
+    Questions: Question list
+}
+and Question = string
+
+let generateQuestionsStack category =
+    let questions = [1..50] |> List.map (fun i -> sprintf "%s Question %i" category i)
+    { Category = category; Questions = questions}
+
+let askAndDiscardQuestion location (questionsStacks: QuestionsStack list) =
+    let questionsStack = questionsStacks.[location % 4]
+    printfn "The category is %s" questionsStack.Category
+    let firstQuestion = questionsStack.Questions |> List.head
+    printfn "%s" firstQuestion
+    questionsStacks
+    |> List.map (fun x -> 
+        if x = questionsStack then { questionsStack with Questions = questionsStack.Questions |> List.tail }
+        else x)

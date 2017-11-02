@@ -16,11 +16,11 @@ Run `Fsi.exe GameRunner.fsx > goldenMaster.txt && git status goldenMaster.txt` i
 * Have a look at Game type : even more mutability and side effects in methods...
 * Let's cleanup a bit: create a Player record type for all these primitive obcession
     * Record type in F#: immutable class with default constructor and member equality (i.e a Value Object) + type inference
-* Live-code Name and Place property and then fast-forward other properties: `git reset --hard && git checkout -b step2 fsharp-refactoring-step2`
+* Live-code Name and Place property and then fast-forward : `git reset --hard && git checkout -b step2 fsharp-refactoring-step2`
     * /!\ ToString() to replace /!\
     * `move` function uses "copy and update record expression" (move printfn also)
     * `winAGoldCoin` function to increment `GoldCoins` (move printfn also)
-* Live-code QuestionsStack and Question record types (using temporary mutable QuestionsStack list in Game)
+    * QuestionsStack and Question record types (using temporary mutable QuestionsStack list in Game)
     * Use Category instead of Name (avoid properties collision)
     * `generateQuestions` function [1..50] |> fun i -> ...
     * `askAndDiscardQuestion` function taking location and all questions stacks

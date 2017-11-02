@@ -7,27 +7,18 @@ open System.Linq;
 open System.Text;
 open TriviaGame
 
-type Game() as this =
+type Game() =
 
     let players = List<Player>()
-
-    let popQuestions = LinkedList<string>()
-    let scienceQuestions = LinkedList<string>()
-    let sportsQuestions = LinkedList<string>()
-    let rockQuestions = LinkedList<string>()
+    let mutable questionsStacks = [
+        generateQuestionsStack "Pop"
+        generateQuestionsStack "Science"
+        generateQuestionsStack "Sports"
+        generateQuestionsStack "Rock"
+    ]
 
     let mutable currentPlayer = 0;
     let mutable isGettingOutOfPenaltyBox = false;
-
-    do
-        for i = 1 to 50 do
-            popQuestions.AddLast("Pop Question " + i.ToString()) |> ignore
-            scienceQuestions.AddLast("Science Question " + i.ToString()) |> ignore
-            sportsQuestions.AddLast("Sports Question " + i.ToString()) |> ignore
-            rockQuestions.AddLast(this.createRockQuestion(i)) |> ignore
-    
-    member this.createRockQuestion(index: int): string =
-        "Rock Question " + index.ToString()
 
     member this.isPlayable(): bool =
         this.howManyPlayers() >= 2
@@ -52,7 +43,6 @@ type Game() as this =
 
                 Console.WriteLine(players.[currentPlayer].Name + " is getting out of the penalty box");
                 players.[currentPlayer] <- players.[currentPlayer] |> move roll
-                Console.WriteLine("The category is " + this.currentCategory());
                 this.askQuestion();
                
             else
@@ -61,32 +51,11 @@ type Game() as this =
 
         else
             players.[currentPlayer] <- players.[currentPlayer] |> move roll
-            Console.WriteLine("The category is " + this.currentCategory());
             this.askQuestion();
 
     member private this.askQuestion() =
-        if this.currentCategory() = "Pop" then
-            Console.WriteLine(popQuestions.First.Value);
-            popQuestions.RemoveFirst();
-            
-        if this.currentCategory() = "Science" then
-            Console.WriteLine(scienceQuestions.First.Value);
-            scienceQuestions.RemoveFirst();
-        
-        if this.currentCategory() = "Sports" then
-            Console.WriteLine(sportsQuestions.First.Value);
-            sportsQuestions.RemoveFirst();
-
-        if this.currentCategory() = "Rock" then
-            Console.WriteLine(rockQuestions.First.Value);
-            rockQuestions.RemoveFirst();
-
-
-    member private this.currentCategory(): String =
-        if (players.[currentPlayer].Location % 4 = 0) then "Pop"
-        elif (players.[currentPlayer].Location % 4 = 1) then "Science"
-        elif (players.[currentPlayer].Location % 4 = 2) then "Sports"
-        else "Rock"
+        let location = players.[currentPlayer].Location
+        questionsStacks <- questionsStacks |> askAndDiscardQuestion location
 
     member this.wasCorrectlyAnswered(): bool =
         if players.[currentPlayer].IsInPenaltyBox then
