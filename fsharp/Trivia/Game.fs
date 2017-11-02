@@ -17,6 +17,8 @@ let winAGoldCoin player =
     { player with GoldCoins = player.GoldCoins + 1  }
 
 let goToPenaltyBox player = 
+    printfn "Question was incorrectly answered"
+    printfn "%s was sent to the penalty box" player.Name
     { player with IsInPenaltyBox = true }
 
 type QuestionsStack = {
@@ -49,11 +51,11 @@ let addPlayer name gameState =
     printfn "They are player number %i" (playerTurn.NextPlayers.Length + 1)
     Rolling playerTurn
 
-let nextPlayer = function
+let nextPlayer currentPlayer = function
     | Rolling p -> 
         Rolling { p with 
                     Player = p.NextPlayers |> List.head
-                    NextPlayers = (p.NextPlayers |> List.tail) @ [ p.Player ] }
+                    NextPlayers = (p.NextPlayers |> List.tail) @ [ currentPlayer ] }
     | x -> x
 
 let roll gameState dice =

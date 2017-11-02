@@ -86,20 +86,20 @@ type Game() =
                                 + players.[currentPlayer].GoldCoins.ToString()
                                 + " Gold Coins.");
 
+        let player = players.[currentPlayer]
         let winner = this.didPlayerWin();
 
         currentPlayer <- currentPlayer + 1;
         if (currentPlayer = players.Count) then currentPlayer <- 0;
-        nextPlayer <| if winner then gameState else Won;
+        nextPlayer player <| if winner then gameState else Won;
 
     member this.wrongAnswer gameState =
-        Console.WriteLine("Question was incorrectly answered");
-        Console.WriteLine(players.[currentPlayer].Name + " was sent to the penalty box");
-        players.[currentPlayer] <- goToPenaltyBox players.[currentPlayer];
+        let playerInPenaltyBox = goToPenaltyBox players.[currentPlayer]
+        players.[currentPlayer] <- playerInPenaltyBox;
 
         currentPlayer <- currentPlayer + 1;
         if (currentPlayer = players.Count) then currentPlayer <- 0;
-        nextPlayer gameState;
+        nextPlayer playerInPenaltyBox gameState;
 
 
     member private this.didPlayerWin(): bool =

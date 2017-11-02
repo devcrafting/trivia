@@ -24,5 +24,7 @@ Run `Fsi.exe GameRunner.fsx > goldenMaster.txt && git status goldenMaster.txt` i
 ## Starting to remove mutability - 15 min
 
 * Start with `addPlayer` instead of `Game.add`, introducing a discriminated union type
-* Make `roll`, `correctlyAnswered` and `wrongAnswer` take and return a `GameState`
-* Make `correctlyAnswered` and `wrongAnswer` change next player in GameState (temporary Won status to hide `isAWinner` mutable)
+* Make `roll`, `wasCorrectlyAnswered` and `wrongAnswer` take and return a `GameState`
+* Make `wasCorrectlyAnswered` and `wrongAnswer` change next player in GameState (temporary Won status to hide `isAWinner` mutable)
+* Simplify `wasCorrectlyAnswered` (remove duplication)
+* Encapsulate messages for `goToPenaltyBox`
