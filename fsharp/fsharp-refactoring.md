@@ -21,7 +21,8 @@ Run `Fsi.exe GameRunner.fsx > goldenMaster.txt && git status goldenMaster.txt` i
 * Live-code Name and Place property and then fast-forward other properties: `git reset --hard && git checkout -b step2 fsharp-refactoring-step2`
 * Live-code QuestionsStack and Question record types (using temporary mutable QuestionsStack list in Game)
 
-## Starting to remove mutability
+## Starting to remove mutability - 15 min
 
-* Start with `addPlayer` instead of `Game.add`
-* 
+* Start with `addPlayer` instead of `Game.add`, introducing a discriminated union type
+* Make `roll`, `correctlyAnswered` and `wrongAnswer` take and return a `GameState`
+* Make `correctlyAnswered` and `wrongAnswer` change next player in GameState (temporary Won status to hide `isAWinner` mutable)

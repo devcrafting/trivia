@@ -32,6 +32,7 @@ let generateQuestionsStack category =
 type GameState =
     | WaitingPlayers
     | Rolling of PlayerTurn
+    | Won
 and PlayerTurn = {
     Player: Player
     NextPlayers: Player list
@@ -47,3 +48,17 @@ let addPlayer name gameState =
     printfn "%s was added" name
     printfn "They are player number %i" (playerTurn.NextPlayers.Length + 1)
     Rolling playerTurn
+
+let nextPlayer = function
+    | Rolling p -> 
+        Rolling { p with 
+                    Player = p.NextPlayers |> List.head
+                    NextPlayers = (p.NextPlayers |> List.tail) @ [ p.Player ] }
+    | x -> x
+
+let roll gameState dice =
+    match gameState with 
+    | Rolling p ->
+        printfn "%s is the current player" p.Player.Name
+        printfn "They have rolled a %i" dice
+        gameState

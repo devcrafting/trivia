@@ -29,9 +29,8 @@ type Game() =
     member this.howManyPlayers(): int =
         players.Count;
 
-    member this.roll(roll: int) =
-        Console.WriteLine(players.[currentPlayer].Name + " is the current player");
-        Console.WriteLine("They have rolled a " + roll.ToString());
+    member this.roll gameState (roll: int) =
+        let gameState = TriviaGame.roll gameState roll
 
         if players.[currentPlayer].IsInPenaltyBox then
             if roll % 2 <> 0 then
@@ -56,6 +55,7 @@ type Game() =
                                 + "'s new location is "
                                 + players.[currentPlayer].Place.ToString());
             this.askQuestion();
+        gameState
 
     member private this.askQuestion() =
         let questionsStack = questionsStacks.[this.currentCategory()]
@@ -68,7 +68,7 @@ type Game() =
     member private this.currentCategory() =
         players.[currentPlayer].Place % 4
         
-    member this.wasCorrectlyAnswered(): bool =
+    member this.wasCorrectlyAnswered gameState =
         if players.[currentPlayer].IsInPenaltyBox then
             if isGettingOutOfPenaltyBox then
                 Console.WriteLine("Answer was correct!!!!");
@@ -82,11 +82,11 @@ type Game() =
                 currentPlayer <- currentPlayer + 1;
                 if currentPlayer = players.Count then currentPlayer <- 0;
                 
-                winner;
+                nextPlayer <| if winner then gameState else Won;
             else
                 currentPlayer <- currentPlayer + 1;
                 if currentPlayer = players.Count then currentPlayer <- 0;
-                true;
+                nextPlayer gameState;
         else
 
             Console.WriteLine("Answer was corrent!!!!");
@@ -100,16 +100,16 @@ type Game() =
             currentPlayer <- currentPlayer + 1;
             if (currentPlayer = players.Count) then currentPlayer <- 0;
 
-            winner;
+            nextPlayer <| if winner then gameState else Won;
 
-    member this.wrongAnswer(): bool=
+    member this.wrongAnswer gameState =
         Console.WriteLine("Question was incorrectly answered");
         Console.WriteLine(players.[currentPlayer].Name + " was sent to the penalty box");
         players.[currentPlayer] <- goToPenaltyBox players.[currentPlayer];
 
         currentPlayer <- currentPlayer + 1;
         if (currentPlayer = players.Count) then currentPlayer <- 0;
-        true;
+        nextPlayer gameState;
 
 
     member private this.didPlayerWin(): bool =
@@ -140,11 +140,12 @@ module GameRunner =
 
         while isFirstRound || notAWinner do
             isFirstRound <- false; 
-            aGame.roll(rand.Next(5) + 1);
+            gameState <- aGame.roll gameState (rand.Next(5) + 1);
 
             if (rand.Next(9) = 7) then
-                notAWinner <- aGame.wrongAnswer();
+                gameState <- aGame.wrongAnswer gameState;
             else
-                notAWinner <- aGame.wasCorrectlyAnswered();
+                gameState <- aGame.wasCorrectlyAnswered gameState;
 
+            notAWinner <- match gameState with Won -> false | _ -> true
         0
