@@ -6,8 +6,6 @@ open TriviaGame
 
 [<EntryPoint>]
 let main argv = 
-    let mutable isFirstRound = true;
-    let mutable notAWinner = false;
     let aGame = Game();
 
     aGame.add("Chet") |> ignore;
@@ -32,13 +30,21 @@ let main argv =
         | seed::tail -> new Random(int seed)
         | _ -> new Random()
 
-    while isFirstRound || notAWinner do
-        isFirstRound <- false; 
-        aGame.roll(rand.Next(5) + 1);
-
+    let randomizeAnswers turn =
         if (rand.Next(9) = 7) then
-            notAWinner <- aGame.wrongAnswer();
+            aGame.wrongAnswer turn
         else
-            notAWinner <- aGame.wasCorrectlyAnswered();
+            aGame.wasCorrectlyAnswered turn
+
+    let rec nextTurn gameState =
+        match gameState with
+        | Playing turn ->
+            turn
+            |> aGame.roll(rand.Next(5) + 1)
+            |> randomizeAnswers
+            |> nextTurn
+        | Won -> ()
+
+    nextTurn initialGameState
 
     0

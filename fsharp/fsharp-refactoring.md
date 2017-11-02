@@ -25,7 +25,7 @@ Run `Fsi.exe GameRunner.fsx > goldenMaster.txt && git status goldenMaster.txt` i
     * `generateQuestions` function [1..50] |> fun i -> ...
     * `askAndDiscardQuestion` function taking location and all questions stacks
 
-## Starting to remove mutability - 15 min
+## Starting to remove mutability - 25 min
 
 * Start with `addPlayer` instead of `Game.add`, introducing a discriminated union type
 * Simplify `wasCorrectlyAnswered` (remove duplication around return type) and make emerge need for another return type (new GameState : `Won` or `Playing` with new turn prepared => `nextTurn` function)

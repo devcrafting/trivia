@@ -48,6 +48,7 @@ let askAndDiscardQuestion location (questionsStacks: QuestionsStack list) =
 type GameState =
     | GameOutOfTheBox of QuestionsStack list
     | Playing of GameTurn
+    | Won
 and GameTurn = {
     Player: Player
     NextPlayers: Player list
@@ -63,3 +64,10 @@ let invitePlayer name gameState =
     printfn "%s was added" name
     printfn "They are player number %i" (firstGameTurn.NextPlayers.Length + 1)
     Playing firstGameTurn
+
+let prepareNextTurn currentPlayer currentTurn =
+    if currentPlayer.GoldCoins = 6 then Won
+    else
+        Playing { currentTurn with
+                    Player = currentTurn.NextPlayers |> List.head
+                    NextPlayers = (currentTurn.NextPlayers |> List.tail) @ [ currentPlayer ] }
