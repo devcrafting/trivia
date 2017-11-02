@@ -24,8 +24,6 @@ type Game() =
     member this.add(playerName: String): bool =
         players.Add({ Name = playerName; Place = 0; GoldCoins = 0; IsInPenaltyBox = false });
 
-        Console.WriteLine(playerName + " was added");
-        Console.WriteLine("They are player number " + players.Count.ToString());
         true
 
     member this.howManyPlayers(): int =
@@ -133,6 +131,12 @@ module GameRunner =
             match Array.toList argv with
             | seed::tail -> new Random(int seed)
             | _ -> new Random()
+
+        let mutable gameState =
+            WaitingPlayers
+            |> addPlayer "Chet"
+            |> addPlayer "Pat"
+            |> addPlayer "Sue" 
 
         while isFirstRound || notAWinner do
             isFirstRound <- false; 

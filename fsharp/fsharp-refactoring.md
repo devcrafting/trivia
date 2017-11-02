@@ -10,7 +10,7 @@ Run `Fsi.exe GameRunner.fsx > goldenMaster.txt && git status goldenMaster.txt` i
 * I already created a Golden Master (sort of characterization test)
 * Check how cool it is : VSCode + command line, even in the .NET world ;)
 
-## Where could we start? - 5 min
+## Where could we start? - 15 min
 
 * Have a look at GameRunner module : mutability of `notAWinner` and `aGame.roll` seems to do something, but what? Mutability again? Side effects?
 * Have a look at Game type : even more mutability and side effects in methods...
@@ -21,4 +21,7 @@ Run `Fsi.exe GameRunner.fsx > goldenMaster.txt && git status goldenMaster.txt` i
 * Live-code Name and Place property and then fast-forward other properties: `git reset --hard && git checkout -b step2 fsharp-refactoring-step2`
 * Live-code QuestionsStack and Question record types (using temporary mutable QuestionsStack list in Game)
 
-## 
+## Starting to remove mutability
+
+* Start with `addPlayer` instead of `Game.add`
+* 
