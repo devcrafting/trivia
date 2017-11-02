@@ -44,3 +44,22 @@ let askAndDiscardQuestion location (questionsStacks: QuestionsStack list) =
     |> List.map (fun x -> 
         if x = questionsStack then { questionsStack with Questions = questionsStack.Questions |> List.tail }
         else x)
+
+type GameState =
+    | GameOutOfTheBox of QuestionsStack list
+    | Playing of GameTurn
+and GameTurn = {
+    Player: Player
+    NextPlayers: Player list
+    QuestionsStacks: QuestionsStack list
+}
+
+let invitePlayer name gameState =
+    let player = Player.WithName name
+    let firstGameTurn =
+        match gameState with
+        | GameOutOfTheBox q -> { Player = player; NextPlayers = []; QuestionsStacks = q }
+        | Playing turn -> { turn with NextPlayers = turn.NextPlayers @ [ player ] }
+    printfn "%s was added" name
+    printfn "They are player number %i" (firstGameTurn.NextPlayers.Length + 1)
+    Playing firstGameTurn

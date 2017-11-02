@@ -25,9 +25,6 @@ type Game() =
 
     member this.add(playerName: String): bool =
         players.Add(Player.WithName playerName)
-
-        Console.WriteLine(playerName + " was added");
-        Console.WriteLine("They are player number " + players.Count.ToString());
         true
 
     member this.howManyPlayers(): int =
