@@ -9,8 +9,7 @@ namespace Trivia
 
 
         List<Player> players = new List<Player>();
-
-        int[] places = new int[6];
+        
         int[] purses = new int[6];
 
         bool[] inPenaltyBox = new bool[6];
@@ -49,7 +48,6 @@ namespace Trivia
 
 
             players.Add(new Player(playerName));
-            places[HowManyPlayers()] = 0;
             purses[HowManyPlayers()] = 0;
             inPenaltyBox[HowManyPlayers()] = false;
 
@@ -75,12 +73,10 @@ namespace Trivia
                     isGettingOutOfPenaltyBox = true;
 
                     Console.WriteLine(players[currentPlayer].Name + " is getting out of the penalty box");
-                    places[currentPlayer] = places[currentPlayer] + roll;
-                    if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-
+                    players[currentPlayer].Move(roll);
                     Console.WriteLine(players[currentPlayer].Name
                             + "'s new location is "
-                            + places[currentPlayer]);
+                            + players[currentPlayer].Location);
                     Console.WriteLine("The category is " + CurrentCategory());
                     AskQuestion();
                 }
@@ -94,12 +90,10 @@ namespace Trivia
             else
             {
 
-                places[currentPlayer] = places[currentPlayer] + roll;
-                if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-
+                players[currentPlayer].Move(roll);
                 Console.WriteLine(players[currentPlayer].Name
                         + "'s new location is "
-                        + places[currentPlayer]);
+                        + players[currentPlayer].Location);
                 Console.WriteLine("The category is " + CurrentCategory());
                 AskQuestion();
             }
@@ -133,9 +127,9 @@ namespace Trivia
 
         private String CurrentCategory()
         {
-            if (places[currentPlayer] % 4 == 0) return "Pop";
-            if (places[currentPlayer] % 4 == 1) return "Science";
-            if (places[currentPlayer] % 4 == 2) return "Sports";
+            if (players[currentPlayer].Location % 4 == 0) return "Pop";
+            if (players[currentPlayer].Location % 4 == 1) return "Science";
+            if (players[currentPlayer].Location % 4 == 2) return "Sports";
             return "Rock";
         }
 
