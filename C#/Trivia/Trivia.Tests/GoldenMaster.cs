@@ -2,15 +2,14 @@
 using System.IO;
 using ApprovalTests;
 using ApprovalTests.Reporters;
-using NUnit.Framework;
+using Xunit;
 
 namespace Trivia.Tests
 {
-    [TestFixture]
     [UseReporter(typeof(DiffReporter))]
     public class GoldenMaster
     {
-        [Test]
+        [Fact]
         public void ShouldNotChange()
         {
             var stringWriter = new StringWriter();
