@@ -14,6 +14,7 @@ namespace Trivia
         public string Name { get; }
         public int Location { get; private set; } = 0;
         public bool IsWinner => _goldCoins == 6;
+        public bool IsInPenaltyBox { get; private set; } = false;
 
         public void Move(int roll)
         {
@@ -25,6 +26,13 @@ namespace Trivia
         {
             _goldCoins++;
             Console.WriteLine($"{Name} now has {_goldCoins} Gold Coins.");
+        }
+
+        public void GoToPenaltyBox()
+        {
+            Console.WriteLine("Question was incorrectly answered");
+            Console.WriteLine($"{Name} was sent to the penalty box");
+            IsInPenaltyBox = true;
         }
     }
 }
