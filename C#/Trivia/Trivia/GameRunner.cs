@@ -20,7 +20,7 @@ namespace Trivia
 
                 do
                 {
-                    aGame.Roll(rand.Next(5) + 1);
+                    aGame.Roll(rand.Next(5) + 1, new ConsoleEventPublisher());
 
                     if (rand.Next(9) == 7)
                     {
@@ -31,6 +31,20 @@ namespace Trivia
                         notAWinner = aGame.WasCorrectlyAnswered();
                     }
                 } while (notAWinner);
+            }
+        }
+
+        public class ConsoleEventPublisher : IPublishEvent
+        {
+            public void Publish<TEvent>(TEvent @event)
+            {
+                Apply((dynamic) @event);
+            }
+
+            public void Apply(PlayerRolledDice @event)
+            {
+                Console.WriteLine(@event.PlayerName + " is the current player");
+                Console.WriteLine("They have rolled a " + @event.Roll);
             }
         }
     }

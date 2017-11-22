@@ -22,11 +22,10 @@ namespace Trivia
             return (_players.HowManyPlayers() >= 2);
         }
 
-        public void Roll(int roll)
+        public void Roll(int roll, IPublishEvent eventPublisher)
         {
-            Console.WriteLine(_players.CurrentPlayer.Name + " is the current player");
-            Console.WriteLine("They have rolled a " + roll);
-
+            eventPublisher.Publish(new PlayerRolledDice(_players.CurrentPlayer.Name, roll));
+            
             if (_players.CurrentPlayer.IsInPenaltyBox)
             {
                 if (roll % 2 != 0)
