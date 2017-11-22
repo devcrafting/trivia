@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Trivia
 {
-    internal class Questions
+    public class Questions
     {
         LinkedList<string> popQuestions = new LinkedList<string>();
         LinkedList<string> scienceQuestions = new LinkedList<string>();

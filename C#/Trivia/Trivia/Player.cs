@@ -2,7 +2,7 @@
 
 namespace Trivia
 {
-    internal class Player
+    public class Player
     {
         private int _goldCoins = 0;
 

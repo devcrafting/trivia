@@ -6,24 +6,20 @@ namespace Trivia
 {
     public class Game
     {
-        private readonly Players _players = new Players();
-        private readonly Questions _questions = new Questions();
+        private readonly Players _players;
+        private readonly Questions _questions;
         
         bool isGettingOutOfPenaltyBox;
 
-        public Game()
+        public Game(Players players, Questions questions)
         {
+            _players = players;
+            _questions = questions;
         }
 
         public bool IsPlayable()
         {
             return (_players.HowManyPlayers() >= 2);
-        }
-
-        public bool Add(String playerName)
-        {
-            _players.Add(new Player(playerName));
-            return true;
         }
 
         public void Roll(int roll)

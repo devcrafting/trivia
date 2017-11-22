@@ -3,21 +3,22 @@ using System.Collections.Generic;
 
 namespace Trivia
 {
-    internal class Players
+    public class Players
     {
         private readonly List<Player> _players = new List<Player>();
 
         public Player CurrentPlayer { get; private set; }
 
-        public void Add(Player player)
+        public void Add(string playerName)
         {
+            var player = new Player(playerName);
             _players.Add(player);
             if (CurrentPlayer == null)
             {
                 CurrentPlayer = player;
             }
 
-            Console.WriteLine($"{player.Name} was added");
+            Console.WriteLine($"{playerName} was added");
             Console.WriteLine($"They are player number {_players.Count}");
         }
 
