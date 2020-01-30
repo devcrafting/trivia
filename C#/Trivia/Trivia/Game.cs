@@ -16,8 +16,6 @@ namespace Trivia
                 { 3, "Rock"}
             };
 
-        int[] purses = new int[6];
-
         LinkedList<string> popQuestions = new LinkedList<string>();
         LinkedList<string> scienceQuestions = new LinkedList<string>();
         LinkedList<string> sportsQuestions = new LinkedList<string>();
@@ -50,7 +48,6 @@ namespace Trivia
         public bool Add(String playerName)
         {
             _players.Add(new Player(playerName));
-            purses[HowManyPlayers()] = 0;
 
             Console.WriteLine(playerName + " was added");
             Console.WriteLine("They are player number " + _players.Count);
@@ -128,13 +125,8 @@ namespace Trivia
                 if (isGettingOutOfPenaltyBox)
                 {
                     Console.WriteLine("Answer was correct!!!!");
-                    purses[currentPlayer]++;
-                    Console.WriteLine(_players[currentPlayer].Name
-                            + " now has "
-                            + purses[currentPlayer]
-                            + " Gold Coins.");
-
-                    bool winner = DidPlayerWin();
+                    _players[currentPlayer].WinAGoldCoin();
+                    bool winner = _players[currentPlayer].HasNotWon();
                     currentPlayer++;
                     if (currentPlayer == _players.Count) currentPlayer = 0;
 
@@ -154,13 +146,9 @@ namespace Trivia
             {
 
                 Console.WriteLine("Answer was corrent!!!!");
-                purses[currentPlayer]++;
-                Console.WriteLine(_players[currentPlayer].Name
-                        + " now has "
-                        + purses[currentPlayer]
-                        + " Gold Coins.");
+                _players[currentPlayer].WinAGoldCoin();
 
-                bool winner = DidPlayerWin();
+                bool winner = _players[currentPlayer].HasNotWon();
                 currentPlayer++;
                 if (currentPlayer == _players.Count) currentPlayer = 0;
 
@@ -177,12 +165,6 @@ namespace Trivia
             currentPlayer++;
             if (currentPlayer == _players.Count) currentPlayer = 0;
             return true;
-        }
-
-
-        private bool DidPlayerWin()
-        {
-            return purses[currentPlayer] != 6;
         }
     }
 }

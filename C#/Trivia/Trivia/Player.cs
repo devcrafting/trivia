@@ -15,6 +15,7 @@ namespace Trivia
         public string Name { get; }
         public bool IsInPenaltyBox { get; private set; }
         public int Place { get; private set; }
+        public int GoldCoins { get; private set; }
 
         public void GoToPenaltyBox()
         {
@@ -26,5 +27,13 @@ namespace Trivia
             Place = (Place + roll) % 12;
             Console.WriteLine($"{Name}'s new location is {Place}");
         }
+
+        public void WinAGoldCoin()
+        {
+            GoldCoins++;
+            Console.WriteLine($"{Name} now has {GoldCoins} Gold Coins.");
+        }
+
+        public bool HasNotWon() => GoldCoins != 6;
     }
 }
