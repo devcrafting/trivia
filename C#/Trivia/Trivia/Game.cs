@@ -6,8 +6,9 @@ namespace Trivia
 {
     public class Game
     {
-        private Players players = new Players();
-        private Dictionary<int, string> _categories =
+        private readonly Players players = new Players();
+        private readonly QuestionsDecks _questionsDecks = new QuestionsDecks();
+        private readonly Dictionary<int, string> _categories =
             new Dictionary<int, string>
             {
                 { 0, "Pop"},
@@ -16,33 +17,15 @@ namespace Trivia
                 { 3, "Rock"}
             };
 
-        LinkedList<string> popQuestions = new LinkedList<string>();
-        LinkedList<string> scienceQuestions = new LinkedList<string>();
-        LinkedList<string> sportsQuestions = new LinkedList<string>();
-        LinkedList<string> rockQuestions = new LinkedList<string>();
-
         bool isGettingOutOfPenaltyBox;
 
         public Game()
         {
-            for (var i = 0; i < 50; i++)
-            {
-                popQuestions.AddLast("Pop Question " + i);
-                scienceQuestions.AddLast(("Science Question " + i));
-                sportsQuestions.AddLast(("Sports Question " + i));
-                rockQuestions.AddLast(CreateRockQuestion(i));
-            }
         }
 
-        public string CreateRockQuestion(int index)
-        {
-            return "Rock Question " + index;
-        }
-
-        public bool Add(String playerName)
+        public void Add(string playerName)
         {
             players.Add(new Player(playerName));
-            return true;
         }
 
         public void Roll(int roll)
@@ -77,28 +60,8 @@ namespace Trivia
 
         private void AskQuestion()
         {
-            if (CurrentCategory() == "Pop")
-            {
-                Console.WriteLine(popQuestions.First());
-                popQuestions.RemoveFirst();
-            }
-            if (CurrentCategory() == "Science")
-            {
-                Console.WriteLine(scienceQuestions.First());
-                scienceQuestions.RemoveFirst();
-            }
-            if (CurrentCategory() == "Sports")
-            {
-                Console.WriteLine(sportsQuestions.First());
-                sportsQuestions.RemoveFirst();
-            }
-            if (CurrentCategory() == "Rock")
-            {
-                Console.WriteLine(rockQuestions.First());
-                rockQuestions.RemoveFirst();
-            }
+            _questionsDecks.AskQuestionFor(CurrentCategory());
         }
-
 
         private String CurrentCategory() =>
             _categories[players.CurrentPlayer.Place % 4];
