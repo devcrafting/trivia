@@ -6,7 +6,7 @@ open System.Collections.Generic;
 open System.Linq;
 open System.Text;
 
-type Game() as this =
+type UglyGame() as this =
 
     let players = List<string>()
 
@@ -165,13 +165,13 @@ module GameRunner =
     let main argv = 
         let mutable isFirstRound = true;
         let mutable notAWinner = false;
-        let aGame = Game();
+        let aGame = UglyGame();
 
         aGame.add("Chet") |> ignore;
         aGame.add("Pat") |> ignore;
         aGame.add("Sue") |> ignore;
 
-        let rand = new Random();
+        let rand = new Random(0);
 
         while isFirstRound || notAWinner do
             isFirstRound <- false; 
