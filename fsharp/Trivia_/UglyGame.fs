@@ -4,34 +4,38 @@ module UglyTrivia
 open System;
 open System.Collections.Generic;
 
+type Category =
+    | Science
+    | Rock
+    | Sports
+    | Pop
+
 type GameState =
     {
         Players: List<string>
         Places: int array
         Purses: int array
         InPenaltyBox: bool array
+        Questions: Map<Category, string list>
         PopQuestions: string list
-        ScienceQuestions: LinkedList<string>
-        SportsQuestions: LinkedList<string>
-        RockQuestions: LinkedList<string>
+        ScienceQuestions: string list
+        SportsQuestions: string list
+        RockQuestions: string list
         CurrentPlayer: int
         GettingOutOfPenaltyBox: bool
     }
 
 let newGame () =
     let popQuestions = [1..50] |> List.map (fun i -> "Pop Question " + i.ToString())
-    let scienceQuestions = LinkedList<string>()
-    let sportsQuestions = LinkedList<string>()
-    let rockQuestions = LinkedList<string>()
-    for i = 1 to 50 do
-        scienceQuestions.AddLast("Science Question " + i.ToString()) |> ignore
-        sportsQuestions.AddLast("Sports Question " + i.ToString()) |> ignore
-        rockQuestions.AddLast("Rock Question " + i.ToString()) |> ignore
+    let scienceQuestions = [1..50] |> List.map (fun i -> "Science Question " + i.ToString())
+    let sportsQuestions = [1..50] |> List.map (fun i -> "Sports Question " + i.ToString())
+    let rockQuestions = [1..50] |> List.map (fun i -> "Rock Question " + i.ToString())
     {
         Players = List<string>()
         Places = Array.create 6 0
         Purses = Array.create 6 0
         InPenaltyBox = Array.create 6 false
+        Questions = Map.ofList [(Sports, sportsQuestions); (Science, scienceQuestions); (Rock, rockQuestions); (Pop, popQuestions)]
         PopQuestions = popQuestions
         ScienceQuestions = scienceQuestions
         SportsQuestions = sportsQuestions
@@ -39,7 +43,12 @@ let newGame () =
         CurrentPlayer = 0
         GettingOutOfPenaltyBox = false
     }
-
+    
+let askAndDiscardQuestion category state =
+    let first::tail = state.Questions.[category]
+    Console.WriteLine(first)
+    { state with Questions = state.Questions |> Map.add category tail }
+    
 type UglyGame() as this =
 
     let mutable state = newGame()
@@ -51,21 +60,8 @@ type UglyGame() as this =
 
     let inPenaltyBox = Array.create 6 false
 
-    let scienceQuestions = LinkedList<string>()
-    let sportsQuestions = LinkedList<string>()
-    let rockQuestions = LinkedList<string>()
-
     let mutable currentPlayer = 0;
     let mutable isGettingOutOfPenaltyBox = false;
-
-    do
-        for i = 1 to 50 do
-            scienceQuestions.AddLast("Science Question " + i.ToString()) |> ignore
-            sportsQuestions.AddLast("Sports Question " + i.ToString()) |> ignore
-            rockQuestions.AddLast(this.createRockQuestion(i)) |> ignore
-    
-    member this.createRockQuestion(index: int): string =
-        "Rock Question " + index.ToString()
 
     member this.isPlayable(): bool =
         this.howManyPlayers() >= 2
@@ -98,7 +94,7 @@ type UglyGame() as this =
                 Console.WriteLine(players.[currentPlayer]
                                     + "'s new location is "
                                     + places.[currentPlayer].ToString());
-                Console.WriteLine("The category is " + this.currentCategory());
+                Console.WriteLine("The category is " + this.currentCategory().ToString());
                 this.askQuestion();
                
             else
@@ -112,41 +108,18 @@ type UglyGame() as this =
             Console.WriteLine(players.[currentPlayer]
                                 + "'s new location is "
                                 + places.[currentPlayer].ToString());
-            Console.WriteLine("The category is " + this.currentCategory());
+            Console.WriteLine("The category is " + this.currentCategory().ToString());
             this.askQuestion();
 
-    member private this.askQuestion() =
-        if this.currentCategory() = "Pop" then
-            let askAndDiscardQuestion state =
-                let first::tail = state.PopQuestions
-                Console.WriteLine(first)
-                { state with PopQuestions = tail }
-            state <- askAndDiscardQuestion state
-        if this.currentCategory() = "Science" then
-            Console.WriteLine(scienceQuestions.First.Value);
-            scienceQuestions.RemoveFirst();
         
-        if this.currentCategory() = "Sports" then
-            Console.WriteLine(sportsQuestions.First.Value);
-            sportsQuestions.RemoveFirst();
+    member private this.askQuestion() =
+        state <- askAndDiscardQuestion (this.currentCategory()) state
 
-        if this.currentCategory() = "Rock" then
-            Console.WriteLine(rockQuestions.First.Value);
-            rockQuestions.RemoveFirst();
-
-
-    member private this.currentCategory(): String =
-
-        if (places.[currentPlayer] = 0) then "Pop";
-        elif (places.[currentPlayer] = 4) then "Pop";
-        elif (places.[currentPlayer] = 8) then "Pop";
-        elif (places.[currentPlayer] = 1) then "Science";
-        elif (places.[currentPlayer] = 5) then "Science";
-        elif (places.[currentPlayer] = 9) then "Science";
-        elif (places.[currentPlayer] = 2) then "Sports";
-        elif (places.[currentPlayer] = 6) then "Sports";
-        elif (places.[currentPlayer] = 10) then "Sports";
-        else "Rock"
+    member private this.currentCategory() =
+        if (places.[currentPlayer] % 4 = 0) then Pop
+        elif (places.[currentPlayer] % 4 = 1) then Science
+        elif (places.[currentPlayer] % 4 = 2) then Sports
+        else Rock
 
     member this.wasCorrectlyAnswered(): bool =
         if inPenaltyBox.[currentPlayer] then
