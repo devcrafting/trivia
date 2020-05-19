@@ -1,13 +1,49 @@
 ﻿
-namespace UglyTrivia
+module UglyTrivia
 
 open System;
 open System.Collections.Generic;
-open System.Linq;
-open System.Text;
+
+type GameState =
+    {
+        Players: List<string>
+        Places: int array
+        Purses: int array
+        InPenaltyBox: bool array
+        PopQuestions: string list
+        ScienceQuestions: LinkedList<string>
+        SportsQuestions: LinkedList<string>
+        RockQuestions: LinkedList<string>
+        CurrentPlayer: int
+        GettingOutOfPenaltyBox: bool
+    }
+
+let newGame () =
+    let popQuestions = [1..50] |> List.map (fun i -> "Pop Question " + i.ToString())
+    let scienceQuestions = LinkedList<string>()
+    let sportsQuestions = LinkedList<string>()
+    let rockQuestions = LinkedList<string>()
+    for i = 1 to 50 do
+        scienceQuestions.AddLast("Science Question " + i.ToString()) |> ignore
+        sportsQuestions.AddLast("Sports Question " + i.ToString()) |> ignore
+        rockQuestions.AddLast("Rock Question " + i.ToString()) |> ignore
+    {
+        Players = List<string>()
+        Places = Array.create 6 0
+        Purses = Array.create 6 0
+        InPenaltyBox = Array.create 6 false
+        PopQuestions = popQuestions
+        ScienceQuestions = scienceQuestions
+        SportsQuestions = sportsQuestions
+        RockQuestions = rockQuestions
+        CurrentPlayer = 0
+        GettingOutOfPenaltyBox = false
+    }
 
 type UglyGame() as this =
 
+    let mutable state = newGame()
+        
     let players = List<string>()
 
     let places = Array.create 6 0
@@ -15,7 +51,6 @@ type UglyGame() as this =
 
     let inPenaltyBox = Array.create 6 false
 
-    let popQuestions = LinkedList<string>()
     let scienceQuestions = LinkedList<string>()
     let sportsQuestions = LinkedList<string>()
     let rockQuestions = LinkedList<string>()
@@ -25,7 +60,6 @@ type UglyGame() as this =
 
     do
         for i = 1 to 50 do
-            popQuestions.AddLast("Pop Question " + i.ToString()) |> ignore
             scienceQuestions.AddLast("Science Question " + i.ToString()) |> ignore
             sportsQuestions.AddLast("Sports Question " + i.ToString()) |> ignore
             rockQuestions.AddLast(this.createRockQuestion(i)) |> ignore
@@ -83,9 +117,11 @@ type UglyGame() as this =
 
     member private this.askQuestion() =
         if this.currentCategory() = "Pop" then
-            Console.WriteLine(popQuestions.First.Value);
-            popQuestions.RemoveFirst();
-            
+            let askAndDiscardQuestion state =
+                let first::tail = state.PopQuestions
+                Console.WriteLine(first)
+                { state with PopQuestions = tail }
+            state <- askAndDiscardQuestion state
         if this.currentCategory() = "Science" then
             Console.WriteLine(scienceQuestions.First.Value);
             scienceQuestions.RemoveFirst();
