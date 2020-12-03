@@ -6,7 +6,7 @@ class Game
 {
     var $players;
     var $places;
-    var $purses;
+    var $goldCoins;
     var $inPenaltyBox;
 
     var $popQuestions;
@@ -31,7 +31,7 @@ class Game
     {
         $this->players = array();
         $this->places = array(0);
-        $this->purses = array(0);
+        $this->goldCoins = array(0);
         $this->inPenaltyBox = array(0);
 
         $this->popQuestions = array();
@@ -52,7 +52,7 @@ class Game
     {
         array_push($this->players, $playerName);
         $this->places[$this->howManyPlayers()] = 0;
-        $this->purses[$this->howManyPlayers()] = 0;
+        $this->goldCoins[$this->howManyPlayers()] = 0;
         $this->inPenaltyBox[$this->howManyPlayers()] = false;
 
         $this->echoln($playerName . " was added");
@@ -135,7 +135,7 @@ class Game
 
     function didPlayerWin()
     {
-        return !($this->purses[$this->currentPlayer] == 6);
+        return !($this->goldCoins[$this->currentPlayer] == 6);
     }
 
     /**
@@ -167,10 +167,10 @@ class Game
 
     private function winAGoldCoin(): void
     {
-        $this->purses[$this->currentPlayer]++;
+        $this->goldCoins[$this->currentPlayer]++;
         $this->echoln($this->players[$this->currentPlayer]
             . " now has "
-            . $this->purses[$this->currentPlayer]
+            . $this->goldCoins[$this->currentPlayer]
             . " Gold Coins.");
     }
 }
