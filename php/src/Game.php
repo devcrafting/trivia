@@ -75,27 +75,13 @@ class Game
                 $this->isGettingOutOfPenaltyBox = true;
 
                 $this->echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
-                $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
-                if ($this->places[$this->currentPlayer] > 11) $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
-
-                $this->echoln($this->players[$this->currentPlayer]
-                    . "'s new location is "
-                    . $this->places[$this->currentPlayer]);
-                $this->echoln("The category is " . $this->currentCategory());
-                $this->askQuestion();
+                $this->moveAndAskQuestion($roll);
             } else {
                 $this->echoln($this->players[$this->currentPlayer] . " is not getting out of the penalty box");
                 $this->isGettingOutOfPenaltyBox = false;
             }
         } else {
-            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
-            if ($this->places[$this->currentPlayer] > 11) $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
-
-            $this->echoln($this->players[$this->currentPlayer]
-                . "'s new location is "
-                . $this->places[$this->currentPlayer]);
-            $this->echoln("The category is " . $this->currentCategory());
-            $this->askQuestion();
+            $this->moveAndAskQuestion($roll);
         }
     }
 
@@ -124,35 +110,17 @@ class Game
         if ($this->inPenaltyBox[$this->currentPlayer]) {
             if ($this->isGettingOutOfPenaltyBox) {
                 $this->echoln("Answer was correct!!!!");
-                $this->purses[$this->currentPlayer]++;
-                $this->echoln($this->players[$this->currentPlayer]
-                    . " now has "
-                    . $this->purses[$this->currentPlayer]
-                    . " Gold Coins.");
+                $this->winAGoldCoin();
 
-                $winner = $this->didPlayerWin();
-                $this->currentPlayer++;
-                if ($this->currentPlayer == count($this->players)) $this->currentPlayer = 0;
-
-                return $winner;
+                return $this->switchToNextPlayer();
             } else {
-                $this->currentPlayer++;
-                if ($this->currentPlayer == count($this->players)) $this->currentPlayer = 0;
-                return true;
+                return $this->switchToNextPlayer();
             }
         } else {
             $this->echoln("Answer was corrent!!!!");
-            $this->purses[$this->currentPlayer]++;
-            $this->echoln($this->players[$this->currentPlayer]
-                . " now has "
-                . $this->purses[$this->currentPlayer]
-                . " Gold Coins.");
+            $this->winAGoldCoin();
 
-            $winner = $this->didPlayerWin();
-            $this->currentPlayer++;
-            if ($this->currentPlayer == count($this->players)) $this->currentPlayer = 0;
-
-            return $winner;
+            return $this->switchToNextPlayer();
         }
     }
 
@@ -162,13 +130,47 @@ class Game
         $this->echoln($this->players[$this->currentPlayer] . " was sent to the penalty box");
         $this->inPenaltyBox[$this->currentPlayer] = true;
 
-        $this->currentPlayer++;
-        if ($this->currentPlayer == count($this->players)) $this->currentPlayer = 0;
-        return true;
+        return $this->switchToNextPlayer();
     }
 
     function didPlayerWin()
     {
         return !($this->purses[$this->currentPlayer] == 6);
+    }
+
+    /**
+     * @param $roll
+     */
+    private function moveAndAskQuestion($roll): void
+    {
+        $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
+        if ($this->places[$this->currentPlayer] > 11) $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
+
+        $this->echoln($this->players[$this->currentPlayer]
+            . "'s new location is "
+            . $this->places[$this->currentPlayer]);
+        $this->echoln("The category is " . $this->currentCategory());
+        $this->askQuestion();
+    }
+
+    /**
+     * @return bool
+     */
+    private function switchToNextPlayer(): bool
+    {
+        $winner = $this->didPlayerWin();
+        $this->currentPlayer++;
+        if ($this->currentPlayer == count($this->players)) $this->currentPlayer = 0;
+
+        return $winner;
+    }
+
+    private function winAGoldCoin(): void
+    {
+        $this->purses[$this->currentPlayer]++;
+        $this->echoln($this->players[$this->currentPlayer]
+            . " now has "
+            . $this->purses[$this->currentPlayer]
+            . " Gold Coins.");
     }
 }
