@@ -43,19 +43,9 @@ class Game
             array_push($this->popQuestions, "Pop Question " . $i);
             array_push($this->scienceQuestions, ("Science Question " . $i));
             array_push($this->sportsQuestions, ("Sports Question " . $i));
-            array_push($this->rockQuestions, $this->createRockQuestion($i));
+            array_push($this->rockQuestions, "Rock Question " . $i);
         }
         $this->println = $println;
-    }
-
-    function createRockQuestion($index)
-    {
-        return "Rock Question " . $index;
-    }
-
-    function isPlayable()
-    {
-        return ($this->howManyPlayers() >= 2);
     }
 
     function add($playerName)
