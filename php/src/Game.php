@@ -48,7 +48,7 @@ class Game
         $this->println = $println;
     }
 
-    function add($playerName)
+    function add($playerName): bool
     {
         array_push($this->players, $playerName);
         $this->places[$this->howManyPlayers()] = 0;
@@ -60,7 +60,7 @@ class Game
         return true;
     }
 
-    function howManyPlayers()
+    function howManyPlayers(): int
     {
         return count($this->players);
     }
@@ -97,7 +97,7 @@ class Game
             $this->echoln(array_shift($this->rockQuestions));
     }
 
-    function currentCategory()
+    function currentCategory(): string
     {
         if ($this->places[$this->currentPlayer] % 4 == 0) return "Pop";
         if ($this->places[$this->currentPlayer] % 4 == 1) return "Science";
@@ -105,7 +105,7 @@ class Game
         return "Rock";
     }
 
-    function wasCorrectlyAnswered()
+    function wasCorrectlyAnswered(): bool
     {
         if ($this->inPenaltyBox[$this->currentPlayer]) {
             if ($this->isGettingOutOfPenaltyBox) {
@@ -124,7 +124,7 @@ class Game
         }
     }
 
-    function wrongAnswer()
+    function wrongAnswer(): bool
     {
         $this->echoln("Question was incorrectly answered");
         $this->echoln($this->players[$this->currentPlayer] . " was sent to the penalty box");
@@ -133,7 +133,7 @@ class Game
         return $this->switchToNextPlayer();
     }
 
-    function didPlayerWin()
+    function didPlayerWin(): bool
     {
         return !($this->goldCoins[$this->currentPlayer] == 6);
     }
