@@ -4,6 +4,9 @@ namespace Trivia;
 
 class Game
 {
+    /**
+     * @var Player[]
+     */
     var $players;
     var $places;
     var $goldCoins;
@@ -50,7 +53,7 @@ class Game
 
     function add($playerName): bool
     {
-        array_push($this->players, $playerName);
+        array_push($this->players, new Player($playerName));
         $this->places[$this->howManyPlayers()] = 0;
         $this->goldCoins[$this->howManyPlayers()] = 0;
         $this->inPenaltyBox[$this->howManyPlayers()] = false;
@@ -67,17 +70,17 @@ class Game
 
     function roll($roll)
     {
-        $this->echoln($this->players[$this->currentPlayer] . " is the current player");
+        $this->echoln($this->players[$this->currentPlayer]->getName() . " is the current player");
         $this->echoln("They have rolled a " . $roll);
 
         if ($this->inPenaltyBox[$this->currentPlayer]) {
             if ($roll % 2 != 0) {
                 $this->isGettingOutOfPenaltyBox = true;
 
-                $this->echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
+                $this->echoln($this->players[$this->currentPlayer]->getName() . " is getting out of the penalty box");
                 $this->moveAndAskQuestion($roll);
             } else {
-                $this->echoln($this->players[$this->currentPlayer] . " is not getting out of the penalty box");
+                $this->echoln($this->players[$this->currentPlayer]->getName() . " is not getting out of the penalty box");
                 $this->isGettingOutOfPenaltyBox = false;
             }
         } else {
@@ -127,7 +130,7 @@ class Game
     function wrongAnswer(): bool
     {
         $this->echoln("Question was incorrectly answered");
-        $this->echoln($this->players[$this->currentPlayer] . " was sent to the penalty box");
+        $this->echoln($this->players[$this->currentPlayer]->getName() . " was sent to the penalty box");
         $this->inPenaltyBox[$this->currentPlayer] = true;
 
         return $this->switchToNextPlayer();
@@ -146,7 +149,7 @@ class Game
         $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
         if ($this->places[$this->currentPlayer] > 11) $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
 
-        $this->echoln($this->players[$this->currentPlayer]
+        $this->echoln($this->players[$this->currentPlayer]->getName()
             . "'s new location is "
             . $this->places[$this->currentPlayer]);
         $this->echoln("The category is " . $this->currentCategory());
@@ -168,7 +171,7 @@ class Game
     private function winAGoldCoin(): void
     {
         $this->goldCoins[$this->currentPlayer]++;
-        $this->echoln($this->players[$this->currentPlayer]
+        $this->echoln($this->players[$this->currentPlayer]->getName()
             . " now has "
             . $this->goldCoins[$this->currentPlayer]
             . " Gold Coins.");
