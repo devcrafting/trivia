@@ -6,7 +6,7 @@ class GameRunner
 {
     public static function run(\Closure $println)
     {
-        $notAWinner;
+        $winner = false;
 
         $aGame = new Game($println);
 
@@ -14,18 +14,14 @@ class GameRunner
         $aGame->add("Pat");
         $aGame->add("Sue");
 
-
         do {
-
             $aGame->roll(rand(0, 5) + 1);
 
             if (rand(0, 9) == 7) {
-                $notAWinner = $aGame->wrongAnswer();
+                $winner = $aGame->wrongAnswer();
             } else {
-                $notAWinner = $aGame->wasCorrectlyAnswered();
+                $winner = $aGame->wasCorrectlyAnswered();
             }
-
-
-        } while ($notAWinner);
+        } while (!$winner);
     }
 }

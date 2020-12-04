@@ -133,9 +133,9 @@ class Game
         return $this->switchToNextPlayer();
     }
 
-    function didPlayerWin(): bool
+    function hasPlayerWon(): bool
     {
-        return !($this->goldCoins[$this->currentPlayer] == 6);
+        return $this->goldCoins[$this->currentPlayer] == 6;
     }
 
     /**
@@ -158,7 +158,7 @@ class Game
      */
     private function switchToNextPlayer(): bool
     {
-        $winner = $this->didPlayerWin();
+        $winner = $this->hasPlayerWon();
         $this->currentPlayer++;
         if ($this->currentPlayer == count($this->players)) $this->currentPlayer = 0;
 
