@@ -1,5 +1,7 @@
 package com.adaptionsoft.games.uglytrivia.domain;
 
+import java.util.List;
+
 public class Game {
     Players players = new Players();
 
@@ -11,9 +13,8 @@ public class Game {
         this.questions = questions;
     }
 
-    public boolean add(String playerName) {
-        players.add(playerName);
-        return true;
+    public List<String> add(String playerName) {
+        return players.add(playerName);
     }
 
     public void roll(int roll) {

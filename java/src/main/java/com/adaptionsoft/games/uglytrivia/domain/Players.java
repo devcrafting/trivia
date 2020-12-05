@@ -1,16 +1,18 @@
 package com.adaptionsoft.games.uglytrivia.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Players {
     private List<Player> players = new ArrayList<>();
     private int currentPlayer;
 
-    public void add(String playerName) {
+    public List<String> add(String playerName) {
         players.add(new Player(playerName));
-        System.out.println(playerName + " was added");
-        System.out.println("They are player number " + players.size());
+        return Arrays.asList(
+            playerName + " was added",
+            "They are player number " + players.size());
     }
 
     public Player getCurrentPlayer() {

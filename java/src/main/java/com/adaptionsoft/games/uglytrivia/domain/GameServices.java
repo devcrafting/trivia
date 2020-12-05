@@ -5,10 +5,12 @@ import java.util.Random;
 public class GameServices implements GameFacade {
     private final Games games;
     private final Questions questions;
+    private final OutputWriter output;
 
-    public GameServices(Games games, Questions questions) {
+    public GameServices(Games games, Questions questions, OutputWriter output) {
         this.games = games;
         this.questions = questions;
+        this.output = output;
     }
 
     @Override
