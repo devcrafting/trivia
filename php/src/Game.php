@@ -8,7 +8,6 @@ class Game
      * @var Player[]
      */
     var $players = array();
-    var $inPenaltyBox;
 
     var $popQuestions;
     var $scienceQuestions;
@@ -30,8 +29,6 @@ class Game
 
     function __construct(\Closure $println)
     {
-        $this->inPenaltyBox = array(0);
-
         $this->popQuestions = array();
         $this->scienceQuestions = array();
         $this->sportsQuestions = array();
@@ -49,7 +46,6 @@ class Game
     function add($playerName): bool
     {
         array_push($this->players, new Player($playerName));
-        $this->inPenaltyBox[$this->howManyPlayers()] = false;
 
         $this->echoln($playerName . " was added");
         $this->echoln("They are player number " . count($this->players));
@@ -66,7 +62,7 @@ class Game
         $this->echoln($this->players[$this->currentPlayer]->getName() . " is the current player");
         $this->echoln("They have rolled a " . $roll);
 
-        if ($this->inPenaltyBox[$this->currentPlayer]) {
+        if ($this->players[$this->currentPlayer]->isInPenaltyBox()) {
             if ($roll % 2 != 0) {
                 $this->isGettingOutOfPenaltyBox = true;
 
@@ -103,7 +99,7 @@ class Game
 
     function wasCorrectlyAnswered(): bool
     {
-        if ($this->inPenaltyBox[$this->currentPlayer]) {
+        if ($this->players[$this->currentPlayer]->isInPenaltyBox()) {
             if ($this->isGettingOutOfPenaltyBox) {
                 $this->echoln("Answer was correct!!!!");
                 $this->winAGoldCoin();
@@ -124,7 +120,7 @@ class Game
     {
         $this->echoln("Question was incorrectly answered");
         $this->echoln($this->players[$this->currentPlayer]->getName() . " was sent to the penalty box");
-        $this->inPenaltyBox[$this->currentPlayer] = true;
+        $this->players[$this->currentPlayer]->goToPenaltyBox();
 
         return $this->switchToNextPlayer();
     }

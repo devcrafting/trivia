@@ -7,8 +7,9 @@ namespace Trivia;
 class Player
 {
     private $name;
-    private $location;
-    private $goldCoins;
+    private $location = 0;
+    private $goldCoins = 0;
+    private $isInPenaltyBox = false;
 
     /**
      * Player constructor.
@@ -17,21 +18,14 @@ class Player
     public function __construct($name)
     {
         $this->name = $name;
-        $this->location = 0;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return int
-     */
-    public function getLocation()
+    public function getLocation(): int
     {
         return $this->location;
     }
@@ -52,11 +46,18 @@ class Player
         $this->goldCoins++;
     }
 
-    /**
-     * @return int
-     */
-    public function getGoldCoins()
+    public function getGoldCoins() : int
     {
         return $this->goldCoins;
+    }
+
+    public function isInPenaltyBox() : bool
+    {
+        return $this->isInPenaltyBox;
+    }
+
+    public function goToPenaltyBox()
+    {
+        $this->isInPenaltyBox = true;
     }
 }
