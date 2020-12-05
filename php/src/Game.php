@@ -9,10 +9,10 @@ class Game
      */
     var $players;
 
-    var $popQuestions;
-    var $scienceQuestions;
-    var $sportsQuestions;
-    var $rockQuestions;
+    /**
+     * @var Question[][]
+     */
+    var $questions;
 
     var $isGettingOutOfPenaltyBox;
     /**
@@ -29,16 +29,16 @@ class Game
     function __construct(\Closure $println)
     {
         $this->players = new Players();
-        $this->popQuestions = array();
-        $this->scienceQuestions = array();
-        $this->sportsQuestions = array();
-        $this->rockQuestions = array();
+        $this->questions[0] = array();
+        $this->questions[1] = array();
+        $this->questions[2] = array();
+        $this->questions[3] = array();
 
         for ($i = 0; $i < 50; $i++) {
-            array_push($this->popQuestions, new Question("Pop", "Pop Question " . $i));
-            array_push($this->scienceQuestions, new Question("Science", "Science Question " . $i));
-            array_push($this->sportsQuestions, new Question("Sports", "Sports Question " . $i));
-            array_push($this->rockQuestions, new Question("Rock", "Rock Question " . $i));
+            array_push($this->questions[0], new Question("Pop", "Pop Question " . $i));
+            array_push($this->questions[1], new Question("Science", "Science Question " . $i));
+            array_push($this->questions[2], new Question("Sports", "Sports Question " . $i));
+            array_push($this->questions[3], new Question("Rock", "Rock Question " . $i));
         }
         $this->println = $println;
     }
@@ -73,13 +73,7 @@ class Game
 
     function askQuestion($location): Question
     {
-        if ($location % 4 == 0)
-            return array_shift($this->popQuestions);
-        if ($location % 4 == 1)
-            return array_shift($this->scienceQuestions);
-        if ($location % 4 == 2)
-            return array_shift($this->sportsQuestions);
-        return array_shift($this->rockQuestions);
+        return array_shift($this->questions[$location % 4]);
     }
 
     function wasCorrectlyAnswered(): bool
