@@ -1,5 +1,7 @@
 package com.adaptionsoft.games.uglytrivia.domain;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Game {
@@ -17,34 +19,38 @@ public class Game {
         return players.add(playerName);
     }
 
-    public void roll(int roll) {
-        System.out.println(players.getCurrentPlayer().name + " is the current player");
-        System.out.println("They have rolled a " + roll);
+    public List<String> roll(int roll) {
+        List<String> messages = new ArrayList<>();
+        messages.addAll(Arrays.asList(
+                players.getCurrentPlayer().name + " is the current player",
+                "They have rolled a " + roll));
 
         if (players.getCurrentPlayer().isInPenaltyBox()) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
 
-                System.out.println(players.getCurrentPlayer().name + " is getting out of the penalty box");
-                moveAndAskQuestion(roll);
+                messages.add(players.getCurrentPlayer().name + " is getting out of the penalty box");
+                messages.addAll(moveAndAskQuestion(roll));
             } else {
-                System.out.println(players.getCurrentPlayer().name + " is not getting out of the penalty box");
+                messages.add(players.getCurrentPlayer().name + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
             }
         } else {
-            moveAndAskQuestion(roll);
+            messages.addAll(moveAndAskQuestion(roll));
         }
+        return messages;
     }
 
-    private void moveAndAskQuestion(int roll) {
+    private List<String> moveAndAskQuestion(int roll) {
         players.getCurrentPlayer().move(roll);
         int location = players.getCurrentPlayer().getLocation();
-        System.out.println(players.getCurrentPlayer().name
-                + "'s new location is "
-                + location);
         Question question = questions.drawQuestion(location);
-        System.out.println("The category is " + question.category);
-        System.out.println(question.text);
+        return Arrays.asList(
+            players.getCurrentPlayer().name
+                    + "'s new location is "
+                    + location,
+            "The category is " + question.category,
+            question.text);
     }
 
     public boolean wasCorrectlyAnswered() {

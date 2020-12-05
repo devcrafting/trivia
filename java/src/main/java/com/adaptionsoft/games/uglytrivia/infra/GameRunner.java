@@ -24,7 +24,7 @@ public class GameRunner {
 		output.write(aGame.add("Sue"));
 
 		do {
-			aGame.roll(rand.nextInt(5) + 1);
+			output.write(aGame.roll(rand.nextInt(5) + 1));
 
 			if (rand.nextInt(9) == 7) {
 				winner = aGame.wrongAnswer();
