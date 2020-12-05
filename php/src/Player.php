@@ -8,6 +8,7 @@ class Player
 {
     private $name;
     private $location;
+    private $goldCoins;
 
     /**
      * Player constructor.
@@ -39,5 +40,23 @@ class Player
     {
         $this->location = $this->location + $roll;
         if ($this->location > 11) $this->location = $this->location - 12;
+    }
+
+    public function hasPlayerWon(): bool
+    {
+        return $this->goldCoins == 6;
+    }
+
+    public function winAGoldCoin()
+    {
+        $this->goldCoins++;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGoldCoins()
+    {
+        return $this->goldCoins;
     }
 }

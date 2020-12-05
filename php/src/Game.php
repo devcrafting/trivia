@@ -8,7 +8,6 @@ class Game
      * @var Player[]
      */
     var $players = array();
-    var $goldCoins;
     var $inPenaltyBox;
 
     var $popQuestions;
@@ -31,7 +30,6 @@ class Game
 
     function __construct(\Closure $println)
     {
-        $this->goldCoins = array(0);
         $this->inPenaltyBox = array(0);
 
         $this->popQuestions = array();
@@ -51,7 +49,6 @@ class Game
     function add($playerName): bool
     {
         array_push($this->players, new Player($playerName));
-        $this->goldCoins[$this->howManyPlayers()] = 0;
         $this->inPenaltyBox[$this->howManyPlayers()] = false;
 
         $this->echoln($playerName . " was added");
@@ -132,11 +129,6 @@ class Game
         return $this->switchToNextPlayer();
     }
 
-    function hasPlayerWon(): bool
-    {
-        return $this->goldCoins[$this->currentPlayer] == 6;
-    }
-
     /**
      * @param $roll
      */
@@ -156,7 +148,7 @@ class Game
      */
     private function switchToNextPlayer(): bool
     {
-        $winner = $this->hasPlayerWon();
+        $winner = $this->players[$this->currentPlayer]->hasPlayerWon();
         $this->currentPlayer++;
         if ($this->currentPlayer == count($this->players)) $this->currentPlayer = 0;
 
@@ -165,10 +157,10 @@ class Game
 
     private function winAGoldCoin(): void
     {
-        $this->goldCoins[$this->currentPlayer]++;
+        $this->players[$this->currentPlayer]->winAGoldCoin();
         $this->echoln($this->players[$this->currentPlayer]->getName()
             . " now has "
-            . $this->goldCoins[$this->currentPlayer]
+            . $this->players[$this->currentPlayer]->getGoldCoins()
             . " Gold Coins.");
     }
 }
