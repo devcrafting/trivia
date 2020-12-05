@@ -35,10 +35,10 @@ class Game
         $this->rockQuestions = array();
 
         for ($i = 0; $i < 50; $i++) {
-            array_push($this->popQuestions, "Pop Question " . $i);
-            array_push($this->scienceQuestions, ("Science Question " . $i));
-            array_push($this->sportsQuestions, ("Sports Question " . $i));
-            array_push($this->rockQuestions, "Rock Question " . $i);
+            array_push($this->popQuestions, new Question("Pop", "Pop Question " . $i));
+            array_push($this->scienceQuestions, new Question("Science", "Science Question " . $i));
+            array_push($this->sportsQuestions, new Question("Sports", "Sports Question " . $i));
+            array_push($this->rockQuestions, new Question("Rock", "Rock Question " . $i));
         }
         $this->println = $println;
     }
@@ -74,12 +74,12 @@ class Game
     function askQuestion($location): Question
     {
         if ($location % 4 == 0)
-            return new Question("Pop", array_shift($this->popQuestions));
+            return array_shift($this->popQuestions);
         if ($location % 4 == 1)
-            return new Question("Science", array_shift($this->scienceQuestions));
+            return array_shift($this->scienceQuestions);
         if ($location % 4 == 2)
-            return new Question("Sports", array_shift($this->sportsQuestions));
-        return new Question("Rock", array_shift($this->rockQuestions));
+            return array_shift($this->sportsQuestions);
+        return array_shift($this->rockQuestions);
     }
 
     function wasCorrectlyAnswered(): bool
