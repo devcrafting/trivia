@@ -71,23 +71,23 @@ class Game
         }
     }
 
-    function askQuestion()
+    function askQuestion($location)
     {
-        if ($this->currentCategory() == "Pop")
+        if ($this->currentCategory($location) == "Pop")
             $this->echoln(array_shift($this->popQuestions));
-        if ($this->currentCategory() == "Science")
+        if ($this->currentCategory($location) == "Science")
             $this->echoln(array_shift($this->scienceQuestions));
-        if ($this->currentCategory() == "Sports")
+        if ($this->currentCategory($location) == "Sports")
             $this->echoln(array_shift($this->sportsQuestions));
-        if ($this->currentCategory() == "Rock")
+        if ($this->currentCategory($location) == "Rock")
             $this->echoln(array_shift($this->rockQuestions));
     }
 
-    function currentCategory(): string
+    function currentCategory($location): string
     {
-        if ($this->players->getCurrentPlayer()->getLocation() % 4 == 0) return "Pop";
-        if ($this->players->getCurrentPlayer()->getLocation() % 4 == 1) return "Science";
-        if ($this->players->getCurrentPlayer()->getLocation() % 4 == 2) return "Sports";
+        if ($location % 4 == 0) return "Pop";
+        if ($location % 4 == 1) return "Science";
+        if ($location % 4 == 2) return "Sports";
         return "Rock";
     }
 
@@ -129,8 +129,10 @@ class Game
         $this->echoln($this->players->getCurrentPlayer()->getName()
             . "'s new location is "
             . $this->players->getCurrentPlayer()->getLocation());
-        $this->echoln("The category is " . $this->currentCategory());
-        $this->askQuestion();
+
+        $location = $this->players->getCurrentPlayer()->getLocation();
+        $this->echoln("The category is " . $this->currentCategory($location));
+        $this->askQuestion($location);
     }
 
     private function switchToNextPlayer(): bool
