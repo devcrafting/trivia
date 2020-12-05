@@ -73,22 +73,13 @@ class Game
 
     function askQuestion($location): Question
     {
-        if ($this->currentCategory($location) == "Pop")
+        if ($location % 4 == 0)
             return new Question("Pop", array_shift($this->popQuestions));
-        if ($this->currentCategory($location) == "Science")
+        if ($location % 4 == 1)
             return new Question("Science", array_shift($this->scienceQuestions));
-        if ($this->currentCategory($location) == "Sports")
+        if ($location % 4 == 2)
             return new Question("Sports", array_shift($this->sportsQuestions));
-        if ($this->currentCategory($location) == "Rock")
-            return new Question("Rock", array_shift($this->rockQuestions));
-    }
-
-    function currentCategory($location): string
-    {
-        if ($location % 4 == 0) return "Pop";
-        if ($location % 4 == 1) return "Science";
-        if ($location % 4 == 2) return "Sports";
-        return "Rock";
+        return new Question("Rock", array_shift($this->rockQuestions));
     }
 
     function wasCorrectlyAnswered(): bool
