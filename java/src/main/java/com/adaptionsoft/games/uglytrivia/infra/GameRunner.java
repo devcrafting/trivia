@@ -4,6 +4,8 @@ package com.adaptionsoft.games.uglytrivia.infra;
 import com.adaptionsoft.games.uglytrivia.domain.Game;
 import com.adaptionsoft.games.uglytrivia.domain.OutputWriter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class GameRunner {
@@ -26,11 +28,13 @@ public class GameRunner {
 		do {
 			output.write(aGame.roll(rand.nextInt(5) + 1));
 
+			List<String> messages = new ArrayList<>();
 			if (rand.nextInt(9) == 7) {
-				winner = aGame.wrongAnswer();
+				winner = aGame.wrongAnswer(messages);
 			} else {
-				winner = aGame.wasCorrectlyAnswered();
+				winner = aGame.wasCorrectlyAnswered(messages);
 			}
+			output.write(messages);
 		} while (!winner);
 	}
 }

@@ -53,24 +53,24 @@ public class Game {
             question.text);
     }
 
-    public boolean wasCorrectlyAnswered() {
+    public boolean wasCorrectlyAnswered(List<String> messages) {
         if (players.getCurrentPlayer().isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
-                System.out.println("Answer was correct!!!!");
-                players.getCurrentPlayer().winAGoldCoin();
+                messages.add("Answer was correct!!!!");
+                messages.add(players.getCurrentPlayer().winAGoldCoin());
             }
             return players.switchToNextPlayer();
         } else {
-            System.out.println("Answer was corrent!!!!");
-            players.getCurrentPlayer().winAGoldCoin();
+            messages.add("Answer was corrent!!!!");
+            messages.add(players.getCurrentPlayer().winAGoldCoin());
 
             return players.switchToNextPlayer();
         }
     }
 
-    public boolean wrongAnswer() {
-        System.out.println("Question was incorrectly answered");
-        System.out.println(players.getCurrentPlayer().name + " was sent to the penalty box");
+    public boolean wrongAnswer(List<String> messages) {
+        messages.add("Question was incorrectly answered");
+        messages.add(players.getCurrentPlayer().name + " was sent to the penalty box");
         players.getCurrentPlayer().sendToPenaltyBox();
 
         return players.switchToNextPlayer();

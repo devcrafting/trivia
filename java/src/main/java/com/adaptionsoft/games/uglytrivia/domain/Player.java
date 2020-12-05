@@ -19,12 +19,12 @@ public class Player {
         return location;
     }
 
-    public void winAGoldCoin() {
+    public String winAGoldCoin() {
         goldCoins++;
-        System.out.println(name
+        return name
                 + " now has "
                 + goldCoins
-                + " Gold Coins.");
+                + " Gold Coins.";
     }
 
     public boolean hasPlayerWon() {
