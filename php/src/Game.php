@@ -71,16 +71,16 @@ class Game
         }
     }
 
-    function askQuestion($location)
+    function askQuestion($location): Question
     {
         if ($this->currentCategory($location) == "Pop")
-            $this->echoln(array_shift($this->popQuestions));
+            return new Question("Pop", array_shift($this->popQuestions));
         if ($this->currentCategory($location) == "Science")
-            $this->echoln(array_shift($this->scienceQuestions));
+            return new Question("Science", array_shift($this->scienceQuestions));
         if ($this->currentCategory($location) == "Sports")
-            $this->echoln(array_shift($this->sportsQuestions));
+            return new Question("Sports", array_shift($this->sportsQuestions));
         if ($this->currentCategory($location) == "Rock")
-            $this->echoln(array_shift($this->rockQuestions));
+            return new Question("Rock", array_shift($this->rockQuestions));
     }
 
     function currentCategory($location): string
@@ -131,8 +131,9 @@ class Game
             . $this->players->getCurrentPlayer()->getLocation());
 
         $location = $this->players->getCurrentPlayer()->getLocation();
-        $this->echoln("The category is " . $this->currentCategory($location));
-        $this->askQuestion($location);
+        $question = $this->askQuestion($location);
+        $this->echoln("The category is " . $question->getCategory());
+        $this->echoln($question->getText());
     }
 
     private function switchToNextPlayer(): bool
