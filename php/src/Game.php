@@ -7,8 +7,7 @@ class Game
     /**
      * @var Player[]
      */
-    var $players;
-    var $places;
+    var $players = array();
     var $goldCoins;
     var $inPenaltyBox;
 
@@ -32,8 +31,6 @@ class Game
 
     function __construct(\Closure $println)
     {
-        $this->players = array();
-        $this->places = array(0);
         $this->goldCoins = array(0);
         $this->inPenaltyBox = array(0);
 
@@ -54,7 +51,6 @@ class Game
     function add($playerName): bool
     {
         array_push($this->players, new Player($playerName));
-        $this->places[$this->howManyPlayers()] = 0;
         $this->goldCoins[$this->howManyPlayers()] = 0;
         $this->inPenaltyBox[$this->howManyPlayers()] = false;
 
@@ -102,9 +98,9 @@ class Game
 
     function currentCategory(): string
     {
-        if ($this->places[$this->currentPlayer] % 4 == 0) return "Pop";
-        if ($this->places[$this->currentPlayer] % 4 == 1) return "Science";
-        if ($this->places[$this->currentPlayer] % 4 == 2) return "Sports";
+        if ($this->players[$this->currentPlayer]->getLocation() % 4 == 0) return "Pop";
+        if ($this->players[$this->currentPlayer]->getLocation() % 4 == 1) return "Science";
+        if ($this->players[$this->currentPlayer]->getLocation() % 4 == 2) return "Sports";
         return "Rock";
     }
 
@@ -146,12 +142,11 @@ class Game
      */
     private function moveAndAskQuestion($roll): void
     {
-        $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
-        if ($this->places[$this->currentPlayer] > 11) $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
+        $this->players[$this->currentPlayer]->move($roll);
 
         $this->echoln($this->players[$this->currentPlayer]->getName()
             . "'s new location is "
-            . $this->places[$this->currentPlayer]);
+            . $this->players[$this->currentPlayer]->getLocation());
         $this->echoln("The category is " . $this->currentCategory());
         $this->askQuestion();
     }
