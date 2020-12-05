@@ -15,12 +15,12 @@ public class Game {
         this.questions = questions;
     }
 
-    public List<String> add(String playerName) {
+    public List<Object> add(String playerName) {
         return players.add(playerName);
     }
 
-    public List<String> roll(int roll) {
-        List<String> messages = new ArrayList<>();
+    public List<Object> roll(int roll) {
+        List<Object> messages = new ArrayList<>();
         messages.addAll(Arrays.asList(
                 players.getCurrentPlayer().name + " is the current player",
                 "They have rolled a " + roll));
@@ -41,7 +41,7 @@ public class Game {
         return messages;
     }
 
-    private List<String> moveAndAskQuestion(int roll) {
+    private List<Object> moveAndAskQuestion(int roll) {
         players.getCurrentPlayer().move(roll);
         int location = players.getCurrentPlayer().getLocation();
         Question question = questions.drawQuestion(location);
@@ -53,7 +53,7 @@ public class Game {
             question.text);
     }
 
-    public boolean wasCorrectlyAnswered(List<String> messages) {
+    public boolean wasCorrectlyAnswered(List<Object> messages) {
         if (players.getCurrentPlayer().isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
                 messages.add("Answer was correct!!!!");
@@ -68,7 +68,7 @@ public class Game {
         }
     }
 
-    public boolean wrongAnswer(List<String> messages) {
+    public boolean wrongAnswer(List<Object> messages) {
         messages.add("Question was incorrectly answered");
         messages.add(players.getCurrentPlayer().name + " was sent to the penalty box");
         players.getCurrentPlayer().sendToPenaltyBox();

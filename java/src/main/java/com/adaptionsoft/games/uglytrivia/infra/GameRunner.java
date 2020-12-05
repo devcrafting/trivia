@@ -28,7 +28,7 @@ public class GameRunner {
 		do {
 			output.write(aGame.roll(rand.nextInt(5) + 1));
 
-			List<String> messages = new ArrayList<>();
+			List<Object> messages = new ArrayList<>();
 			if (rand.nextInt(9) == 7) {
 				winner = aGame.wrongAnswer(messages);
 			} else {
