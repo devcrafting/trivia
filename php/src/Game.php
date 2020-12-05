@@ -10,7 +10,7 @@ class Game
     var $players;
 
     /**
-     * @var Question[][]
+     * @var Questions
      */
     var $questions;
 
@@ -29,17 +29,7 @@ class Game
     function __construct(\Closure $println)
     {
         $this->players = new Players();
-        $this->questions[0] = array();
-        $this->questions[1] = array();
-        $this->questions[2] = array();
-        $this->questions[3] = array();
-
-        for ($i = 0; $i < 50; $i++) {
-            array_push($this->questions[0], new Question("Pop", "Pop Question " . $i));
-            array_push($this->questions[1], new Question("Science", "Science Question " . $i));
-            array_push($this->questions[2], new Question("Sports", "Sports Question " . $i));
-            array_push($this->questions[3], new Question("Rock", "Rock Question " . $i));
-        }
+        $this->questions = new Questions();
         $this->println = $println;
     }
 
@@ -69,11 +59,6 @@ class Game
         } else {
             $this->moveAndAskQuestion($roll);
         }
-    }
-
-    function askQuestion($location): Question
-    {
-        return array_shift($this->questions[$location % 4]);
     }
 
     function wasCorrectlyAnswered(): bool
@@ -116,7 +101,7 @@ class Game
             . $this->players->getCurrentPlayer()->getLocation());
 
         $location = $this->players->getCurrentPlayer()->getLocation();
-        $question = $this->askQuestion($location);
+        $question = $this->questions->drawQuestion($location);
         $this->echoln("The category is " . $question->getCategory());
         $this->echoln($question->getText());
     }
