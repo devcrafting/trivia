@@ -1,9 +1,9 @@
 
-package com.adaptionsoft.games.trivia.runner;
+package com.adaptionsoft.games.uglytrivia.infra;
+
+import com.adaptionsoft.games.uglytrivia.domain.Game;
+
 import java.util.Random;
-
-import com.adaptionsoft.games.uglytrivia.Game;
-
 
 public class GameRunner {
 
@@ -14,7 +14,7 @@ public class GameRunner {
 	}
 
 	public static void playGame(Random rand) {
-		Game aGame = new Game();
+		Game aGame = new Game(new GeneratedQuestions());
 
 		aGame.add("Chet");
 		aGame.add("Pat");

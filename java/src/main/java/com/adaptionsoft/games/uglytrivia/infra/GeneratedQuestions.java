@@ -1,13 +1,16 @@
-package com.adaptionsoft.games.uglytrivia;
+package com.adaptionsoft.games.uglytrivia.infra;
+
+import com.adaptionsoft.games.uglytrivia.domain.Question;
+import com.adaptionsoft.games.uglytrivia.domain.Questions;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class Questions {
+public class GeneratedQuestions implements Questions {
     private Map<Integer, LinkedList<Question>> questions = new HashMap<>();
 
-    public Questions() {
+    public GeneratedQuestions() {
         questions.put(0, new LinkedList<>());
         questions.put(1, new LinkedList<>());
         questions.put(2, new LinkedList<>());
@@ -20,6 +23,7 @@ public class Questions {
         }
     }
 
+    @Override
     public Question drawQuestion(int location) {
         return questions.get(location % 4).removeFirst();
     }

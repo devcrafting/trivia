@@ -1,17 +1,14 @@
-package com.adaptionsoft.games.uglytrivia;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+package com.adaptionsoft.games.uglytrivia.domain;
 
 public class Game {
     Players players = new Players();
 
-    Questions questions = new Questions();
+    Questions questions;
 
     boolean isGettingOutOfPenaltyBox;
 
-    public Game() {
+    public Game(Questions questions) {
+        this.questions = questions;
     }
 
     public boolean add(String playerName) {

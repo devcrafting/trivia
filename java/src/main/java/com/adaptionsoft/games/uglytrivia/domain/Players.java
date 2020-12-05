@@ -1,4 +1,4 @@
-package com.adaptionsoft.games.uglytrivia;
+package com.adaptionsoft.games.uglytrivia.domain;
 
 import java.util.ArrayList;
 import java.util.List;

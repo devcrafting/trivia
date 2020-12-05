@@ -1,6 +1,6 @@
 package com.adaptionsoft.games.trivia;
 
-import com.adaptionsoft.games.trivia.runner.GameRunner;
+import com.adaptionsoft.games.uglytrivia.infra.GameRunner;
 import org.approvaltests.Approvals;
 import org.junit.jupiter.api.Test;
 
