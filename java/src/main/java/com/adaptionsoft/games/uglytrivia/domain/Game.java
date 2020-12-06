@@ -58,11 +58,11 @@ public class Game {
         } else {
             messages.add(players.getCurrentPlayer().winAGoldCoin());
         }
-        return players.switchToNextPlayer();
+        return players.switchToNextPlayer(messages);
     }
 
     public boolean wrongAnswer(List<Object> messages) {
         messages.add(players.getCurrentPlayer().sendToPenaltyBox());
-        return players.switchToNextPlayer();
+        return players.switchToNextPlayer(messages);
     }
 }

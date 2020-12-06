@@ -3,11 +3,6 @@ package com.adaptionsoft.games.uglytrivia.infra;
 import com.adaptionsoft.games.uglytrivia.domain.EventsPublisher;
 import com.adaptionsoft.games.uglytrivia.domain.events.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-
 public class ConsoleWriter {
     public ConsoleWriter(EventsPublisher eventsPublisher) {
         eventsPublisher.register(PlayerAdded.class, this::handle);
@@ -18,6 +13,11 @@ public class ConsoleWriter {
         eventsPublisher.register(QuestionAsked.class, this::handle);
         eventsPublisher.register(GoldCoinWon.class, this::handle);
         eventsPublisher.register(SentToPenaltyBox.class, this::handle);
+        eventsPublisher.register(PlayerWon.class, this::handle);
+    }
+
+    private void handle(PlayerWon playerWon) {
+        // could also make EventsPublisher not fail if not handler...
     }
 
     private void handle(PlayerAdded event) {

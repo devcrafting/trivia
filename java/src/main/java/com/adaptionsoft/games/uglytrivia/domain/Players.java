@@ -20,11 +20,12 @@ public class Players {
         return players.get(currentPlayer);
     }
 
-    public boolean switchToNextPlayer() {
-        boolean winner = getCurrentPlayer().hasPlayerWon();
+    public boolean switchToNextPlayer(List<Object> messages) {
+        List<Object> events = getCurrentPlayer().hasPlayerWon();
+        messages.addAll(events);
         currentPlayer++;
         if (currentPlayer == players.size()) currentPlayer = 0;
 
-        return winner;
+        return !events.isEmpty();
     }
 }

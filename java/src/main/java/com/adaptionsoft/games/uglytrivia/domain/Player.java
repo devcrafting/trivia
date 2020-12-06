@@ -1,7 +1,10 @@
 package com.adaptionsoft.games.uglytrivia.domain;
 
 import com.adaptionsoft.games.uglytrivia.domain.events.GoldCoinWon;
+import com.adaptionsoft.games.uglytrivia.domain.events.PlayerWon;
 import com.adaptionsoft.games.uglytrivia.domain.events.SentToPenaltyBox;
+
+import java.util.*;
 
 public class Player {
     public final String name;
@@ -27,8 +30,10 @@ public class Player {
         return new GoldCoinWon(name, goldCoins);
     }
 
-    public boolean hasPlayerWon() {
-        return goldCoins == 6;
+    public List<Object> hasPlayerWon() {
+        return goldCoins == 6
+                ? Arrays.asList(new PlayerWon(name))
+                : Collections.emptyList();
     }
 
     public boolean isInPenaltyBox() {
