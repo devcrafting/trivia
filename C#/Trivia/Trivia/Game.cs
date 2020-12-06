@@ -75,8 +75,8 @@ namespace Trivia
                     if (_places[_currentPlayer] > 11) _places[_currentPlayer] = _places[_currentPlayer] - 12;
 
                     Console.WriteLine(_players[_currentPlayer]
-                            + "'s new location is "
-                            + _places[_currentPlayer]);
+                                      + "'s new location is "
+                                      + _places[_currentPlayer]);
                     Console.WriteLine("The category is " + CurrentCategory());
                     AskQuestion();
                 }
@@ -92,8 +92,8 @@ namespace Trivia
                 if (_places[_currentPlayer] > 11) _places[_currentPlayer] = _places[_currentPlayer] - 12;
 
                 Console.WriteLine(_players[_currentPlayer]
-                        + "'s new location is "
-                        + _places[_currentPlayer]);
+                                  + "'s new location is "
+                                  + _places[_currentPlayer]);
                 Console.WriteLine("The category is " + CurrentCategory());
                 AskQuestion();
             }
@@ -106,16 +106,19 @@ namespace Trivia
                 Console.WriteLine(_popQuestions.First());
                 _popQuestions.RemoveFirst();
             }
+
             if (CurrentCategory() == "Science")
             {
                 Console.WriteLine(_scienceQuestions.First());
                 _scienceQuestions.RemoveFirst();
             }
+
             if (CurrentCategory() == "Sports")
             {
                 Console.WriteLine(_sportsQuestions.First());
                 _sportsQuestions.RemoveFirst();
             }
+
             if (CurrentCategory() == "Rock")
             {
                 Console.WriteLine(_rockQuestions.First());
@@ -146,9 +149,9 @@ namespace Trivia
                     Console.WriteLine("Answer was correct!!!!");
                     _purses[_currentPlayer]++;
                     Console.WriteLine(_players[_currentPlayer]
-                            + " now has "
-                            + _purses[_currentPlayer]
-                            + " Gold Coins.");
+                                      + " now has "
+                                      + _purses[_currentPlayer]
+                                      + " Gold Coins.");
 
                     var winner = DidPlayerWin();
                     _currentPlayer++;
@@ -168,9 +171,9 @@ namespace Trivia
                 Console.WriteLine("Answer was corrent!!!!");
                 _purses[_currentPlayer]++;
                 Console.WriteLine(_players[_currentPlayer]
-                        + " now has "
-                        + _purses[_currentPlayer]
-                        + " Gold Coins.");
+                                  + " now has "
+                                  + _purses[_currentPlayer]
+                                  + " Gold Coins.");
 
                 var winner = DidPlayerWin();
                 _currentPlayer++;
@@ -191,11 +194,9 @@ namespace Trivia
             return true;
         }
 
-
         private bool DidPlayerWin()
         {
             return !(_purses[_currentPlayer] == 6);
         }
     }
-
 }
