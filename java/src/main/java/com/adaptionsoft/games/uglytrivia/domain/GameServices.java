@@ -5,9 +5,9 @@ import java.util.Random;
 public class GameServices implements GameFacade {
     private final Games games;
     private final Questions questions;
-    private final OutputWriter output;
+    private final EventsPublisher output;
 
-    public GameServices(Games games, Questions questions, OutputWriter output) {
+    public GameServices(Games games, Questions questions, EventsPublisher output) {
         this.games = games;
         this.questions = questions;
         this.output = output;

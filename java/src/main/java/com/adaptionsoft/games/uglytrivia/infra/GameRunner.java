@@ -2,7 +2,7 @@
 package com.adaptionsoft.games.uglytrivia.infra;
 
 import com.adaptionsoft.games.uglytrivia.domain.Game;
-import com.adaptionsoft.games.uglytrivia.domain.OutputWriter;
+import com.adaptionsoft.games.uglytrivia.domain.EventsPublisher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class GameRunner {
 
-	private static OutputWriter output = new ConsoleWriter();
+	private static EventsPublisher eventsPublisher = new EventsHandlers();
 	private static boolean winner;
 
 	public static void main(String[] args) {
@@ -18,14 +18,15 @@ public class GameRunner {
 	}
 
 	public static void playGame(Random rand) {
+		new ConsoleWriter(eventsPublisher);
 		Game aGame = new Game(new GeneratedQuestions());
 
-		output.write(aGame.add("Chet"));
-		output.write(aGame.add("Pat"));
-		output.write(aGame.add("Sue"));
+		eventsPublisher.publish(aGame.add("Chet"));
+		eventsPublisher.publish(aGame.add("Pat"));
+		eventsPublisher.publish(aGame.add("Sue"));
 
 		do {
-			output.write(aGame.roll(rand.nextInt(5) + 1));
+			eventsPublisher.publish(aGame.roll(rand.nextInt(5) + 1));
 
 			List<Object> messages = new ArrayList<>();
 			if (rand.nextInt(9) == 7) {
@@ -33,7 +34,7 @@ public class GameRunner {
 			} else {
 				winner = aGame.wasCorrectlyAnswered(messages);
 			}
-			output.write(messages);
+			eventsPublisher.publish(messages);
 		} while (!winner);
 	}
 }

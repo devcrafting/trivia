@@ -1,6 +1,6 @@
 package com.adaptionsoft.games.uglytrivia.infra;
 
-import com.adaptionsoft.games.uglytrivia.domain.OutputWriter;
+import com.adaptionsoft.games.uglytrivia.domain.EventsPublisher;
 import com.adaptionsoft.games.uglytrivia.domain.events.*;
 
 import java.util.HashMap;
@@ -8,22 +8,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class ConsoleWriter implements OutputWriter {
-    private Map<Class, Consumer> handlers = new HashMap<>();
-
-    public ConsoleWriter() {
-        register(PlayerAdded.class, this::handle);
-        register(DiceRolled.class, this::handle);
-        register(GettingOutOfPenaltyBox.class, this::handle);
-        register(TryToGetOutOfPenaltyBoxFailed.class, this::handle);
-        register(PlayerMoved.class, this::handle);
-        register(QuestionAsked.class, this::handle);
-        register(GoldCoinWon.class, this::handle);
-        register(SentToPenaltyBox.class, this::handle);
-    }
-
-    private <T> void register(Class<T> clazz, Consumer<T> handler) {
-        handlers.put(clazz, handler);
+public class ConsoleWriter {
+    public ConsoleWriter(EventsPublisher eventsPublisher) {
+        eventsPublisher.register(PlayerAdded.class, this::handle);
+        eventsPublisher.register(DiceRolled.class, this::handle);
+        eventsPublisher.register(GettingOutOfPenaltyBox.class, this::handle);
+        eventsPublisher.register(TryToGetOutOfPenaltyBoxFailed.class, this::handle);
+        eventsPublisher.register(PlayerMoved.class, this::handle);
+        eventsPublisher.register(QuestionAsked.class, this::handle);
+        eventsPublisher.register(GoldCoinWon.class, this::handle);
+        eventsPublisher.register(SentToPenaltyBox.class, this::handle);
     }
 
     private void handle(PlayerAdded event) {
@@ -66,10 +60,5 @@ public class ConsoleWriter implements OutputWriter {
     private void handle(SentToPenaltyBox event) {
         System.out.println("Question was incorrectly answered");
         System.out.println(event.playerName + " was sent to the penalty box");
-    }
-
-    @Override
-    public void write(List<Object> lines) {
-        lines.forEach(l -> handlers.get(l.getClass()).accept(l));
     }
 }
