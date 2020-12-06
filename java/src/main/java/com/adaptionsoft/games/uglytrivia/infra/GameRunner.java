@@ -10,8 +10,7 @@ import java.util.Random;
 
 public class GameRunner {
 
-	private static OutputWriter output =
-			lines -> lines.stream().forEach(System.out::println);
+	private static OutputWriter output = new ConsoleWriter();
 	private static boolean winner;
 
 	public static void main(String[] args) {

@@ -1,5 +1,7 @@
 package com.adaptionsoft.games.uglytrivia.domain;
 
+import com.adaptionsoft.games.uglytrivia.domain.events.PlayerAdded;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +13,7 @@ public class Players {
     public List<Object> add(String playerName) {
         players.add(new Player(playerName));
         return Arrays.asList(
-            playerName + " was added",
+            new PlayerAdded(playerName),
             "They are player number " + players.size());
     }
 
