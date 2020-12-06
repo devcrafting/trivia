@@ -58,7 +58,7 @@ public class Game {
             }
             return players.switchToNextPlayer();
         } else {
-            messages.add("Answer was corrent!!!!");
+            messages.add("Answer was correct!!!!");
             messages.add(players.getCurrentPlayer().winAGoldCoin());
 
             return players.switchToNextPlayer();
