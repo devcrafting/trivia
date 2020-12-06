@@ -12,7 +12,6 @@ public class ConsoleWriter implements OutputWriter {
     private Map<Class, Consumer> handlers = new HashMap<>();
 
     public ConsoleWriter() {
-        handlers.put(String.class, System.out::println);
         register(PlayerAdded.class, this::handle);
         register(DiceRolled.class, this::handle);
         register(GettingOutOfPenaltyBox.class, this::handle);
@@ -20,6 +19,7 @@ public class ConsoleWriter implements OutputWriter {
         register(PlayerMoved.class, this::handle);
         register(QuestionAsked.class, this::handle);
         register(GoldCoinWon.class, this::handle);
+        register(SentToPenaltyBox.class, this::handle);
     }
 
     private <T> void register(Class<T> clazz, Consumer<T> handler) {
@@ -61,6 +61,11 @@ public class ConsoleWriter implements OutputWriter {
                 + " now has "
                 + event.goldCoins
                 + " Gold Coins.");
+    }
+
+    private void handle(SentToPenaltyBox event) {
+        System.out.println("Question was incorrectly answered");
+        System.out.println(event.playerName + " was sent to the penalty box");
     }
 
     @Override

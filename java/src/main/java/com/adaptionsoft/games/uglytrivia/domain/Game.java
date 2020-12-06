@@ -62,10 +62,7 @@ public class Game {
     }
 
     public boolean wrongAnswer(List<Object> messages) {
-        messages.add("Question was incorrectly answered");
-        messages.add(players.getCurrentPlayer().name + " was sent to the penalty box");
-        players.getCurrentPlayer().sendToPenaltyBox();
-
+        messages.add(players.getCurrentPlayer().sendToPenaltyBox());
         return players.switchToNextPlayer();
     }
 }

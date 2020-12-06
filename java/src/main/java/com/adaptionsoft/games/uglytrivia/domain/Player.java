@@ -1,6 +1,7 @@
 package com.adaptionsoft.games.uglytrivia.domain;
 
 import com.adaptionsoft.games.uglytrivia.domain.events.GoldCoinWon;
+import com.adaptionsoft.games.uglytrivia.domain.events.SentToPenaltyBox;
 
 public class Player {
     public final String name;
@@ -34,7 +35,8 @@ public class Player {
         return isInPenaltyBox;
     }
 
-    public void sendToPenaltyBox() {
+    public SentToPenaltyBox sendToPenaltyBox() {
         isInPenaltyBox = true;
+        return new SentToPenaltyBox(name);
     }
 }
