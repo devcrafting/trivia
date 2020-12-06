@@ -5,7 +5,7 @@ import com.adaptionsoft.games.uglytrivia.domain.events.PlayerWon;
 import com.adaptionsoft.games.uglytrivia.infra.GeneratedQuestions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,13 +18,12 @@ public class GameShould {
         game.add("toto");
         IntStream.range(1, 6).forEach(i -> {
             game.roll(1);
-            game.wasCorrectlyAnswered(new ArrayList<>());
+            game.wasCorrectlyAnswered();
         });
         game.roll(1);
 
         // Act
-        ArrayList<Object> events = new ArrayList<>();
-        game.wasCorrectlyAnswered(events);
+        List<Object> events = game.wasCorrectlyAnswered();
 
         // Assert
         assertThat(events).contains(new PlayerWon("toto"));

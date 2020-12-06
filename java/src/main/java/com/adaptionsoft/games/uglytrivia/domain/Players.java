@@ -4,6 +4,7 @@ import com.adaptionsoft.games.uglytrivia.domain.events.PlayerAdded;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class Players {
@@ -20,12 +21,10 @@ public class Players {
         return players.get(currentPlayer);
     }
 
-    public boolean switchToNextPlayer(List<Object> messages) {
+    public List<Object> switchToNextPlayer() {
         List<Object> events = getCurrentPlayer().hasPlayerWon();
-        messages.addAll(events);
         currentPlayer++;
         if (currentPlayer == players.size()) currentPlayer = 0;
-
-        return !events.isEmpty();
+        return events;
     }
 }

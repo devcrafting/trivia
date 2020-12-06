@@ -3,6 +3,7 @@ package com.adaptionsoft.games.uglytrivia.infra;
 
 import com.adaptionsoft.games.uglytrivia.domain.Game;
 import com.adaptionsoft.games.uglytrivia.domain.EventsPublisher;
+import com.adaptionsoft.games.uglytrivia.domain.events.PlayerWon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +29,13 @@ public class GameRunner {
 		do {
 			eventsPublisher.publish(aGame.roll(rand.nextInt(5) + 1));
 
-			List<Object> messages = new ArrayList<>();
+			List<Object> messages;
 			if (rand.nextInt(9) == 7) {
-				winner = aGame.wrongAnswer(messages);
+				messages = aGame.wrongAnswer();
 			} else {
-				winner = aGame.wasCorrectlyAnswered(messages);
+				messages = aGame.wasCorrectlyAnswered();
 			}
+			winner = messages.stream().anyMatch(e -> e instanceof PlayerWon);
 			eventsPublisher.publish(messages);
 		} while (!winner);
 	}

@@ -50,19 +50,23 @@ public class Game {
             new QuestionAsked(question));
     }
 
-    public boolean wasCorrectlyAnswered(List<Object> messages) {
+    public List<Object> wasCorrectlyAnswered() {
+        ArrayList<Object> events = new ArrayList<>();
         if (players.getCurrentPlayer().isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
-                messages.add(players.getCurrentPlayer().winAGoldCoin());
+                events.add(players.getCurrentPlayer().winAGoldCoin());
             }
         } else {
-            messages.add(players.getCurrentPlayer().winAGoldCoin());
+            events.add(players.getCurrentPlayer().winAGoldCoin());
         }
-        return players.switchToNextPlayer(messages);
+        events.addAll(players.switchToNextPlayer());
+        return events;
     }
 
-    public boolean wrongAnswer(List<Object> messages) {
-        messages.add(players.getCurrentPlayer().sendToPenaltyBox());
-        return players.switchToNextPlayer(messages);
+    public List<Object> wrongAnswer() {
+        ArrayList<Object> events = new ArrayList<>();
+        events.add(players.getCurrentPlayer().sendToPenaltyBox());
+        events.addAll(players.switchToNextPlayer());
+        return events;
     }
 }
