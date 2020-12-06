@@ -22,6 +22,7 @@ public class ConsoleWriter implements OutputWriter {
 
     private void handle(PlayerAdded event) {
         System.out.println(event.name + " was added");
+        System.out.println("They are player number " + event.numberOfPlayers);
     }
 
     @Override

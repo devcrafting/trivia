@@ -13,8 +13,7 @@ public class Players {
     public List<Object> add(String playerName) {
         players.add(new Player(playerName));
         return Arrays.asList(
-            new PlayerAdded(playerName),
-            "They are player number " + players.size());
+            new PlayerAdded(playerName, players.size()));
     }
 
     public Player getCurrentPlayer() {
