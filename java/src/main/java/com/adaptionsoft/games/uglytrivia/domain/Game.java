@@ -53,16 +53,12 @@ public class Game {
     public boolean wasCorrectlyAnswered(List<Object> messages) {
         if (players.getCurrentPlayer().isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
-                messages.add("Answer was correct!!!!");
                 messages.add(players.getCurrentPlayer().winAGoldCoin());
             }
-            return players.switchToNextPlayer();
         } else {
-            messages.add("Answer was correct!!!!");
             messages.add(players.getCurrentPlayer().winAGoldCoin());
-
-            return players.switchToNextPlayer();
         }
+        return players.switchToNextPlayer();
     }
 
     public boolean wrongAnswer(List<Object> messages) {

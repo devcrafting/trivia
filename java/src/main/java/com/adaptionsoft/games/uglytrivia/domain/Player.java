@@ -1,5 +1,7 @@
 package com.adaptionsoft.games.uglytrivia.domain;
 
+import com.adaptionsoft.games.uglytrivia.domain.events.GoldCoinWon;
+
 public class Player {
     public final String name;
     private int location;
@@ -19,12 +21,9 @@ public class Player {
         return location;
     }
 
-    public String winAGoldCoin() {
+    public GoldCoinWon winAGoldCoin() {
         goldCoins++;
-        return name
-                + " now has "
-                + goldCoins
-                + " Gold Coins.";
+        return new GoldCoinWon(name, goldCoins);
     }
 
     public boolean hasPlayerWon() {

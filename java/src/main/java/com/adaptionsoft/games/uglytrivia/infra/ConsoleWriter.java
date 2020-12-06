@@ -19,6 +19,7 @@ public class ConsoleWriter implements OutputWriter {
         register(TryToGetOutOfPenaltyBoxFailed.class, this::handle);
         register(PlayerMoved.class, this::handle);
         register(QuestionAsked.class, this::handle);
+        register(GoldCoinWon.class, this::handle);
     }
 
     private <T> void register(Class<T> clazz, Consumer<T> handler) {
@@ -52,6 +53,14 @@ public class ConsoleWriter implements OutputWriter {
     private void handle(QuestionAsked event) {
         System.out.println("The category is " + event.question.category);
         System.out.println(event.question.text);
+    }
+
+    private void handle(GoldCoinWon event) {
+        System.out.println("Answer was correct!!!!");
+        System.out.println(event.playerName
+                + " now has "
+                + event.goldCoins
+                + " Gold Coins.");
     }
 
     @Override
