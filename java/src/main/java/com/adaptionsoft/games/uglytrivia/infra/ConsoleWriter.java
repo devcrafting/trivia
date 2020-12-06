@@ -1,7 +1,7 @@
 package com.adaptionsoft.games.uglytrivia.infra;
 
 import com.adaptionsoft.games.uglytrivia.domain.OutputWriter;
-import com.adaptionsoft.games.uglytrivia.domain.events.PlayerAdded;
+import com.adaptionsoft.games.uglytrivia.domain.events.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +14,11 @@ public class ConsoleWriter implements OutputWriter {
     public ConsoleWriter() {
         handlers.put(String.class, System.out::println);
         register(PlayerAdded.class, this::handle);
+        register(DiceRolled.class, this::handle);
+        register(GettingOutOfPenaltyBox.class, this::handle);
+        register(TryToGetOutOfPenaltyBoxFailed.class, this::handle);
+        register(PlayerMoved.class, this::handle);
+        register(QuestionAsked.class, this::handle);
     }
 
     private <T> void register(Class<T> clazz, Consumer<T> handler) {
@@ -23,6 +28,30 @@ public class ConsoleWriter implements OutputWriter {
     private void handle(PlayerAdded event) {
         System.out.println(event.name + " was added");
         System.out.println("They are player number " + event.numberOfPlayers);
+    }
+
+    private void handle(DiceRolled event) {
+        System.out.println(event.playerName + " is the current player");
+        System.out.println("They have rolled a " + event.roll);
+    }
+
+    private void handle(GettingOutOfPenaltyBox event) {
+        System.out.println(event.playerName + " is getting out of the penalty box");
+    }
+
+    private void handle(TryToGetOutOfPenaltyBoxFailed event) {
+        System.out.println(event.playerName + " is not getting out of the penalty box");
+    }
+
+    private void handle(PlayerMoved event) {
+        System.out.println(event.playerName
+                + "'s new location is "
+                + event.newLocation);
+    }
+
+    private void handle(QuestionAsked event) {
+        System.out.println("The category is " + event.question.category);
+        System.out.println(event.question.text);
     }
 
     @Override

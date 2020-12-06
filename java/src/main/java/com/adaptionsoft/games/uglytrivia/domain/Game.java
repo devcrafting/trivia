@@ -1,5 +1,7 @@
 package com.adaptionsoft.games.uglytrivia.domain;
 
+import com.adaptionsoft.games.uglytrivia.domain.events.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,18 +23,16 @@ public class Game {
 
     public List<Object> roll(int roll) {
         List<Object> messages = new ArrayList<>();
-        messages.addAll(Arrays.asList(
-                players.getCurrentPlayer().name + " is the current player",
-                "They have rolled a " + roll));
+        messages.add(new DiceRolled(players.getCurrentPlayer().name, roll));
 
         if (players.getCurrentPlayer().isInPenaltyBox()) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
 
-                messages.add(players.getCurrentPlayer().name + " is getting out of the penalty box");
+                messages.add(new GettingOutOfPenaltyBox(players.getCurrentPlayer().name));
                 messages.addAll(moveAndAskQuestion(roll));
             } else {
-                messages.add(players.getCurrentPlayer().name + " is not getting out of the penalty box");
+                messages.add(new TryToGetOutOfPenaltyBoxFailed(players.getCurrentPlayer().name));
                 isGettingOutOfPenaltyBox = false;
             }
         } else {
@@ -46,11 +46,8 @@ public class Game {
         int location = players.getCurrentPlayer().getLocation();
         Question question = questions.drawQuestion(location);
         return Arrays.asList(
-            players.getCurrentPlayer().name
-                    + "'s new location is "
-                    + location,
-            "The category is " + question.category,
-            question.text);
+            new PlayerMoved(players.getCurrentPlayer().name, location),
+            new QuestionAsked(question));
     }
 
     public boolean wasCorrectlyAnswered(List<Object> messages) {
