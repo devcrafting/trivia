@@ -1,12 +1,15 @@
 package com.adaptionsoft.games.uglytrivia.domain;
 
 import com.adaptionsoft.games.uglytrivia.domain.events.*;
+import com.adaptionsoft.games.uglytrivia.infra.GeneratedQuestions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class Game {
+    private UUID gameId;
     Players players = new Players();
 
     Questions questions;
@@ -15,6 +18,19 @@ public class Game {
 
     public Game(Questions questions) {
         this.questions = questions;
+    }
+
+    public Game(UUID gameId, Players players, Questions questions) {
+        this(questions);
+        this.gameId = gameId;
+        this.players = players;
+    }
+
+    public static Game loadState(
+            UUID gameId,
+            Players players,
+            GeneratedQuestions generatedQuestions) {
+        return new Game(gameId, players, generatedQuestions);
     }
 
     public List<Object> add(String playerName) {

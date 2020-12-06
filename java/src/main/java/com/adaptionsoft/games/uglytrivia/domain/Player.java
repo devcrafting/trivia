@@ -16,6 +16,17 @@ public class Player {
         this.name = name;
     }
 
+    private Player(String name, int location, int goldCoins, boolean isInPenaltyBox) {
+        this.name = name;
+        this.location = location;
+        this.goldCoins = goldCoins;
+        this.isInPenaltyBox = isInPenaltyBox;
+    }
+
+    public static Player loadState(String name, int location, int goldCoins, boolean isInPenaltyBox) {
+        return new Player(name, location, goldCoins, isInPenaltyBox);
+    }
+
     public void move(int roll) {
         location += roll;
         if (location > 11) location = location - 12;

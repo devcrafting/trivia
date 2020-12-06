@@ -4,12 +4,23 @@ import com.adaptionsoft.games.uglytrivia.domain.events.PlayerAdded;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public class Players {
-    private List<Player> players = new ArrayList<>();
+    private List<Player> players;
     private int currentPlayer;
+
+    public Players() {
+        this(new ArrayList<>());
+    }
+
+    private Players(List<Player> players) {
+        this.players = players;
+    }
+
+    public static Players loadState(Player... players) {
+        return new Players(Arrays.asList(players.clone()));
+    }
 
     public List<Object> add(String playerName) {
         players.add(new Player(playerName));
