@@ -8,8 +8,6 @@ namespace Trivia
     {
         private readonly List<Player> _players = new List<Player>();
 
-        private readonly int[] _goldCoins = new int[6];
-
         private readonly bool[] _inPenaltyBox = new bool[6];
 
         private readonly LinkedList<string> _popQuestions = new LinkedList<string>();
@@ -34,7 +32,6 @@ namespace Trivia
         public bool Add(string playerName)
         {
             _players.Add(new Player(playerName));
-            _goldCoins[HowManyPlayers()] = 0;
             _inPenaltyBox[HowManyPlayers()] = false;
 
             Console.WriteLine(playerName + " was added");
@@ -125,7 +122,7 @@ namespace Trivia
                 if (_isGettingOutOfPenaltyBox)
                 {
                     Console.WriteLine("Answer was correct!!!!");
-                    WinAGoldCoin();
+                    _players[_currentPlayer].WinAGoldCoin();
                 }
 
                 return SwitchToNextPlayer();
@@ -133,24 +130,15 @@ namespace Trivia
             else
             {
                 Console.WriteLine("Answer was corrent!!!!");
-                WinAGoldCoin();
+                _players[_currentPlayer].WinAGoldCoin();
 
                 return SwitchToNextPlayer();
             }
         }
 
-        private void WinAGoldCoin()
-        {
-            _goldCoins[_currentPlayer]++;
-            Console.WriteLine(_players[_currentPlayer].Name
-                              + " now has "
-                              + _goldCoins[_currentPlayer]
-                              + " Gold Coins.");
-        }
-
         private bool SwitchToNextPlayer()
         {
-            var winner = DidPlayerWin();
+            var winner = _players[_currentPlayer].DidPlayerWin();
             _currentPlayer++;
             if (_currentPlayer == _players.Count) _currentPlayer = 0;
             return winner;
@@ -163,11 +151,6 @@ namespace Trivia
             _inPenaltyBox[_currentPlayer] = true;
 
             return SwitchToNextPlayer();
-        }
-
-        private bool DidPlayerWin()
-        {
-            return _goldCoins[_currentPlayer] == 6;
         }
     }
 }

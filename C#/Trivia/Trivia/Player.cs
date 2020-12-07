@@ -1,7 +1,10 @@
+using System;
+
 namespace Trivia
 {
     internal class Player
     {
+        private int _goldCoins;
         public string Name { get; }
 
         public int Location { get; private set; }
@@ -11,9 +14,17 @@ namespace Trivia
             Name = name;
         }
 
-        public void Move(int roll)
+        public void Move(int roll) => Location = (Location + roll) % 12;
+
+        public void WinAGoldCoin()
         {
-            this.Location = (this.Location + roll) % 12;
+            _goldCoins++;
+            Console.WriteLine(Name
+                              + " now has "
+                              + _goldCoins
+                              + " Gold Coins.");
         }
+
+        public bool DidPlayerWin() => _goldCoins == 6;
     }
 }
