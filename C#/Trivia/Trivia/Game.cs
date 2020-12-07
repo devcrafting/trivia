@@ -74,38 +74,27 @@ namespace Trivia
         private Question DrawQuestion(int location)
         {
             Question question = null;
-            if (CurrentCategory(location) == "Pop")
+            if (location % 4 == 0)
             {
                 question = new Question("Pop", _popQuestions.First());
                 _popQuestions.RemoveFirst();
             }
-
-            if (CurrentCategory(location) == "Science")
+            else if (location % 4 == 1)
             {
                 question = new Question("Science", _scienceQuestions.First());
                 _scienceQuestions.RemoveFirst();
             }
-
-            if (CurrentCategory(location) == "Sports")
+            else if (location % 4 == 2)
             {
                 question = new Question("Sports", _sportsQuestions.First());
                 _sportsQuestions.RemoveFirst();
             }
-
-            if (CurrentCategory(location) == "Rock")
+            else
             {
                 question = new Question("Rock", _rockQuestions.First());
                 _rockQuestions.RemoveFirst();
             }
             return question;
-        }
-
-        private string CurrentCategory(int location)
-        {
-            if (location % 4 == 0) return "Pop";
-            if (location % 4 == 1) return "Science";
-            if (location % 4 == 2) return "Sports";
-            return "Rock";
         }
 
         public bool WasCorrectlyAnswered()
