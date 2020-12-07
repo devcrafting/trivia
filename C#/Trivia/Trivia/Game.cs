@@ -62,45 +62,46 @@ namespace Trivia
         private void MoveAndAskQuestion(int roll)
         {
             _players.CurrentPlayer.Move(roll);
+            var location = _players.CurrentPlayer.Location;
             Console.WriteLine(_players.CurrentPlayer.Name
                               + "'s new location is "
-                              + _players.CurrentPlayer.Location);
-            Console.WriteLine("The category is " + CurrentCategory());
-            AskQuestion();
+                              + location);
+            Console.WriteLine("The category is " + CurrentCategory(location));
+            AskQuestion(location);
         }
 
-        private void AskQuestion()
+        private void AskQuestion(int location)
         {
-            if (CurrentCategory() == "Pop")
+            if (CurrentCategory(location) == "Pop")
             {
                 Console.WriteLine(_popQuestions.First());
                 _popQuestions.RemoveFirst();
             }
 
-            if (CurrentCategory() == "Science")
+            if (CurrentCategory(location) == "Science")
             {
                 Console.WriteLine(_scienceQuestions.First());
                 _scienceQuestions.RemoveFirst();
             }
 
-            if (CurrentCategory() == "Sports")
+            if (CurrentCategory(location) == "Sports")
             {
                 Console.WriteLine(_sportsQuestions.First());
                 _sportsQuestions.RemoveFirst();
             }
 
-            if (CurrentCategory() == "Rock")
+            if (CurrentCategory(location) == "Rock")
             {
                 Console.WriteLine(_rockQuestions.First());
                 _rockQuestions.RemoveFirst();
             }
         }
 
-        private string CurrentCategory()
+        private string CurrentCategory(int location)
         {
-            if (_players.CurrentPlayer.Location % 4 == 0) return "Pop";
-            if (_players.CurrentPlayer.Location % 4 == 1) return "Science";
-            if (_players.CurrentPlayer.Location % 4 == 2) return "Sports";
+            if (location % 4 == 0) return "Pop";
+            if (location % 4 == 1) return "Science";
+            if (location % 4 == 2) return "Sports";
             return "Rock";
         }
 
