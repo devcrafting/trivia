@@ -8,7 +8,6 @@ namespace Trivia
     {
         private readonly List<Player> _players = new List<Player>();
 
-        private readonly int[] _places = new int[6];
         private readonly int[] _goldCoins = new int[6];
 
         private readonly bool[] _inPenaltyBox = new bool[6];
@@ -35,7 +34,6 @@ namespace Trivia
         public bool Add(string playerName)
         {
             _players.Add(new Player(playerName));
-            _places[HowManyPlayers()] = 0;
             _goldCoins[HowManyPlayers()] = 0;
             _inPenaltyBox[HowManyPlayers()] = false;
 
@@ -77,12 +75,10 @@ namespace Trivia
 
         private void MoveAndAskQuestion(int roll)
         {
-            _places[_currentPlayer] = _places[_currentPlayer] + roll;
-            if (_places[_currentPlayer] > 11) _places[_currentPlayer] = _places[_currentPlayer] - 12;
-
+            _players[_currentPlayer].Move(roll);
             Console.WriteLine(_players[_currentPlayer].Name
                               + "'s new location is "
-                              + _places[_currentPlayer]);
+                              + _players[_currentPlayer].Location);
             Console.WriteLine("The category is " + CurrentCategory());
             AskQuestion();
         }
@@ -116,9 +112,9 @@ namespace Trivia
 
         private string CurrentCategory()
         {
-            if (_places[_currentPlayer] % 4 == 0) return "Pop";
-            if (_places[_currentPlayer] % 4 == 1) return "Science";
-            if (_places[_currentPlayer] % 4 == 2) return "Sports";
+            if (_players[_currentPlayer].Location % 4 == 0) return "Pop";
+            if (_players[_currentPlayer].Location % 4 == 1) return "Science";
+            if (_players[_currentPlayer].Location % 4 == 2) return "Sports";
             return "Rock";
         }
 
