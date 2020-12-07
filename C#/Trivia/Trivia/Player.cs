@@ -8,6 +8,7 @@ namespace Trivia
         public string Name { get; }
 
         public int Location { get; private set; }
+        public bool IsInPenaltyBox { get; private set; }
 
         public Player(string name)
         {
@@ -26,5 +27,10 @@ namespace Trivia
         }
 
         public bool DidPlayerWin() => _goldCoins == 6;
+
+        public void SendToPenaltyBox()
+        {
+            IsInPenaltyBox = true;
+        }
     }
 }

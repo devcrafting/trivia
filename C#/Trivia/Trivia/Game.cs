@@ -8,8 +8,6 @@ namespace Trivia
     {
         private readonly List<Player> _players = new List<Player>();
 
-        private readonly bool[] _inPenaltyBox = new bool[6];
-
         private readonly LinkedList<string> _popQuestions = new LinkedList<string>();
         private readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
         private readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
@@ -32,7 +30,6 @@ namespace Trivia
         public bool Add(string playerName)
         {
             _players.Add(new Player(playerName));
-            _inPenaltyBox[HowManyPlayers()] = false;
 
             Console.WriteLine(playerName + " was added");
             Console.WriteLine("They are player number " + _players.Count);
@@ -49,7 +46,7 @@ namespace Trivia
             Console.WriteLine(_players[_currentPlayer].Name + " is the current player");
             Console.WriteLine("They have rolled a " + roll);
 
-            if (_inPenaltyBox[_currentPlayer])
+            if (_players[_currentPlayer].IsInPenaltyBox)
             {
                 if (roll % 2 != 0)
                 {
@@ -117,7 +114,7 @@ namespace Trivia
 
         public bool WasCorrectlyAnswered()
         {
-            if (_inPenaltyBox[_currentPlayer])
+            if (_players[_currentPlayer].IsInPenaltyBox)
             {
                 if (_isGettingOutOfPenaltyBox)
                 {
@@ -148,7 +145,7 @@ namespace Trivia
         {
             Console.WriteLine("Question was incorrectly answered");
             Console.WriteLine(_players[_currentPlayer].Name + " was sent to the penalty box");
-            _inPenaltyBox[_currentPlayer] = true;
+            _players[_currentPlayer].SendToPenaltyBox();
 
             return SwitchToNextPlayer();
         }
