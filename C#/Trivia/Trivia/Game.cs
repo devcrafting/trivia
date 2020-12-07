@@ -166,14 +166,12 @@ namespace Trivia
             Console.WriteLine(_players[_currentPlayer] + " was sent to the penalty box");
             _inPenaltyBox[_currentPlayer] = true;
 
-            _currentPlayer++;
-            if (_currentPlayer == _players.Count) _currentPlayer = 0;
-            return true;
+            return SwitchToNextPlayer();
         }
 
         private bool DidPlayerWin()
         {
-            return !(_goldCoins[_currentPlayer] == 6);
+            return _goldCoins[_currentPlayer] == 6;
         }
     }
 }
