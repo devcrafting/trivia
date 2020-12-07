@@ -8,10 +8,10 @@ namespace Trivia
     {
         private readonly AllPlayers _players = new AllPlayers();
 
-        private readonly LinkedList<string> _popQuestions = new LinkedList<string>();
-        private readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
-        private readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
-        private readonly LinkedList<string> _rockQuestions = new LinkedList<string>();
+        private readonly LinkedList<Question> _popQuestions = new LinkedList<Question>();
+        private readonly LinkedList<Question> _scienceQuestions = new LinkedList<Question>();
+        private readonly LinkedList<Question> _sportsQuestions = new LinkedList<Question>();
+        private readonly LinkedList<Question> _rockQuestions = new LinkedList<Question>();
 
         private int _currentPlayer;
         private bool _isGettingOutOfPenaltyBox;
@@ -20,10 +20,10 @@ namespace Trivia
         {
             for (var i = 0; i < 50; i++)
             {
-                _popQuestions.AddLast("Pop Question " + i);
-                _scienceQuestions.AddLast(("Science Question " + i));
-                _sportsQuestions.AddLast(("Sports Question " + i));
-                _rockQuestions.AddLast("Rock Question " + i);
+                _popQuestions.AddLast(new Question("Pop", "Pop Question " + i));
+                _scienceQuestions.AddLast(new Question("Science", "Science Question " + i));
+                _sportsQuestions.AddLast(new Question("Sports", "Sports Question " + i));
+                _rockQuestions.AddLast(new Question("Rock", "Rock Question " + i));
             }
         }
 
@@ -76,22 +76,22 @@ namespace Trivia
             Question question = null;
             if (location % 4 == 0)
             {
-                question = new Question("Pop", _popQuestions.First());
+                question = _popQuestions.First();
                 _popQuestions.RemoveFirst();
             }
             else if (location % 4 == 1)
             {
-                question = new Question("Science", _scienceQuestions.First());
+                question = _scienceQuestions.First();
                 _scienceQuestions.RemoveFirst();
             }
             else if (location % 4 == 2)
             {
-                question = new Question("Sports", _sportsQuestions.First());
+                question = _sportsQuestions.First();
                 _sportsQuestions.RemoveFirst();
             }
             else
             {
-                question = new Question("Rock", _rockQuestions.First());
+                question = _rockQuestions.First();
                 _rockQuestions.RemoveFirst();
             }
             return question;
