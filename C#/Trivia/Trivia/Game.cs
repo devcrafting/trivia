@@ -6,7 +6,7 @@ namespace Trivia
 {
     public class Game
     {
-        private readonly List<string> _players = new List<string>();
+        private readonly List<Player> _players = new List<Player>();
 
         private readonly int[] _places = new int[6];
         private readonly int[] _goldCoins = new int[6];
@@ -34,7 +34,7 @@ namespace Trivia
 
         public bool Add(string playerName)
         {
-            _players.Add(playerName);
+            _players.Add(new Player(playerName));
             _places[HowManyPlayers()] = 0;
             _goldCoins[HowManyPlayers()] = 0;
             _inPenaltyBox[HowManyPlayers()] = false;
@@ -51,7 +51,7 @@ namespace Trivia
 
         public void Roll(int roll)
         {
-            Console.WriteLine(_players[_currentPlayer] + " is the current player");
+            Console.WriteLine(_players[_currentPlayer].Name + " is the current player");
             Console.WriteLine("They have rolled a " + roll);
 
             if (_inPenaltyBox[_currentPlayer])
@@ -60,12 +60,12 @@ namespace Trivia
                 {
                     _isGettingOutOfPenaltyBox = true;
 
-                    Console.WriteLine(_players[_currentPlayer] + " is getting out of the penalty box");
+                    Console.WriteLine(_players[_currentPlayer].Name + " is getting out of the penalty box");
                     MoveAndAskQuestion(roll);
                 }
                 else
                 {
-                    Console.WriteLine(_players[_currentPlayer] + " is not getting out of the penalty box");
+                    Console.WriteLine(_players[_currentPlayer].Name + " is not getting out of the penalty box");
                     _isGettingOutOfPenaltyBox = false;
                 }
             }
@@ -80,7 +80,7 @@ namespace Trivia
             _places[_currentPlayer] = _places[_currentPlayer] + roll;
             if (_places[_currentPlayer] > 11) _places[_currentPlayer] = _places[_currentPlayer] - 12;
 
-            Console.WriteLine(_players[_currentPlayer]
+            Console.WriteLine(_players[_currentPlayer].Name
                               + "'s new location is "
                               + _places[_currentPlayer]);
             Console.WriteLine("The category is " + CurrentCategory());
@@ -146,7 +146,7 @@ namespace Trivia
         private void WinAGoldCoin()
         {
             _goldCoins[_currentPlayer]++;
-            Console.WriteLine(_players[_currentPlayer]
+            Console.WriteLine(_players[_currentPlayer].Name
                               + " now has "
                               + _goldCoins[_currentPlayer]
                               + " Gold Coins.");
@@ -163,7 +163,7 @@ namespace Trivia
         public bool WrongAnswer()
         {
             Console.WriteLine("Question was incorrectly answered");
-            Console.WriteLine(_players[_currentPlayer] + " was sent to the penalty box");
+            Console.WriteLine(_players[_currentPlayer].Name + " was sent to the penalty box");
             _inPenaltyBox[_currentPlayer] = true;
 
             return SwitchToNextPlayer();
