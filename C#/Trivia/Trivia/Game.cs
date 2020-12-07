@@ -63,38 +63,41 @@ namespace Trivia
         {
             _players.CurrentPlayer.Move(roll);
             var location = _players.CurrentPlayer.Location;
+            var question = DrawQuestion(location);
             Console.WriteLine(_players.CurrentPlayer.Name
                               + "'s new location is "
                               + location);
-            Console.WriteLine("The category is " + CurrentCategory(location));
-            AskQuestion(location);
+            Console.WriteLine("The category is " + question.Category);
+            Console.WriteLine(question.Text);
         }
 
-        private void AskQuestion(int location)
+        private Question DrawQuestion(int location)
         {
+            Question question = null;
             if (CurrentCategory(location) == "Pop")
             {
-                Console.WriteLine(_popQuestions.First());
+                question = new Question("Pop", _popQuestions.First());
                 _popQuestions.RemoveFirst();
             }
 
             if (CurrentCategory(location) == "Science")
             {
-                Console.WriteLine(_scienceQuestions.First());
+                question = new Question("Science", _scienceQuestions.First());
                 _scienceQuestions.RemoveFirst();
             }
 
             if (CurrentCategory(location) == "Sports")
             {
-                Console.WriteLine(_sportsQuestions.First());
+                question = new Question("Sports", _sportsQuestions.First());
                 _sportsQuestions.RemoveFirst();
             }
 
             if (CurrentCategory(location) == "Rock")
             {
-                Console.WriteLine(_rockQuestions.First());
+                question = new Question("Rock", _rockQuestions.First());
                 _rockQuestions.RemoveFirst();
             }
+            return question;
         }
 
         private string CurrentCategory(int location)
