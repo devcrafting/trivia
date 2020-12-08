@@ -13,48 +13,48 @@ use Trivia\Domain\Event\PlayerMoved;
 use Trivia\Domain\Event\PlayerSentToPenaltyBox;
 use Trivia\Domain\Event\PlayerWonGame;
 use Trivia\Domain\Event\QuestionAsked;
+use Trivia\Domain\EventPublisher;
 
-class OutputWriter
+class ConsoleWriter
 {
     /**
      * @var \Closure
      */
     private $println;
 
-    private $handlerByType;
-
     /**
      * ConsoleHandlers constructor.
      * @param \Closure $println
+     * @param EventPublisher $eventPublisher
      */
-    public function __construct(\Closure $println)
+    public function __construct(\Closure $println, EventPublisher $eventPublisher)
     {
         $this->println = $println;
-        $this->handlerByType[PlayerAdded::class] = function ($event) {
+        $eventPublisher->register(PlayerAdded::class, function ($event) {
             $this->handlePlayerAdded($event);
-        };
-        $this->handlerByType[DiceRolled::class] = function ($event) {
+        });
+        $eventPublisher->register(DiceRolled::class, function ($event) {
             $this->handleDiceRolled($event);
-        };
-        $this->handlerByType[PlayerGetOutOfPenaltyBox::class] = function ($event) {
+        });
+        $eventPublisher->register(PlayerGetOutOfPenaltyBox::class, function ($event) {
             $this->handlerPlayerGetOutOfPenaltyBox($event);
-        };
-        $this->handlerByType[PlayerKeptInPenaltyBox::class] = function ($event) {
+        });
+        $eventPublisher->register(PlayerKeptInPenaltyBox::class, function ($event) {
             $this->handlerPlayerKeptInPenaltyBox($event);
-        };
-        $this->handlerByType[PlayerMoved::class] = function ($event) {
+        });
+        $eventPublisher->register(PlayerMoved::class, function ($event) {
             $this->handlerPlayerMoved($event);
-        };
-        $this->handlerByType[QuestionAsked::class] = function ($event) {
+        });
+        $eventPublisher->register(QuestionAsked::class, function ($event) {
             $this->handlerQuestionAsked($event);
-        };
-        $this->handlerByType[GoldCoinWon::class] = function ($event) {
+        });
+        $eventPublisher->register(GoldCoinWon::class, function ($event) {
             $this->handlerGoldCoinWon($event);
-        };
-        $this->handlerByType[PlayerWonGame::class] = function ($event) { };
-        $this->handlerByType[PlayerSentToPenaltyBox::class] = function ($event) {
+        });
+        $eventPublisher->register(PlayerWonGame::class, function ($event) { });
+        $eventPublisher->register(PlayerSentToPenaltyBox::class, function ($event) {
             $this->handlerPlayerSentToPenaltyBox($event);
-        };
+        });
     }
 
     private function handlePlayerAdded(PlayerAdded $event) {
@@ -69,14 +69,6 @@ class OutputWriter
 
     private function handlerPlayerGetOutOfPenaltyBox(PlayerGetOutOfPenaltyBox $event) {
         ($this->println)($event->playerName . " is getting out of the penalty box");
-    }
-
-    public function publish($events)
-    {
-        foreach ($events as $event) {
-            $handler = $this->handlerByType[get_class($event)];
-            $handler($event);
-        }
     }
 
     private function handlerPlayerKeptInPenaltyBox(PlayerKeptInPenaltyBox $event)

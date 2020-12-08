@@ -6,7 +6,8 @@ use Trivia\Domain\Event\PlayerAdded;
 use Trivia\Domain\Event\PlayerWonGame;
 use Trivia\Domain\Game;
 use Trivia\Infra\ConsoleHandlers;
-use Trivia\Infra\OutputWriter;
+use Trivia\Infra\ConsoleWriter;
+use Trivia\Infra\EventDispatcher;
 use Trivia\Infra\EventPublisher;
 use Trivia\Infra\GeneratedQuestions;
 
@@ -17,21 +18,22 @@ class GameRunner
         $winner = false;
 
         $aGame = new Game($println, new GeneratedQuestions());
-        $consoleWriter = new OutputWriter($println);
+        $eventPublisher = new EventDispatcher();
+        new ConsoleWriter($println, $eventPublisher);
 
-        $consoleWriter->publish(array($aGame->add("Chet")));
-        $consoleWriter->publish(array($aGame->add("Pat")));
-        $consoleWriter->publish(array($aGame->add("Sue")));
+        $eventPublisher->publish(array($aGame->add("Chet")));
+        $eventPublisher->publish(array($aGame->add("Pat")));
+        $eventPublisher->publish(array($aGame->add("Sue")));
 
         do {
-            $consoleWriter->publish($aGame->roll(rand(0, 5) + 1));
+            $eventPublisher->publish($aGame->roll(rand(0, 5) + 1));
 
             if (rand(0, 9) == 7) {
                 $events = $aGame->wrongAnswer();
-                $consoleWriter->publish($events);
+                $eventPublisher->publish($events);
             } else {
                 $events = $aGame->wasCorrectlyAnswered();
-                $consoleWriter->publish($events);
+                $eventPublisher->publish($events);
             }
             $winner = count($events) > 1 && $events[1] instanceof PlayerWonGame;
         } while (!$winner);
