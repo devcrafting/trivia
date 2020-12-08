@@ -78,7 +78,7 @@ class Game
                 return $this->switchToNextPlayer();
             }
         } else {
-            $this->outputWriter("Answer was corrent!!!!");
+            $this->outputWriter("Answer was correct!!!!");
             $this->winAGoldCoin();
 
             return $this->switchToNextPlayer();
