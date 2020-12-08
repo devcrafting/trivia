@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Trivia;
+namespace Trivia\Domain;
 
 
 class Question

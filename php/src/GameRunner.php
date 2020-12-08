@@ -2,6 +2,8 @@
 
 namespace Trivia;
 
+use Trivia\Domain\Game;
+
 class GameRunner
 {
     public static function run(\Closure $println)
