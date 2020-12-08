@@ -15,45 +15,46 @@ class Game
     var $questionsDecks;
 
     var $isGettingOutOfPenaltyBox;
+
     /**
      * @var Closure
      */
-    private $println;
+    private $outputWriter;
 
-    private function echoln($string)
+    private function outputWriter($string)
     {
-        $println = $this->println;
-        $println($string);
+        $outputWriter = $this->outputWriter;
+        $outputWriter($string);
     }
 
-    function __construct(\Closure $println, QuestionsDecks $questionsDecks)
+    function __construct(\Closure $outputWriter, QuestionsDecks $questionsDecks)
     {
         $this->players = new Players();
-        $this->println = $println;
+        $this->outputWriter = $outputWriter;
         $this->questionsDecks = $questionsDecks;
     }
 
     function add($playerName): bool
     {
         $this->players->addPlayer($playerName);
-        $this->echoln($playerName . " was added");
-        $this->echoln("They are player number " . $this->players->getPlayersNumber());
+        $this->outputWriter($playerName . " was added");
+        $this->outputWriter("They are player number " . $this->players->getPlayersNumber());
         return true;
     }
 
     function roll($roll)
     {
-        $this->echoln($this->players->getCurrentPlayer()->getName() . " is the current player");
-        $this->echoln("They have rolled a " . $roll);
+        $this->outputWriter($this->players->getCurrentPlayer()->getName() . " is the current player");
+        $this->outputWriter("They have rolled a " . $roll);
 
         if ($this->players->getCurrentPlayer()->isInPenaltyBox()) {
             if ($roll % 2 != 0) {
                 $this->isGettingOutOfPenaltyBox = true;
 
-                $this->echoln($this->players->getCurrentPlayer()->getName() . " is getting out of the penalty box");
+                $this->outputWriter($this->players->getCurrentPlayer()->getName() . " is getting out of the penalty box");
                 $this->moveAndAskQuestion($roll);
             } else {
-                $this->echoln($this->players->getCurrentPlayer()->getName() . " is not getting out of the penalty box");
+                $this->outputWriter($this->players->getCurrentPlayer()->getName() . " is not getting out of the penalty box");
                 $this->isGettingOutOfPenaltyBox = false;
             }
         } else {
@@ -65,7 +66,7 @@ class Game
     {
         if ($this->players->getCurrentPlayer()->isInPenaltyBox()) {
             if ($this->isGettingOutOfPenaltyBox) {
-                $this->echoln("Answer was correct!!!!");
+                $this->outputWriter("Answer was correct!!!!");
                 $this->winAGoldCoin();
 
                 return $this->switchToNextPlayer();
@@ -73,7 +74,7 @@ class Game
                 return $this->switchToNextPlayer();
             }
         } else {
-            $this->echoln("Answer was corrent!!!!");
+            $this->outputWriter("Answer was corrent!!!!");
             $this->winAGoldCoin();
 
             return $this->switchToNextPlayer();
@@ -82,8 +83,8 @@ class Game
 
     function wrongAnswer(): bool
     {
-        $this->echoln("Question was incorrectly answered");
-        $this->echoln($this->players->getCurrentPlayer()->getName() . " was sent to the penalty box");
+        $this->outputWriter("Question was incorrectly answered");
+        $this->outputWriter($this->players->getCurrentPlayer()->getName() . " was sent to the penalty box");
         $this->players->getCurrentPlayer()->goToPenaltyBox();
 
         return $this->switchToNextPlayer();
@@ -96,14 +97,14 @@ class Game
     {
         $this->players->getCurrentPlayer()->move($roll);
 
-        $this->echoln($this->players->getCurrentPlayer()->getName()
+        $this->outputWriter($this->players->getCurrentPlayer()->getName()
             . "'s new location is "
             . $this->players->getCurrentPlayer()->getLocation());
 
         $location = $this->players->getCurrentPlayer()->getLocation();
         $question = $this->questionsDecks->drawQuestion($location);
-        $this->echoln("The category is " . $question->getCategory());
-        $this->echoln($question->getText());
+        $this->outputWriter("The category is " . $question->getCategory());
+        $this->outputWriter($question->getText());
     }
 
     private function switchToNextPlayer(): bool
@@ -114,7 +115,7 @@ class Game
     private function winAGoldCoin(): void
     {
         $this->players->getCurrentPlayer()->winAGoldCoin();
-        $this->echoln($this->players->getCurrentPlayer()->getName()
+        $this->outputWriter($this->players->getCurrentPlayer()->getName()
             . " now has "
             . $this->players->getCurrentPlayer()->getGoldCoins()
             . " Gold Coins.");
