@@ -2,6 +2,8 @@
 
 namespace Trivia\Domain;
 
+use Trivia\Domain\Event\PlayerAdded;
+
 class Game
 {
     /**
@@ -34,12 +36,10 @@ class Game
         $this->questionsDecks = $questionsDecks;
     }
 
-    function add($playerName): bool
+    function add($playerName): PlayerAdded
     {
         $this->players->addPlayer($playerName);
-        $this->outputWriter($playerName . " was added");
-        $this->outputWriter("They are player number " . $this->players->getPlayersNumber());
-        return true;
+        return new PlayerAdded($playerName, $this->players->getPlayersNumber());
     }
 
     function roll($roll)

@@ -1,6 +1,6 @@
 <?php
 
-namespace Trivia\Domain\Domain;
+namespace Trivia\Domain;
 
 interface GameRepository
 {
