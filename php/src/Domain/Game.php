@@ -10,9 +10,9 @@ class Game
     var $players;
 
     /**
-     * @var Questions
+     * @var QuestionsDecks
      */
-    var $questions;
+    var $questionsDecks;
 
     var $isGettingOutOfPenaltyBox;
     /**
@@ -26,11 +26,11 @@ class Game
         $println($string);
     }
 
-    function __construct(\Closure $println)
+    function __construct(\Closure $println, QuestionsDecks $questionsDecks)
     {
         $this->players = new Players();
-        $this->questions = new Questions();
         $this->println = $println;
+        $this->questionsDecks = $questionsDecks;
     }
 
     function add($playerName): bool
@@ -101,7 +101,7 @@ class Game
             . $this->players->getCurrentPlayer()->getLocation());
 
         $location = $this->players->getCurrentPlayer()->getLocation();
-        $question = $this->questions->drawQuestion($location);
+        $question = $this->questionsDecks->drawQuestion($location);
         $this->echoln("The category is " . $question->getCategory());
         $this->echoln($question->getText());
     }

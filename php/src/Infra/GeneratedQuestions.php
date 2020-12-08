@@ -1,8 +1,11 @@
 <?php
 
-namespace Trivia\Domain;
+namespace Trivia\Infra;
 
-class Questions
+use Trivia\Domain\Question;
+use Trivia\Domain\QuestionsDecks;
+
+class GeneratedQuestions implements QuestionsDecks
 {
     private $questions;
 

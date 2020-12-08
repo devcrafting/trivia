@@ -3,6 +3,7 @@
 namespace Trivia;
 
 use Trivia\Domain\Game;
+use Trivia\Infra\GeneratedQuestions;
 
 class GameRunner
 {
@@ -10,7 +11,7 @@ class GameRunner
     {
         $winner = false;
 
-        $aGame = new Game($println);
+        $aGame = new Game($println, new GeneratedQuestions());
 
         $aGame->add("Chet");
         $aGame->add("Pat");
