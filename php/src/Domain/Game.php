@@ -2,7 +2,11 @@
 
 namespace Trivia\Domain;
 
+use Trivia\Domain\Event\DiceRolled;
 use Trivia\Domain\Event\PlayerAdded;
+use Trivia\Domain\Event\PlayerGetOutOfPenaltyBox;
+use Trivia\Domain\Event\PlayerKeptInPenaltyBox;
+use Trivia\Domain\Event\QuestionAsked;
 
 class Game
 {
@@ -44,22 +48,22 @@ class Game
 
     function roll($roll)
     {
-        $this->outputWriter($this->players->getCurrentPlayer()->getName() . " is the current player");
-        $this->outputWriter("They have rolled a " . $roll);
+        $events = [];
+        array_push($events, new DiceRolled($this->players->getCurrentPlayer()->getName(), $roll));
 
         if ($this->players->getCurrentPlayer()->isInPenaltyBox()) {
             if ($roll % 2 != 0) {
                 $this->isGettingOutOfPenaltyBox = true;
-
-                $this->outputWriter($this->players->getCurrentPlayer()->getName() . " is getting out of the penalty box");
-                $this->moveAndAskQuestion($roll);
+                array_push($events, new PlayerGetOutOfPenaltyBox($this->players->getCurrentPlayer()->getName()));
+                array_push($events, ...$this->moveAndAskQuestion($roll));
             } else {
-                $this->outputWriter($this->players->getCurrentPlayer()->getName() . " is not getting out of the penalty box");
+                array_push($events, new PlayerKeptInPenaltyBox($this->players->getCurrentPlayer()->getName()));
                 $this->isGettingOutOfPenaltyBox = false;
             }
         } else {
-            $this->moveAndAskQuestion($roll);
+            array_push($events, ...$this->moveAndAskQuestion($roll));
         }
+        return $events;
     }
 
     function wasCorrectlyAnswered(): bool
@@ -93,18 +97,15 @@ class Game
     /**
      * @param $roll
      */
-    private function moveAndAskQuestion($roll): void
+    private function moveAndAskQuestion($roll): array
     {
-        $this->players->getCurrentPlayer()->move($roll);
-
-        $this->outputWriter($this->players->getCurrentPlayer()->getName()
-            . "'s new location is "
-            . $this->players->getCurrentPlayer()->getLocation());
+        $events = [];
+        array_push($events, ...$this->players->getCurrentPlayer()->move($roll));
 
         $location = $this->players->getCurrentPlayer()->getLocation();
         $question = $this->questionsDecks->drawQuestion($location);
-        $this->outputWriter("The category is " . $question->getCategory());
-        $this->outputWriter($question->getText());
+        array_push($events, new QuestionAsked($question));
+        return $events;
     }
 
     private function switchToNextPlayer(): bool

@@ -4,7 +4,12 @@
 namespace Trivia\Infra;
 
 
+use Trivia\Domain\Event\DiceRolled;
 use Trivia\Domain\Event\PlayerAdded;
+use Trivia\Domain\Event\PlayerGetOutOfPenaltyBox;
+use Trivia\Domain\Event\PlayerKeptInPenaltyBox;
+use Trivia\Domain\Event\PlayerMoved;
+use Trivia\Domain\Event\QuestionAsked;
 
 class OutputWriter
 {
@@ -25,6 +30,21 @@ class OutputWriter
         $this->handlerByType[PlayerAdded::class] = function ($event) {
             $this->handlePlayerAdded($event);
         };
+        $this->handlerByType[DiceRolled::class] = function ($event) {
+            $this->handleDiceRolled($event);
+        };
+        $this->handlerByType[PlayerGetOutOfPenaltyBox::class] = function ($event) {
+            $this->handlerPlayerGetOutOfPenaltyBox($event);
+        };
+        $this->handlerByType[PlayerKeptInPenaltyBox::class] = function ($event) {
+            $this->handlerPlayerKeptInPenaltyBox($event);
+        };
+        $this->handlerByType[PlayerMoved::class] = function ($event) {
+            $this->handlerPlayerMoved($event);
+        };
+        $this->handlerByType[QuestionAsked::class] = function ($event) {
+            $this->handlerQuestionAsked($event);
+        };
     }
 
     private function handlePlayerAdded(PlayerAdded $event) {
@@ -32,9 +52,39 @@ class OutputWriter
         ($this->println)("They are player number " . $event->numberOfPlayers);
     }
 
-    public function publish($event)
+    private function handleDiceRolled(DiceRolled $event) {
+        ($this->println)($event->playerName . " is the current player");
+        ($this->println)("They have rolled a " . $event->roll);
+    }
+
+    private function handlerPlayerGetOutOfPenaltyBox(PlayerGetOutOfPenaltyBox $event) {
+        ($this->println)($event->playerName . " is getting out of the penalty box");
+    }
+
+    public function publish($events)
     {
-        $handler = $this->handlerByType[get_class($event)];
-        $handler($event);
+        foreach ($events as $event) {
+            $handler = $this->handlerByType[get_class($event)];
+            $handler($event);
+        }
+    }
+
+    private function handlerPlayerKeptInPenaltyBox(PlayerKeptInPenaltyBox $event)
+    {
+        ($this->println)($event->playerName . " is not getting out of the penalty box");
+    }
+
+    private function handlerPlayerMoved(PlayerMoved $event)
+    {
+        ($this->println)($event->playerName
+            . "'s new location is "
+            . $event->location);
+    }
+
+    private function handlerQuestionAsked(QuestionAsked $event)
+    {
+        ($this->println)("The category is " . $event->question->getCategory());
+        ($this->println)($event->question->getText());
+
     }
 }

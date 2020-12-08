@@ -18,12 +18,12 @@ class GameRunner
         $aGame = new Game($println, new GeneratedQuestions());
         $consoleWriter = new OutputWriter($println);
 
-        $consoleWriter->publish($aGame->add("Chet"));
-        $consoleWriter->publish($aGame->add("Pat"));
-        $consoleWriter->publish($aGame->add("Sue"));
+        $consoleWriter->publish(array($aGame->add("Chet")));
+        $consoleWriter->publish(array($aGame->add("Pat")));
+        $consoleWriter->publish(array($aGame->add("Sue")));
 
         do {
-            $aGame->roll(rand(0, 5) + 1);
+            $consoleWriter->publish($aGame->roll(rand(0, 5) + 1));
 
             if (rand(0, 9) == 7) {
                 $winner = $aGame->wrongAnswer();

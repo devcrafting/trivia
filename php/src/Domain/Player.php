@@ -4,6 +4,8 @@
 namespace Trivia\Domain;
 
 
+use Trivia\Domain\Event\PlayerMoved;
+
 class Player
 {
     private $name;
@@ -30,10 +32,12 @@ class Player
         return $this->location;
     }
 
-    public function move($roll)
+    public function move($roll) : array
     {
         $this->location = $this->location + $roll;
         if ($this->location > 11) $this->location = $this->location - 12;
+
+        return array(new PlayerMoved($this->name, $this->location));
     }
 
     public function hasPlayerWon(): bool
