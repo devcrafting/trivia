@@ -66,23 +66,18 @@ class Game
         return $events;
     }
 
-    function wasCorrectlyAnswered(): bool
+    function wasCorrectlyAnswered(): array
     {
+        $events = [];
         if ($this->players->getCurrentPlayer()->isInPenaltyBox()) {
             if ($this->isGettingOutOfPenaltyBox) {
-                $this->outputWriter("Answer was correct!!!!");
-                $this->winAGoldCoin();
-
-                return $this->switchToNextPlayer();
-            } else {
-                return $this->switchToNextPlayer();
+                array_push($events, ...$this->winAGoldCoin());
             }
         } else {
-            $this->outputWriter("Answer was correct!!!!");
-            $this->winAGoldCoin();
-
-            return $this->switchToNextPlayer();
+            array_push($events, ...$this->winAGoldCoin());
         }
+        $this->players->switchToNextPlayer();
+        return $events;
     }
 
     function wrongAnswer(): bool
@@ -91,7 +86,7 @@ class Game
         $this->outputWriter($this->players->getCurrentPlayer()->getName() . " was sent to the penalty box");
         $this->players->getCurrentPlayer()->goToPenaltyBox();
 
-        return $this->switchToNextPlayer();
+        return $this->players->switchToNextPlayer();
     }
 
     /**
@@ -108,17 +103,8 @@ class Game
         return $events;
     }
 
-    private function switchToNextPlayer(): bool
+    private function winAGoldCoin(): array
     {
-        return $this->players->switchToNextPlayer();
-    }
-
-    private function winAGoldCoin(): void
-    {
-        $this->players->getCurrentPlayer()->winAGoldCoin();
-        $this->outputWriter($this->players->getCurrentPlayer()->getName()
-            . " now has "
-            . $this->players->getCurrentPlayer()->getGoldCoins()
-            . " Gold Coins.");
+        return $this->players->getCurrentPlayer()->winAGoldCoin();
     }
 }

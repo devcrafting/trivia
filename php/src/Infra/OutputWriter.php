@@ -5,10 +5,12 @@ namespace Trivia\Infra;
 
 
 use Trivia\Domain\Event\DiceRolled;
+use Trivia\Domain\Event\GoldCoinWon;
 use Trivia\Domain\Event\PlayerAdded;
 use Trivia\Domain\Event\PlayerGetOutOfPenaltyBox;
 use Trivia\Domain\Event\PlayerKeptInPenaltyBox;
 use Trivia\Domain\Event\PlayerMoved;
+use Trivia\Domain\Event\PlayerWonGame;
 use Trivia\Domain\Event\QuestionAsked;
 
 class OutputWriter
@@ -45,6 +47,10 @@ class OutputWriter
         $this->handlerByType[QuestionAsked::class] = function ($event) {
             $this->handlerQuestionAsked($event);
         };
+        $this->handlerByType[GoldCoinWon::class] = function ($event) {
+            $this->handlerGoldCoinWon($event);
+        };
+        $this->handlerByType[PlayerWonGame::class] = function ($event) { };
     }
 
     private function handlePlayerAdded(PlayerAdded $event) {
@@ -86,5 +92,14 @@ class OutputWriter
         ($this->println)("The category is " . $event->question->getCategory());
         ($this->println)($event->question->getText());
 
+    }
+
+    private function handlerGoldCoinWon(GoldCoinWon $event)
+    {
+        ($this->println)("Answer was correct!!!!");
+        ($this->println)($event->playerName
+            . " now has "
+            . $event->goldCoins
+            . " Gold Coins.");
     }
 }

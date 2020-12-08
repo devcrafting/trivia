@@ -4,7 +4,9 @@
 namespace Trivia\Domain;
 
 
+use Trivia\Domain\Event\GoldCoinWon;
 use Trivia\Domain\Event\PlayerMoved;
+use Trivia\Domain\Event\PlayerWonGame;
 
 class Player
 {
@@ -45,14 +47,14 @@ class Player
         return $this->goldCoins == 6;
     }
 
-    public function winAGoldCoin()
+    public function winAGoldCoin() : array
     {
         $this->goldCoins++;
-    }
-
-    public function getGoldCoins() : int
-    {
-        return $this->goldCoins;
+        $events = [];
+        array_push($events, new GoldCoinWon($this->name, $this->goldCoins));
+        if ($this->hasPlayerWon())
+            array_push($events, new PlayerWonGame($this->name));
+        return $events;
     }
 
     public function isInPenaltyBox() : bool

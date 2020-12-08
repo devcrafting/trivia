@@ -3,6 +3,7 @@
 namespace Trivia;
 
 use Trivia\Domain\Event\PlayerAdded;
+use Trivia\Domain\Event\PlayerWonGame;
 use Trivia\Domain\Game;
 use Trivia\Infra\ConsoleHandlers;
 use Trivia\Infra\OutputWriter;
@@ -28,7 +29,9 @@ class GameRunner
             if (rand(0, 9) == 7) {
                 $winner = $aGame->wrongAnswer();
             } else {
-                $winner = $aGame->wasCorrectlyAnswered();
+                $events = $aGame->wasCorrectlyAnswered();
+                $consoleWriter->publish($events);
+                $winner = count($events) > 1 && $events[1] instanceof PlayerWonGame;
             }
         } while (!$winner);
     }
