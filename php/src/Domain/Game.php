@@ -80,13 +80,11 @@ class Game
         return $events;
     }
 
-    function wrongAnswer(): bool
+    function wrongAnswer(): array
     {
-        $this->outputWriter("Question was incorrectly answered");
-        $this->outputWriter($this->players->getCurrentPlayer()->getName() . " was sent to the penalty box");
-        $this->players->getCurrentPlayer()->goToPenaltyBox();
-
-        return $this->players->switchToNextPlayer();
+        $events = $this->players->getCurrentPlayer()->goToPenaltyBox();
+        $this->players->switchToNextPlayer();
+        return $events;
     }
 
     /**

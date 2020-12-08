@@ -6,6 +6,7 @@ namespace Trivia\Domain;
 
 use Trivia\Domain\Event\GoldCoinWon;
 use Trivia\Domain\Event\PlayerMoved;
+use Trivia\Domain\Event\PlayerSentToPenaltyBox;
 use Trivia\Domain\Event\PlayerWonGame;
 
 class Player
@@ -62,8 +63,9 @@ class Player
         return $this->isInPenaltyBox;
     }
 
-    public function goToPenaltyBox()
+    public function goToPenaltyBox() : array
     {
         $this->isInPenaltyBox = true;
+        return array(new PlayerSentToPenaltyBox($this->name));
     }
 }

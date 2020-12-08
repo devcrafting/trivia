@@ -10,6 +10,7 @@ use Trivia\Domain\Event\PlayerAdded;
 use Trivia\Domain\Event\PlayerGetOutOfPenaltyBox;
 use Trivia\Domain\Event\PlayerKeptInPenaltyBox;
 use Trivia\Domain\Event\PlayerMoved;
+use Trivia\Domain\Event\PlayerSentToPenaltyBox;
 use Trivia\Domain\Event\PlayerWonGame;
 use Trivia\Domain\Event\QuestionAsked;
 
@@ -51,6 +52,9 @@ class OutputWriter
             $this->handlerGoldCoinWon($event);
         };
         $this->handlerByType[PlayerWonGame::class] = function ($event) { };
+        $this->handlerByType[PlayerSentToPenaltyBox::class] = function ($event) {
+            $this->handlerPlayerSentToPenaltyBox($event);
+        };
     }
 
     private function handlePlayerAdded(PlayerAdded $event) {
@@ -101,5 +105,11 @@ class OutputWriter
             . " now has "
             . $event->goldCoins
             . " Gold Coins.");
+    }
+
+    private function handlerPlayerSentToPenaltyBox(PlayerSentToPenaltyBox $event)
+    {
+        ($this->println)("Question was incorrectly answered");
+        ($this->println)($event->playerName . " was sent to the penalty box");
     }
 }

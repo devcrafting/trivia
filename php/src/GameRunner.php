@@ -27,12 +27,13 @@ class GameRunner
             $consoleWriter->publish($aGame->roll(rand(0, 5) + 1));
 
             if (rand(0, 9) == 7) {
-                $winner = $aGame->wrongAnswer();
+                $events = $aGame->wrongAnswer();
+                $consoleWriter->publish($events);
             } else {
                 $events = $aGame->wasCorrectlyAnswered();
                 $consoleWriter->publish($events);
-                $winner = count($events) > 1 && $events[1] instanceof PlayerWonGame;
             }
+            $winner = count($events) > 1 && $events[1] instanceof PlayerWonGame;
         } while (!$winner);
     }
 }
