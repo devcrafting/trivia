@@ -8,13 +8,17 @@ object GameRunner {
 }
 
 fun main(args: Array<String>) {
+    val rand = Random()
+    playGame(rand)
+
+}
+
+fun playGame(rand: Random) {
     val aGame = Game()
 
     aGame.add("Chet")
     aGame.add("Pat")
     aGame.add("Sue")
-
-    val rand = Random()
 
     do {
 
@@ -28,5 +32,4 @@ fun main(args: Array<String>) {
 
 
     } while (GameRunner.notAWinner)
-
 }

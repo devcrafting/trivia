@@ -1,13 +1,19 @@
 package com.adaptionsoft.games.trivia
 
-import org.junit.jupiter.api.Assertions.assertTrue
+import com.adaptionsoft.games.trivia.runner.playGame
+import org.approvaltests.Approvals
 import org.junit.jupiter.api.Test
-
+import java.io.ByteArrayOutputStream
+import java.io.PrintStream
+import java.util.*
 
 class SomeTest {
 
     @Test
-    fun true_is_true() {
-        assertTrue(false)
+    fun `it is locked down`() {
+        val out = ByteArrayOutputStream()
+        System.setOut(PrintStream(out))
+        (1..10).forEach { playGame(Random(it.toLong())) }
+        Approvals.verify(out.toString())
     }
 }
